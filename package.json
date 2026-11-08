@@ -16,6 +16,8 @@
     "@tiptap/react": "^3.33.0",
     "@tiptap/starter-kit": "^3.33.0",
     "clsx": "^2.1.1",
+    "isomorphic-dompurify": "^4.7.0",
+    "jsdom": "^31.0.0",
     "lucide-react": "^1.16.0",
     "next": "^15.2.1",
     "react": "^19.0.0",

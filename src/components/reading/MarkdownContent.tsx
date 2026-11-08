@@ -1,5 +1,6 @@
 import React from 'react';
 import { isHtml } from '@/lib/contentParser';
+import { sanitizeHtml, escapeHtml } from '@/lib/sanitizeHtml';
 
 interface MarkdownContentProps {
   content: string;
@@ -18,7 +19,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
     return (
       <div
         className="space-y-6 leading-relaxed article-reading-content"
-        dangerouslySetInnerHTML={{ __html: content }}
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
       />
     );
   }
@@ -119,7 +120,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
 }
 
 function formatInlineMarkdown(text: string): string {
-  return text
+  return escapeHtml(text)
     // Negrito **texto**
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-[var(--color-ink-primary)]">$1</strong>')
     // Itálico *texto*

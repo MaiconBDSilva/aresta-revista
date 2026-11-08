@@ -13,7 +13,7 @@
   - [1.2 Anatomia das Rotas e Componentes](#12-anatomia-das-rotas-e-componentes)
   - [1.3 Como Usar o Seletor de Visão no Protótipo (`PrototypeRoleSwitcher`)](#13-como-usar-o-seletor-de-visão-no-protótipo-prototyperoleswitcher)
 - [2. Manual do Leitor: Como Navegar, Ler e Compartilhar](#2-manual-do-leitor-como-navegar-ler-e-compartilhar)
-  - [2.1 Navegando pela Capa Editorial e pelas 6 Editorias](#21-navegando-pela-capa-editorial-e-pelas-6-editorias)
+  - [2.1 Navegando pela Capa Editorial e pelas 5 Editorias](#21-navegando-pela-capa-editorial-e-pelas-5-editorias)
   - [2.2 Experiência de Leitura Imersiva (`/coluna/[slug]`)](#22-experiência-de-leitura-imersiva-colunaslug)
   - [2.3 Perfil do Colunista (`/autor/[slug]`) vs. Acervo da Coluna (`/coluna-arquivo/[slug]`)](#23-perfil-do-colunista-autorslug-vs-acervo-da-coluna-coluna-arquivoslug)
 - [3. Manual do Autor / Colunista: Escrita, Revisão Colaborativa e Publicação](#3-manual-do-autor--colunista-escrita-revisão-colaborativa-e-publicação)
@@ -40,8 +40,8 @@
 
 ```mermaid
 flowchart TD
-    CAPA["📰 Capa da Revista (/)<br/>Hero, Destaques, 6 Editorias e Colunistas"] --> ARTIGO["📖 Leitor Imersivo (/coluna/[slug])<br/>Artigo Publicado, Conforto Visual e Assinatura"]
-    CAPA --> CAT["🏷️ As 6 Editorias (/editoria/[slug])<br/>Política, Cultura, Entretenimento, Subjetividades, Opinião, Esporte"]
+    CAPA["📰 Capa da Revista (/)<br/>Hero, Destaques, 5 Editorias e Colunistas"] --> ARTIGO["📖 Leitor Imersivo (/coluna/[slug])<br/>Artigo Publicado, Conforto Visual e Assinatura"]
+    CAPA --> CAT["🏷️ As 5 Editorias (/editoria/[slug])<br/>Política, Cultura, Entretenimento, Ensaios, Esporte"]
     CAPA --> COL_ARQ["📚 Acervo da Coluna (/coluna-arquivo/[slug])<br/>Manifesto da Coluna, Seguir e Todos os Artigos"]
     CAPA --> AUTOR["✍️ Perfil do Colunista (/autor/[slug])<br/>Biografia, Redes Sociais e Link da Coluna"]
     CAT --> ARTIGO
@@ -59,9 +59,9 @@ flowchart TD
 
 | Rota | Público | Finalidade Principal |
 | :--- | :--- | :--- |
-| **`/`** | Público Geral | Capa editorial com manchete principal (*Hero*), destaques secundários, vitrine *"Últimas das Colunas"* e feeds das 6 editorias. |
+| **`/`** | Público Geral | Capa editorial com manchete principal (*Hero*), destaques secundários, vitrine *"Últimas das Colunas"* e feeds das 5 editorias. |
 | **`/coluna/[slug]`** | Público Geral | Página de leitura imersiva para artigos com `status = 'publicado'`, controles tipográficos `[A-] [A+]`, temas, *Quote Card* e comentários. |
-| **`/editoria/[slug]`** | Público Geral | Arquivo de artigos publicados filtrados por uma das **6 grandes editorias** (*Política & Poder*, *Cultura & Artes*, *Entretenimento & Pop*, *Subjetividades*, *Opinião & Ensaios*, *Esporte & Sociedade*). |
+| **`/editoria/[slug]`** | Público Geral | Arquivo de artigos publicados filtrados por uma das **5 grandes editorias** (*Política*, *Cultura*, *Entretenimento*, *Ensaios*, *Esporte*). |
 | **`/autor/[slug]`** | Público Geral | **Página de Perfil do Colunista:** biografia completa, foto, redes sociais, destaque da sua coluna titular e seus 3 textos mais recentes. |
 | **`/coluna-arquivo/[slug]`** | Público Geral | **Acervo da Coluna do Autor:** banner, manifesto da coluna, botão *"Seguir esta Coluna"* e listagem cronológica completa de todos os textos publicados na coluna. |
 | **`/conta`** | Leitores Autenticados | **Área do Leitor:** dados cadastrais, preferências de newsletters, colunas que está seguindo e zona de privacidade/LGPD com exclusão de conta. |
@@ -84,15 +84,14 @@ No link público de testes da Vercel (`aresta-revista.vercel.app`), há uma barr
 
 ## 2. Manual do Leitor: Como Navegar, Ler e Compartilhar
 
-### 2.1 Navegando pela Capa Editorial e pelas 6 Editorias
+### 2.1 Navegando pela Capa Editorial e pelas 5 Editorias
 1. **Acesso à Capa:** Na página principal, o leitor visualiza a manchete *Hero* e os destaques curados da edição.
-2. **Filtragem por Temas:** O menu superior com efeito *frosted glass* permite navegar pelas **6 editorias oficiais**:
-   * **Política & Poder:** Conjuntura nacional e internacional, instituições e cidadania.
-   * **Cultura & Artes:** Literatura, artes visuais, música, teatro e cinema de autor.
-   * **Entretenimento & Pop:** Streaming, séries, televisão e cultura pop.
-   * **Subjetividades:** Crônicas intimistas, psicanálise, memória e cotidiano.
-   * **Opinião & Ensaios:** Artigos de fundo e debates teóricos aprofundados.
-   * **Esporte & Sociedade:** Análises culturais do esporte e seu impacto social.
+2. **Filtragem por Temas:** O menu superior com efeito *frosted glass* permite navegar pelas **5 editorias oficiais**:
+   * **Política:** Conjuntura institucional, cidadania, sustentabilidade e poder no Brasil Central.
+   * **Cultura:** Literatura, patrimônio histórico, arquitetura, música e memória.
+   * **Entretenimento:** Cinema, audiovisual, festivais, streaming e cultura pop.
+   * **Ensaios:** Ensaios teóricos, reflexões críticas de fundo e debates estéticos.
+   * **Esporte:** Crônicas esportivas, futebol popular, arquibancadas e impacto social.
 
 ### 2.2 Experiência de Leitura Imersiva (`/coluna/[slug]`)
 * O texto é apresentado em coluna centralizada (`max-w-[68ch]`) com controles `[A-]` e `[A+]` e alternância entre os temas *Papel Linho*, *Branco Puro* e *Modo Noturno*.

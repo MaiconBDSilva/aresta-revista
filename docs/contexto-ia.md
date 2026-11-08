@@ -68,6 +68,7 @@ Para eliminar redundâncias e garantir facilidade de manutenção (princípio DR
 | **[`docs/guia-de-desenvolvimento.md`](./guia-de-desenvolvimento.md)** | Stack técnica, os 7 serviços em `src/services/` (Mock-First), `PrototypeRoleSwitcher`, governança Anti-Class Boom e testes. |
 | **[`docs/roteiro-sprints.md`](./roteiro-sprints.md)** | Planejamento de sprints de desenvolvimento (Sprints 0 a 6), deploy do protótipo na Vercel e checklist de transição para o Supabase. |
 | **[`docs/tutorial-do-sistema.md`](./tutorial-do-sistema.md)** | Manual passo a passo para Leitores, Autores/Colunistas, Administradores (`/admin`) e Desenvolvedores. |
+| **[`docs/guia-de-teste-do-prototipo.md`](./guia-de-teste-do-prototipo.md)** | Roteiro oficial de teste do protótipo navegável para a equipe, limitações da camada mock, checklist e coleta de feedback. |
 
 > **Nota sobre Estrutura de Pastas e Scripts:** A árvore de diretórios atualizada do projeto e os comandos `npm` oficiais ficam centralizados exclusivamente no [`README.md`](../README.md).
 
@@ -106,5 +107,5 @@ Para eliminar redundâncias e garantir facilidade de manutenção (princípio DR
 
 ## 6. Status Atual & Próximas Etapas
 
-* **Fase Atual:** Especificação Técnica, Banco de Dados (`20261107_init_schema.sql`), Elenco de Autores Reais, Catálogo de Classes Semânticas e Regras de Negócio 100% revisados e alinhados.
-* **Próxima Fase:** Início da **Sprint 0** (Setup da aplicação Next.js, Design Tokens carmim `#B91C1C` em `src/styles/theme.css`, Primitivas universais e layout mestre com Header Frosted Glass e Padding Superior).
+* **Fase Atual:** Sprint 4 concluída — protótipo navegável completo (mocks + `PrototypeRoleSwitcher`), com 36 testes Vitest e build de 40 páginas, pronto para o deploy na Vercel.
+* **Próxima Fase:** Deploy na Vercel (definir `NEXT_PUBLIC_SITE_URL`, ver `.env.example`) e, em seguida, **Sprint 5** (Supabase).

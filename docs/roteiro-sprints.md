@@ -125,7 +125,8 @@ flowchart TD
 - [x] Botão de atalho **"Editar Artigo"** contextual no cabeçalho de leitura pública ([`/coluna/[slug]`](file:///e:/Maicon/DEV/aresta-revista/src/app/coluna)), visível exclusivamente para o autor titular do texto e administradores, levando com 1 clique para [`/painel/editor/[id]`](file:///e:/Maicon/DEV/aresta-revista/src/app/painel/editor).
 - [x] Botão visual **"Entrar"** integrado ao Header de Topo e ao Drawer Mobile com modal de login simulado em 1 clique (`LoginVisualModal`), e redirecionamento da pílula do leitor autenticado diretamente para [`/conta`](file:///e:/Maicon/DEV/aresta-revista/src/app/conta).
 - [x] Criação de `interacoesService.ts` para persistência das preferências do leitor e expansão de `artigosService.ts` e `autoresService.ts`.
-- [x] Validação completa com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`) e Build de Produção Next.js (`npm run build`).
+- [x] Validação completa com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`), Vitest (`36 testes aprovados`) e Build de Produção Next.js com 40 páginas (`npm run build`).
+- [x] Correções pré-deploy: leitura (`ArticleReadingLoader`) e editor (`ArticleEditorLoader`) carregam artigos criados/editados localmente no navegador; sanitização de HTML (`sanitizeHtml.ts`); links de compartilhamento dinâmicos (`siteUrl.ts`); `metadataBase`, `icon.svg`, `robots.ts`, `sitemap.ts` e `.env.example`; reset de comentários/revisões na migração de versão do mock.
 
 ### 2.6 MARCO INTERMEDIÁRIO: Deploy do Protótipo Navegável Completo na Vercel
 * Deploy do repositório na Vercel (plano gratuito) gerando o link `aresta-revista.vercel.app`;

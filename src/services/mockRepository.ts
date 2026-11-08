@@ -18,7 +18,7 @@ export const MOCK_DB_TABLES = {
 
 export type MockDbTable = (typeof MOCK_DB_TABLES)[keyof typeof MOCK_DB_TABLES];
 
-export const MOCK_DB_VERSION = 'v1.3_local_author_images';
+export const MOCK_DB_VERSION = 'v1.4_comments_reviews_reset';
 const DB_VERSION_KEY = 'aresta_mock_db_version';
 
 const DB_CHANGE_EVENT = 'aresta_mock_db_changed';
@@ -47,18 +47,25 @@ function checkVersionMigration(): void {
       localStorage.removeItem(MOCK_DB_TABLES.PERFIS);
       localStorage.removeItem(MOCK_DB_TABLES.COLUNAS);
       localStorage.removeItem(MOCK_DB_TABLES.ARTIGOS);
+      localStorage.removeItem(MOCK_DB_TABLES.COMENTARIOS);
+      localStorage.removeItem(MOCK_DB_TABLES.REVISOES);
       localStorage.setItem(DB_VERSION_KEY, MOCK_DB_VERSION);
     }
   } catch {}
 }
 
+const memoryStore = new Map<string, unknown>();
+
 /**
  * Carrega os dados de uma tabela do localStorage.
- * Se não houver dados gravados ou se estiver no servidor (SSR/SSG), retorna o fallback original dos mocks.
+ * Se não houver dados gravados ou se estiver no servidor (SSR/SSG/Node), retorna o fallback original dos mocks.
  */
 export function loadTable<T>(tableName: MockDbTable, fallback: T): T {
   if (!isBrowser()) {
-    return fallback;
+    if (!memoryStore.has(tableName)) {
+      memoryStore.set(tableName, fallback);
+    }
+    return memoryStore.get(tableName) as T;
   }
 
   checkVersionMigration();
@@ -81,7 +88,10 @@ export function loadTable<T>(tableName: MockDbTable, fallback: T): T {
  * Salva os dados de uma tabela no localStorage e notifica os componentes inscritos.
  */
 export function saveTable<T>(tableName: MockDbTable, data: T): void {
-  if (!isBrowser()) return;
+  if (!isBrowser()) {
+    memoryStore.set(tableName, data);
+    return;
+  }
 
   try {
     localStorage.setItem(tableName, JSON.stringify(data));

@@ -37,6 +37,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://arestarevista.com'),
   referrer: 'no-referrer',
   title: {
     default: 'aresta. | Revista de Ensaios & Colunas Contemporâneas',
@@ -45,7 +46,20 @@ export const metadata: Metadata = {
   description:
     'Portal editorial independente para publicação e leitura de colunas de opinião, ensaios culturais e crônicas autorais.',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/icon.svg',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: 'https://arestarevista.com',
+    siteName: 'aresta.',
+    title: 'aresta. | Revista de Ensaios & Colunas Contemporâneas',
+    description: 'Portal editorial independente para publicação e leitura de colunas de opinião, ensaios culturais e crônicas autorais.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'aresta. | Revista de Ensaios & Colunas Contemporâneas',
+    description: 'Portal editorial independente para publicação e leitura de colunas de opinião, ensaios culturais e crônicas autorais.',
   },
 };
 

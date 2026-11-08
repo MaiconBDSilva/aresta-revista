@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { getArtigoUrl } from '@/lib/siteUrl';
 import Image from 'next/image';
 import { X, Download, Copy, Check, ExternalLink, Link2 } from 'lucide-react';
 
@@ -48,7 +49,7 @@ export function InstagramStoryModal({
   const [gerandoImagem, setGerandoImagem] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const urlArtigo = `https://arestarevista.com/coluna/${artigoSlug}`;
+  const urlArtigo = getArtigoUrl(artigoSlug);
 
   // Utilitário de quebra de linhas para medição e renderização
   const getWrappedLines = (

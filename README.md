@@ -30,10 +30,12 @@ aresta-revista/
 │   ├── dicionario-de-dados.md            # 4. Design Tokens, catálogo completo de classes CSS, tabelas SQL e RLS
 │   ├── guia-de-desenvolvimento.md        # 5. Arquitetura Mock-First (7 serviços), Role Switcher e Anti-Class Boom
 │   ├── roteiro-sprints.md                # 6. Cronograma das Sprints (0 a 6), roteiro de deploy e transição
-│   └── tutorial-do-sistema.md            # 7. Manual passo a passo (Leitor, Autor, Admin /admin e Manutenção)
+│   ├── tutorial-do-sistema.md            # 7. Manual passo a passo (Leitor, Autor, Admin /admin e Manutenção)
+│   └── guia-de-teste-do-prototipo.md     # 8. Roteiro oficial de teste do protótipo e checklist para a equipe editorial
 ├── public/                               # Assets estáticos, ícones e logotipo oficial da revista
 │   ├── images/                           # Identidade visual, logotipo logo-aresta.png
-│   └── favicon.ico                       # Favicon da revista
+│   └── favicon.ico                       # Favicon da revista (atual: src/app/icon.svg)
+├── .env.example                          # Modelo de variáveis de ambiente (NEXT_PUBLIC_SITE_URL e Supabase)
 ├── src/                                  # Código-fonte da aplicação Next.js
 │   ├── app/                              # Rotas e páginas (App Router)
 │   │   ├── page.tsx                      # Capa da revista (Hero, Destaques, Feeds por Editoria, Colunistas)
@@ -63,6 +65,8 @@ aresta-revista/
 │   │   ├── supabase/                     # Clientes Supabase (browser client e server client via SSR)
 │   │   ├── __tests__/                    # Testes unitários de utilitários e regras de domínio
 │   │   ├── readingTime.ts                # Cálculo automático do tempo de leitura (200 palavras/minuto)
+│   │   ├── sanitizeHtml.ts               # Sanitização (DOMPurify) e escape de HTML antes de renderizar conteúdo
+│   │   ├── siteUrl.ts                    # URL pública dinâmica dos artigos para links de compartilhamento
 │   │   ├── imageOptimizer.ts             # Otimizador client-side universal em JPEG (image/jpeg, <= 120 KB)
 │   │   └── slugify.ts                    # Normalizador de slugs semânticos para URLs
 │   ├── schemas/                          # Schemas de validação em tempo de execução com Zod (artigo, revisao, autor)
@@ -141,8 +145,8 @@ npm run start
 
 ## 4. Status do Roadmap & Próximos Passos
 
-* **Fase Atual:** **Sprint 3 Concluída (Editor do Autor `/painel`, Publicação Autônoma & Revisão Colaborativa)** — Painel do Colunista completo com as 3 abas essenciais (**Publicados**, **Em Produção** e **Redação Geral**), editor imersivo WYSIWYG Tiptap, otimização e compressão client-side em JPEG ($\le 120\text{ KB}$), fallback oficial `default-cover.svg` (`EditorialImage`), trava de autoria inviolável (apenas o autor titular modifica e publica), mural lateral de sugestões da redação (`EditorialReviewSidebar`), `AuthContext` e botão flutuante `PrototypeRoleSwitcher` para troca dinâmica de perfil em 1 clique.
-* **Cobertura de Testes Automatizados:** 31 testes unitários no Vitest aprovados com 100% de sucesso, validação estrita TypeScript (`tsc --noEmit`) e ESLint com 0 erros, compilação de produção com 35 páginas estáticas e dinâmicas geradas no build.
+* **Fase Atual:** **Sprint 4 Concluída — Protótipo pronto para o deploy na Vercel.** Inclui painel `/admin`, conta do leitor `/conta`, leitura e editor com carregamento no navegador (`ArticleReadingLoader` e `ArticleEditorLoader`, para artigos criados/editados localmente), sanitização de HTML (`sanitizeHtml.ts`, DOMPurify), links de compartilhamento dinâmicos (`siteUrl.ts`), `robots.ts`, `sitemap.ts` e `.env.example`.
+* **Cobertura de Testes Automatizados:** 36 testes unitários no Vitest aprovados, validação estrita TypeScript (`tsc --noEmit`) e ESLint com 0 erros, compilação de produção com 40 páginas geradas no build.
 * **Estratégia Adotada:** **Protótipo Navegável Completo (Mock-First)** — ecossistema autoral, editorial e público totalmente operacionais em dados mock tipados para validação prévia antes da conexão com banco real.
-* **Marco de Validação:** Deploy público na Vercel ao final da **Sprint 4** para testes com pessoas reais via link no WhatsApp.
-* **Próxima Etapa:** **Sprint 4 (Painel Admin `/admin`, Textos em Edição na Redação, Gestão dos Destaques da Capa Hero/Secundários e Gestão de Colunistas)**.
+* **Marco de Validação:** Deploy público na Vercel para testes com pessoas reais via link no WhatsApp (definir `NEXT_PUBLIC_SITE_URL`, conforme `.env.example`).
+* **Próxima Etapa:** **Deploy do protótipo na Vercel** e, depois, **Sprint 5 (Supabase)**.

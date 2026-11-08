@@ -1,10 +1,10 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { getArtigoBySlug, getArtigosPublicados } from '@/services/artigosService';
 import { getAutorBySlug } from '@/services/autoresService';
 import { getComentariosByArtigoId } from '@/services/comentariosService';
 import { ArticleReadingView } from '@/components/reading/ArticleReadingView';
+import { ArticleReadingLoader } from '@/components/reading/ArticleReadingLoader';
 import { ArticleCard } from '@/components/editorial/ArticleCard';
 import { ARTIGOS_MOCK } from '@/services/mocks/artigos.mock';
 
@@ -64,8 +64,13 @@ export default async function ArtigoPage({ params }: ArtigoPageProps) {
   const { slug } = await params;
   const artigo = await getArtigoBySlug(slug);
 
+  // Artigo inexistente nos dados estáticos: pode ter sido criado/publicado localmente (mock no navegador)
   if (!artigo || artigo.status !== 'publicado') {
-    notFound();
+    return (
+      <div className="main-content-layout">
+        <ArticleReadingLoader slug={slug} />
+      </div>
+    );
   }
 
   const comentarios = await getComentariosByArtigoId(artigo.id);

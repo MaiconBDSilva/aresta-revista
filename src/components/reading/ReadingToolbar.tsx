@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { getArtigoUrl } from '@/lib/siteUrl';
 import {
   Sun,
   Moon,
@@ -65,7 +66,7 @@ export function ReadingToolbar({
   const [linkCopiado, setLinkCopiado] = useState(false);
   const bandejaRef = useRef<HTMLDivElement>(null);
 
-  const urlArtigo = `https://arestarevista.com/coluna/${artigoSlug}`;
+  const urlArtigo = getArtigoUrl(artigoSlug);
 
   // Fecha a bandeja ao clicar fora
   useEffect(() => {
