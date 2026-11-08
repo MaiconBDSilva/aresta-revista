@@ -22,6 +22,7 @@
 | Item | Informação Oficial |
 | :--- | :--- |
 | **Nome da Publicação** | **Aresta Revista** |
+| **Domínio Oficial** | **`arestarevista.com`** |
 | **Grafia do Logotipo** | **`aresta.`** (em caixa baixa com ponto final em vermelho carmim `#B91C1C`) |
 | **Cor Central de Destaque** | **Vermelho Carmim `#B91C1C`** (`--color-brand-accent`) |
 | **Asset Oficial da Logo** | [`public/images/logo-aresta.png`](../public/images/logo-aresta.png) |

@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { getCategorias, getCategoriaBySlug } from '../categoriasService';
-import { getAutores, getAutorBySlug, getColunaBySlug, getColunistasVitrine } from '../autoresService';
+import {
+  getAutores,
+  getAutorBySlug,
+  getColunaBySlug,
+  getColunaByAutorId,
+  getColunistasVitrine,
+} from '../autoresService';
 import {
   getHeroArticle,
   getDestaquesSecao,
@@ -9,6 +15,7 @@ import {
   getArtigoBySlug,
   buscarArtigos,
 } from '../artigosService';
+import { getComentariosByArtigoId, adicionarComentario } from '../comentariosService';
 
 describe('categoriasService', () => {
   it('deve retornar as 5 categorias oficiais ativas ordenadas por ordem_exibicao', async () => {
@@ -129,6 +136,31 @@ describe('artigosService', () => {
     const resultadosArtDeco = await buscarArtigos('Art Déco');
     expect(resultadosArtDeco.length).toBeGreaterThan(0);
     expect(resultadosArtDeco[0].titulo).toContain('Art Déco');
+  });
+});
+
+describe('comentariosService', () => {
+  it('deve listar comentários de um artigo com dados do leitor', async () => {
+    const comentarios = await getComentariosByArtigoId('b0000000-0000-0000-0000-000000000001');
+    expect(comentarios.length).toBeGreaterThan(0);
+    expect(comentarios[0].leitor.nome).toBeDefined();
+    expect(comentarios[0].conteudo).toBeDefined();
+  });
+
+  it('deve adicionar novo comentário para leitor autenticado', async () => {
+    const novo = await adicionarComentario({
+      artigoId: 'b0000000-0000-0000-0000-000000000001',
+      leitorId: 'l-test-user',
+      leitorNome: 'Leitor Teste',
+      leitorAvatarUrl: null,
+      conteudo: 'Comentário teste adicionado com sucesso.',
+    });
+
+    expect(novo.id).toBeDefined();
+    expect(novo.conteudo).toBe('Comentário teste adicionado com sucesso.');
+
+    const listagem = await getComentariosByArtigoId('b0000000-0000-0000-0000-000000000001');
+    expect(listagem[0].id).toBe(novo.id);
   });
 });
 

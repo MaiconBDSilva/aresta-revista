@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --font-logo: var(--font-svetze, 'Svetze'), 'Svetze', serif;
+}
+
 /* Vincula a variante dark: do Tailwind exclusivamente à classe .dark (nunca à media query solta) */
 @custom-variant dark (&:where(.dark, .dark *));
 

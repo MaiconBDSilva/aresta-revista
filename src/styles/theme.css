@@ -39,6 +39,11 @@
   --font-reading: var(--font-lora, 'Lora', 'Charter', Georgia, serif);
 }
 
+/* Classe Semântica Canônica para o Logotipo da Marca */
+.font-logo {
+  font-family: var(--font-svetze, 'Svetze'), 'Svetze', Georgia, serif !important;
+}
+
 .dark {
   /* Cores Base da Revista - Modo Noturno (Ativado exclusivamente via classe .dark) */
   --color-ink-primary: #FBFBF9;

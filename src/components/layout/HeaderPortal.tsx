@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, PenSquare, Shield } from 'lucide-react';
 import { HeaderSearchBar } from './HeaderSearchBar';
+import { COLUNAS_MOCK, ARTIGOS_MOCK, PERFIS_AUTORES_MOCK } from '@/services/mocks';
 
 export const CATEGORIAS_OFICIAIS = [
   { nome: 'Política', slug: 'politica', cor: 'var(--color-cat-politica)' },
@@ -217,20 +218,46 @@ export function HeaderPortal() {
 
   // Determina o título editorial com base na rota atual (estilo G1 / portal)
   let tituloEditorial = 'aresta';
+  let linkEditorial = '/';
 
   if (pathname.startsWith('/editoria/')) {
     const slug = pathname.replace('/editoria/', '').split('/')[0];
     const catEncontrada = CATEGORIAS_OFICIAIS.find((c) => c.slug === slug);
     if (catEncontrada) {
       tituloEditorial = catEncontrada.nome.toLowerCase();
+      linkEditorial = `/editoria/${slug}`;
+    }
+  } else if (pathname.startsWith('/coluna-arquivo/')) {
+    const slug = pathname.replace('/coluna-arquivo/', '').split('/')[0];
+    const colEncontrada = COLUNAS_MOCK.find((c) => c.slug === slug);
+    if (colEncontrada) {
+      tituloEditorial = colEncontrada.nome.toLowerCase();
+      linkEditorial = `/coluna-arquivo/${colEncontrada.slug}`;
+    }
+  } else if (pathname.startsWith('/coluna/')) {
+    const slug = pathname.replace('/coluna/', '').split('/')[0];
+    const artigoEncontrado = ARTIGOS_MOCK.find((a) => a.slug === slug);
+    if (artigoEncontrado) {
+      tituloEditorial = artigoEncontrado.coluna.nome.toLowerCase();
+      linkEditorial = `/coluna-arquivo/${artigoEncontrado.coluna.slug}`;
+    }
+  } else if (pathname.startsWith('/autor/')) {
+    const slug = pathname.replace('/autor/', '').split('/')[0];
+    const autorEncontrado = PERFIS_AUTORES_MOCK.find((a) => a.slug === slug);
+    if (autorEncontrado) {
+      const colunaDoAutor = COLUNAS_MOCK.find((c) => c.autor_id === autorEncontrado.id);
+      if (colunaDoAutor) {
+        tituloEditorial = colunaDoAutor.nome.toLowerCase();
+        linkEditorial = `/coluna-arquivo/${colunaDoAutor.slug}`;
+      }
     }
   }
 
   return (
     <div className="header-portal-top">
-      {/* Parte Superior: Logo Grande / Nome da Editoria em Atelier Fleur Regular */}
+      {/* Parte Superior: Logo Grande / Nome da Editoria ou Coluna em Svetze */}
       <div id="header-portal-brand" className="header-portal-brand-area">
-        <Link href="/" className="header-portal-title">
+        <Link href={linkEditorial} className="header-portal-title">
           {tituloEditorial}
           <span style={{ color: 'var(--color-brand-accent)' }}>.</span>
         </Link>

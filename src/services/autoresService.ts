@@ -33,6 +33,14 @@ export async function getColunaBySlug(slug: string): Promise<Coluna | null> {
 }
 
 /**
+ * Recupera a coluna associada a um autor pelo autor_id.
+ */
+export async function getColunaByAutorId(autorId: string): Promise<Coluna | null> {
+  const coluna = COLUNAS_MOCK.find((c) => c.autor_id === autorId && c.ativo);
+  return coluna || null;
+}
+
+/**
  * Retorna os dados para a vitrine horizontal "Últimas das Colunas" na Capa Editorial.
  * Traz os 5 colunistas com suas respectivas colunas e o artigo publicado mais recente de cada um.
  */

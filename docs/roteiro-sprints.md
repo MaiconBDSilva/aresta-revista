@@ -81,18 +81,20 @@ flowchart TD
   - [x] Vitrine horizontal *"Últimas das Colunas"* com avatares dos 5 colunistas e link para `/coluna-arquivo/[slug]`;
   - [x] Seções modulares dedicadas a cada uma das 5 editorias oficiais (`.grid-magazine-feed`).
 - [x] Páginas de filtro por editoria (`/editoria/[slug]`) com metadados dinâmicos e SSG.
-- [x] Busca inteligente integrada ao Header (estilo G1 / Globo.com) com botão carmim "BUSCAR", input responsivo com debounce e popover flutuante com seta notch e resultados imediatos (sem página isolada).
+- [x] Busca inteligente integrada ao Header com botão carmim "BUSCAR", input responsivo com debounce e popover flutuante com seta notch e resultados imediatos (sem página isolada).
 - [x] Validação completa com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`), Vitest (`22 testes aprovados`) e Build de Produção Next.js (`npm run build`).
 
 ### 2.3 Sprint 2: Leitor Imersivo, Perfil (/autor) & Acervo da Coluna (/coluna-arquivo)
-* Desenvolvimento da página do artigo (`/coluna/[slug]`):
-  * Largura de leitura otimizada (`max-w-[68ch]`), barra de progresso carmim no topo e controles `[A-] [A+]` + temas de fundo;
-  * Menu flutuante de seleção de texto para criação de *Quote Card*;
-  * Bloco de assinatura do autor (`AuthorSignature`) com links para o Perfil e para a Coluna;
-  * Compartilhamento dinâmico (`@vercel/og` e Web Share API) e comentários públicos.
-* Desenvolvimento das duas páginas autorais públicas:
-  * **Perfil do Colunista (`/autor/[slug]`):** Biografia completa, foto, redes sociais, destaque da sua coluna e últimos 3 textos;
-  * **Acervo da Coluna (`/coluna-arquivo/[slug]`):** Banner/selo da coluna, manifesto, botão *"Seguir esta Coluna"* e listagem cronológica de todos os textos publicados na coluna.
+- [x] Desenvolvimento da página do artigo (`/coluna/[slug]`):
+  - [x] Header Duplo exibindo o nome da coluna no lugar de `aresta.` e Header Frosted Glass na rolagem;
+  - [x] Largura de leitura otimizada (`max-w-[78ch]`), barra de progresso carmim no topo e controles de leitura com alternância de tema Claro/Escuro e tamanho de fonte `[A-] [A+]`;
+  - [x] Botão explícito de Quote Card nos controles flutuantes com modal de citação editorial estilizado, cópia de texto formatado e compartilhamento no X e WhatsApp;
+  - [x] Bloco de assinatura do autor (`AuthorSignature`) com redes (X e Instagram), links para o Perfil e para o Acervo da Coluna;
+  - [x] Comentários públicos com leitura aberta para visitantes e obrigatoriedade de login para publicar comentários, com simulação em 1 clique e feedback instantâneo.
+- [x] Desenvolvimento das duas páginas autorais públicas:
+  - [x] **Perfil do Colunista (`/autor/[slug]`):** Foto/avatar grande, biografia completa, redes sociais X e Instagram, destaque da coluna exclusiva e ensaios publicados exibidos em carrossel horizontal fluido;
+  - [x] **Acervo da Coluna (`/coluna-arquivo/[slug]`):** Banner/manifesto da coluna, identificação do colunista titular, modal "Seguir esta Coluna" (com opções de seguir apenas a coluna ou todas, detecção de e-mail de conta logada ou campo de e-mail para visitantes) e grade de artigos com paginação tradicional com números.
+- [x] Validação com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`), Vitest (`24 testes aprovados`) e Build de Produção Next.js com 33 páginas estáticas SSG geradas com sucesso (`npm run build`).
 
 ### 2.4 Sprint 3: Editor do Autor (/painel), Publicação Autônoma & Revisão Colaborativa
 * Desenvolvimento do Painel do Colunista (`/painel` e `/painel/editor`):

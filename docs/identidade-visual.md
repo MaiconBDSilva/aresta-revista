@@ -170,10 +170,20 @@ A navegação da revista opera sob uma arquitetura de dois momentos perfeitament
 
 ### 6.1 Máscara de Degradê Editorial para Redes
 Para a geração automática de imagens de compartilhamento (WhatsApp, X e Instagram Stories):
-* Uma máscara preta em degradê vertical cobre a metade inferior da foto:
-  `linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.6) 50%, transparent 100%)`.
+* Uma máscara escura em degradê vertical cobre a foto principal do artigo:
+  `linear-gradient(180deg, rgba(9, 9, 11, 0.72) 0%, rgba(9, 9, 11, 0.88) 60%, rgba(9, 9, 11, 0.96) 100%)`.
 * O título do artigo em tipografia serifa clara repousa sobre a máscara com contraste legível em qualquer tela.
+* URL oficial estampada nos cartões: **`arestarevista.com`**.
 
 ### 6.2 Cartões de Citação (*Quote Cards*)
-* Fundo linho com aspas decorativas nobres em vermelho carmim (`#B91C1C`) e a frase selecionada pelo leitor;
-* Assinatura do colunista e logotipo `aresta.` em `Svetze` com ponto vermelho carmim no canto inferior direito.
+* Composição sobre a foto de capa com máscara escura;
+* Aspas decorativas nobres em vermelho carmim (`#B91C1C`) e o trecho literal selecionado pelo leitor (sem edição manual);
+* Logotipo oficial `aresta.` estritamente na fonte **`Svetze`** com ponto carmim `#B91C1C`;
+* Assinatura do colunista e endereço canônico `arestarevista.com`.
+
+### 6.3 Cartão de Instagram Story (9:16 - 1080x1920)
+* Proporção vertical oficial de Stories (1080x1920) gerada via Canvas nativo;
+* Foto de capa do artigo com máscara escurecedora contínua;
+* Logotipo `aresta.` em **`Svetze`** no topo com ponto carmim `#B91C1C`;
+* Título do ensaio, subtítulo e aspas editoriais;
+* Assinatura do autor, coluna e indicação visual para uso da figurinha de link com destino para `arestarevista.com/coluna/[slug]`.

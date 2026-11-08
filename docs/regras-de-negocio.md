@@ -280,7 +280,7 @@ Para garantir máxima legibilidade para o leitor humano, identidade editorial e 
   * O `slug` é **obrigatoriamente semântico**, gerado diretamente a partir do título do artigo no momento da criação/edição através da função canônica `slugify()` (`src/lib/slugify.ts`).
   * O slug é formatado exclusivamente em minúsculas, com acentuação e caracteres especiais removidos e todas as palavras separadas por hífens (`kebab-case`). Exemplo:
     * **Título:** *"A Crise Hídrica no Cerrado e os Desafios do Agronegócio em Goiás"*
-    * **URL Canônica:** `https://aresta.com.br/coluna/a-crise-hidrica-no-cerrado-e-os-desafios-do-agronegocio-em-goias`
+    * **URL Canônica:** `https://arestarevista.com/coluna/a-crise-hidrica-no-cerrado-e-os-desafios-do-agronegocio-em-goias`
 * **Unicidade de Slugs:** O banco de dados e os serviços garantem a restrição `UNIQUE` na coluna `slug` da tabela `artigos`. Em caso de títulos idênticos, adiciona-se um sufixo numérico sequencial com hífen (ex: `-2`).
 
 ### 9.2 Mapa de Rotas Semânticas do Portal
