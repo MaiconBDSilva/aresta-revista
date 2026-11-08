@@ -21,3 +21,5 @@ export function calcularTempoLeitura(texto: string | null | undefined): number {
   return Math.max(1, minutos);
 }
 
+export const calculateReadingTime = calcularTempoLeitura;
+

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { ArtigoCompleto, ArtigoComentarioPublico } from '@/types/artigo.types';
 import type { Perfil } from '@/types/autor.types';
+import { EditorialImage } from '@/components/editorial/EditorialImage';
 import { ReadingProgressBar } from './ReadingProgressBar';
 import { ReadingToolbar, type TemaLeitura, type TamanhoFonte } from './ReadingToolbar';
 import { QuoteCardModal } from './QuoteCardModal';
@@ -212,7 +213,7 @@ export function ArticleReadingView({
         {artigo.imagem_capa_url && (
           <figure className="mb-10 -mx-4 sm:mx-0">
             <div className="relative aspect-[16/9] w-full rounded-none sm:rounded-xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-              <Image
+              <EditorialImage
                 src={artigo.imagem_capa_url}
                 alt={artigo.legenda_capa || artigo.titulo}
                 fill

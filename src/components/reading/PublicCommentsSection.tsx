@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { MessageSquare, Lock, Send, UserCheck, AlertCircle } from 'lucide-react';
+import { MessageSquare, Lock, Send, AlertCircle } from 'lucide-react';
 import type { ArtigoComentarioPublico } from '@/types/artigo.types';
 import { adicionarComentario } from '@/services/comentariosService';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 interface PublicCommentsSectionProps {
   artigoId: string;
@@ -15,22 +17,15 @@ export function PublicCommentsSection({
   artigoId,
   comentariosIniciais,
 }: PublicCommentsSectionProps) {
+  const { perfil, isAutenticado, logout } = useAuth();
   const [comentarios, setComentarios] = useState<ArtigoComentarioPublico[]>(comentariosIniciais);
-  const [estaLogado, setEstaLogado] = useState(false);
   const [novoComentario, setNovoComentario] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  // Usuário simulado do protótipo
-  const usuarioSimulado = {
-    id: 'leitor-autenticado-prototipo',
-    nome: 'Mariana Mendonça',
-    avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80',
-  };
-
   const handleEnviar = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!novoComentario.trim() || !estaLogado) return;
+    if (!novoComentario.trim() || !isAutenticado || !perfil) return;
 
     setEnviando(true);
     setFeedback(null);
@@ -38,18 +33,20 @@ export function PublicCommentsSection({
     try {
       const criado = await adicionarComentario({
         artigoId,
-        leitorId: usuarioSimulado.id,
-        leitorNome: usuarioSimulado.nome,
-        leitorAvatarUrl: usuarioSimulado.avatar_url,
+        leitorId: perfil.id,
+        leitorNome: perfil.nome,
+        leitorAvatarUrl: perfil.avatar_url,
         conteudo: novoComentario,
       });
 
       setComentarios([criado, ...comentarios]);
       setNovoComentario('');
       setFeedback('Comentário publicado com sucesso!');
+      toast.success('Comentário publicado no debate público!');
       setTimeout(() => setFeedback(null), 3000);
     } catch {
       setFeedback('Erro ao publicar comentário. Tente novamente.');
+      toast.error('Erro ao publicar comentário.');
     } finally {
       setEnviando(false);
     }
@@ -74,7 +71,7 @@ export function PublicCommentsSection({
 
       {/* Caixa de Ação para Comentar: Exige Autenticação Obrigatória */}
       <div className="mb-10 p-5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-paper-surface)]">
-        {!estaLogado ? (
+        {!isAutenticado || !perfil ? (
           <div className="text-center py-4">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/10 text-amber-600 mb-3">
               <Lock className="w-6 h-6" />
@@ -82,38 +79,43 @@ export function PublicCommentsSection({
             <h4 className="font-serif font-bold text-lg text-[var(--color-ink-primary)] mb-1">
               Faça login para comentar
             </h4>
-            <p className="text-sm text-[var(--color-ink-secondary)] max-w-md mx-auto mb-4">
+            <p className="text-sm text-[var(--color-ink-secondary)] max-w-md mx-auto leading-relaxed">
               A aresta preza pela qualidade e civilidade do debate público. Comentários anônimos não são aceitos.
             </p>
-            <button
-              onClick={() => setEstaLogado(true)}
-              className="btn-primary text-xs py-2 px-5 inline-flex items-center gap-2"
-            >
-              <UserCheck className="w-4 h-4" />
-              <span>Entrar com sua Conta (Simular Leitor Conectado)</span>
-            </button>
           </div>
         ) : (
           <form onSubmit={handleEnviar}>
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[var(--color-border-subtle)]">
-                  <Image
-                    src={usuarioSimulado.avatar_url}
-                    alt={usuarioSimulado.nome}
-                    fill
-                    className="object-cover"
-                    sizes="28px"
-                  />
+              <div className="flex items-center gap-2.5">
+                <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[var(--color-border-subtle)] bg-neutral-200 dark:bg-neutral-700">
+                  {perfil.avatar_url ? (
+                    <Image
+                      src={perfil.avatar_url}
+                      alt={perfil.nome}
+                      fill
+                      className="object-cover"
+                      sizes="28px"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[11px] font-bold text-ink-secondary">
+                      {perfil.nome.charAt(0)}
+                    </div>
+                  )}
                 </div>
-                <span className="text-xs font-semibold text-[var(--color-ink-primary)]">
-                  Comentando como {usuarioSimulado.nome}
-                </span>
+                <div>
+                  <span className="text-xs font-semibold text-[var(--color-ink-primary)]">
+                    Comentando como {perfil.nome}
+                  </span>
+                  <span className="ml-1.5 text-[10px] uppercase font-mono px-1.5 py-0.2 rounded bg-neutral-100 dark:bg-neutral-800 text-ink-muted">
+                    {perfil.papel === 'leitor' ? 'Leitor' : perfil.papel === 'autor' ? 'Colunista' : 'Redação'}
+                  </span>
+                </div>
               </div>
               <button
                 type="button"
-                onClick={() => setEstaLogado(false)}
+                onClick={() => logout()}
                 className="text-xs text-[var(--color-ink-muted)] hover:text-[var(--color-brand-accent)] transition-colors"
+                title="Desconectar e navegar como visitante anônimo"
               >
                 Desconectar
               </button>

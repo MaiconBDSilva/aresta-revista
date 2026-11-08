@@ -11,6 +11,10 @@
     "validate": "tsc --noEmit && eslint . && vitest run"
   },
   "dependencies": {
+    "@tiptap/extension-placeholder": "^3.33.0",
+    "@tiptap/pm": "^3.33.0",
+    "@tiptap/react": "^3.33.0",
+    "@tiptap/starter-kit": "^3.33.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.16.0",
     "next": "^15.2.1",
@@ -33,4 +37,3 @@
     "vitest": "^3.0.7"
   }
 }
-

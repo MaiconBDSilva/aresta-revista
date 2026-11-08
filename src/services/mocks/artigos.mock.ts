@@ -787,5 +787,97 @@ Este ensaio analisa em detalhe os cenários orçamentários do Tesouro Estadual 
       { id: 55, nome: 'Pacto Federativo', slug: 'pacto-federativo' },
     ],
   },
+
+  // ============================================================================
+  // 16. DANILLO REIS - CULTURA (EM EDIÇÃO - PARA TESTE DE REDAÇÃO GERAL)
+  // ============================================================================
+  {
+    id: 'b0000000-0000-0000-0000-000000000016',
+    titulo: 'Vitrines Esquecidas: A Memória Tipográfica do Comércio Goianiense',
+    slug: 'vitrines-esquecidas-a-memoria-tipografica-do-comercio-goianiense',
+    subtitulo_lead: 'Um mapeamento visual dos letreiros metálicos e néons sobreviventes na Avenida Goiás e Campinas.',
+    conteudo: `Caminhar pelas calçadas do Centro de Goiânia exige olhar para cima e decifrar as inscrições que resistiram às reformas apressadas e à uniformização das fachadas comerciais. Antes do domínio do vinil adesivo e das placas em ACM com impressão digital, os letreiros da capital eram fundidos em ferro batido, esculpidos em relevos de argamassa ou desenhados à mão livre por calígrafos itinerantes.
+
+Cada tipografia preservada narra um capítulo do projeto de modernização de Goiás. Na Avenida Goiás, as letras sem serifa com proporções geométricas refletem o espírito racionalista da fundação nos anos 1930. Em Campinas, pelo contrário, as curvas expressivas e cursivas remetem à atmosfera dos armazéns do início do século.
+
+Neste rascunho, reúno os primeiros registros fotográficos e proponho um debate sobre o tombamento tipográfico como patrimônio imaterial.`,
+    imagem_capa_url: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&h=675&q=82',
+    legenda_capa: 'Fachada antiga com letreiro em ferro forjado no centro histórico.',
+    creditos_capa: 'Foto: Acervo do Autor',
+    tempo_leitura_min: 4,
+    status: 'edicao',
+    publicado_em: null,
+    atualizado_em: '2026-11-07T14:10:00Z',
+    eh_destaque_hero: false,
+    eh_destaque_secao: false,
+    visualizacoes: 0,
+    categoria: {
+      id: CATEGORIAS_MOCK[1].id,
+      nome: CATEGORIAS_MOCK[1].nome,
+      slug: CATEGORIAS_MOCK[1].slug,
+      cor_acento: CATEGORIAS_MOCK[1].cor_acento,
+    },
+    coluna: {
+      id: COLUNAS_MOCK[1].id,
+      nome: COLUNAS_MOCK[1].nome,
+      slug: COLUNAS_MOCK[1].slug,
+    },
+    autor: {
+      id: PERFIS_AUTORES_MOCK[1].id,
+      nome: PERFIS_AUTORES_MOCK[1].nome,
+      slug: PERFIS_AUTORES_MOCK[1].slug,
+      avatar_url: PERFIS_AUTORES_MOCK[1].avatar_url,
+    },
+    tags: [
+      { id: 61, nome: 'Tipografia', slug: 'tipografia' },
+      { id: 62, nome: 'Patrimônio', slug: 'patrimonio' },
+      { id: 63, nome: 'Goiânia', slug: 'goiania' },
+    ],
+  },
+
+  // ============================================================================
+  // 17. LARA LIMA - ENSAIOS (EM EDIÇÃO - PARA TESTE DE REDAÇÃO GERAL)
+  // ============================================================================
+  {
+    id: 'b0000000-0000-0000-0000-000000000017',
+    titulo: 'Ruído e Silêncio: As Novas Fronteiras da Música Experimental no Cerrado',
+    slug: 'ruido-e-silencio-as-novas-fronteiras-da-musica-experimental-no-cerrado',
+    subtitulo_lead: 'Como artistas independentes transformam frequências sonoras da paisagem campestre em texturas eletrônicas imersivas.',
+    conteudo: `O cerrado possui uma acústica própria: o estalo dos galhos sob o calor seco, o vento rasante na vegetação retorcida e o murmúrio subterrâneo dos lençóis freáticos. Uma nova geração de produtores musicais em Goiás e Brasília vem utilizando sintetizadores modulares e gravações de campo (field recordings) para transcrever essa paisagem em experiências de música ambiente e drone music.
+
+O que parece ruído desconexo à primeira audição revela uma sofisticada estrutura polifônica que descontrói o estereótipo estritamente ruralista da sonoridade regional.`,
+    imagem_capa_url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&h=675&q=82',
+    legenda_capa: 'Sintetizador analógico em estúdio independente com iluminação âmbar.',
+    creditos_capa: 'Foto: Lara Lima / Arquivo Pessoal',
+    tempo_leitura_min: 3,
+    status: 'edicao',
+    publicado_em: null,
+    atualizado_em: '2026-11-07T16:45:00Z',
+    eh_destaque_hero: false,
+    eh_destaque_secao: false,
+    visualizacoes: 0,
+    categoria: {
+      id: CATEGORIAS_MOCK[3].id,
+      nome: CATEGORIAS_MOCK[3].nome,
+      slug: CATEGORIAS_MOCK[3].slug,
+      cor_acento: CATEGORIAS_MOCK[3].cor_acento,
+    },
+    coluna: {
+      id: COLUNAS_MOCK[3].id,
+      nome: COLUNAS_MOCK[3].nome,
+      slug: COLUNAS_MOCK[3].slug,
+    },
+    autor: {
+      id: PERFIS_AUTORES_MOCK[3].id,
+      nome: PERFIS_AUTORES_MOCK[3].nome,
+      slug: PERFIS_AUTORES_MOCK[3].slug,
+      avatar_url: PERFIS_AUTORES_MOCK[3].avatar_url,
+    },
+    tags: [
+      { id: 71, nome: 'Música', slug: 'musica' },
+      { id: 72, nome: 'Cerrado', slug: 'cerrado' },
+      { id: 73, nome: 'Arte Contemporânea', slug: 'arte-contemporanea' },
+    ],
+  },
 ];
 

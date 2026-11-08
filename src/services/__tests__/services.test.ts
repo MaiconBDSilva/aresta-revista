@@ -14,8 +14,21 @@ import {
   getArtigosPorCategoria,
   getArtigoBySlug,
   buscarArtigos,
+  getArtigosEmProducao,
+  getArtigosRedacaoGeral,
+  getMeusArtigosPublicados,
+  salvarRascunhoArtigo,
+  publicarArtigo,
+  _resetArtigosStore,
 } from '../artigosService';
 import { getComentariosByArtigoId, adicionarComentario } from '../comentariosService';
+import {
+  getComentariosRevisao,
+  adicionarComentarioRevisao,
+  alternarResolvidoComentario,
+  _resetRevisaoStore,
+} from '../revisaoService';
+import { PERFIS_AUTORES_MOCK } from '../mocks/autores.mock';
 
 describe('categoriasService', () => {
   it('deve retornar as 5 categorias oficiais ativas ordenadas por ordem_exibicao', async () => {
@@ -163,4 +176,107 @@ describe('comentariosService', () => {
     expect(listagem[0].id).toBe(novo.id);
   });
 });
+
+describe('Sprint 3: Gestão Editorial, Trava de Autoria & Revisão da Redação', () => {
+  const autorLucas = PERFIS_AUTORES_MOCK[0]; // Lucas Campos
+  const autorDanillo = PERFIS_AUTORES_MOCK[1]; // Danillo Reis
+
+  it('deve listar artigos em produção segregados por autor', async () => {
+    const emProducaoLucas = await getArtigosEmProducao(autorLucas.id);
+    expect(emProducaoLucas.length).toBeGreaterThan(0);
+    expect(emProducaoLucas.every((a) => a.autor.id === autorLucas.id)).toBe(true);
+    expect(emProducaoLucas.every((a) => a.status === 'edicao')).toBe(true);
+  });
+
+  it('deve listar artigos na Redação Geral apenas dos OUTROS autores', async () => {
+    const redacaoGeral = await getArtigosRedacaoGeral(autorLucas.id);
+    expect(redacaoGeral.length).toBeGreaterThan(0);
+    // Nenhum artigo do Lucas deve aparecer na redação geral dele
+    expect(redacaoGeral.some((a) => a.autor.id === autorLucas.id)).toBe(false);
+    expect(redacaoGeral.every((a) => a.status === 'edicao')).toBe(true);
+  });
+
+  it('deve listar artigos publicados pelo autor', async () => {
+    const publicadosLucas = await getMeusArtigosPublicados(autorLucas.id);
+    expect(publicadosLucas.length).toBeGreaterThan(0);
+    expect(publicadosLucas.every((a) => a.autor.id === autorLucas.id)).toBe(true);
+    expect(publicadosLucas.every((a) => a.status === 'publicado')).toBe(true);
+  });
+
+  it('TRAVA DE AUTORIA: deve bloquear edição de artigo alheio', async () => {
+    const emProducaoLucas = await getArtigosEmProducao(autorLucas.id);
+    const artigoDoLucas = emProducaoLucas[0];
+
+    // Danillo tenta alterar o artigo do Lucas -> Deve lançar erro!
+    await expect(
+      salvarRascunhoArtigo(
+        {
+          id: artigoDoLucas.id,
+          titulo: 'Tentativa Não Autorizada',
+          subtitulo_lead: 'Teste',
+          conteudo: 'Texto modificado',
+          categoria_id: 1,
+        },
+        autorDanillo.id
+      )
+    ).rejects.toThrow(/Acesso negado: apenas o autor titular/);
+  });
+
+  it('TRAVA DE AUTORIA: deve bloquear publicação de artigo alheio', async () => {
+    const emProducaoLucas = await getArtigosEmProducao(autorLucas.id);
+    const artigoDoLucas = emProducaoLucas[0];
+
+    // Danillo tenta publicar o artigo do Lucas -> Deve lançar erro!
+    await expect(publicarArtigo(artigoDoLucas.id, autorDanillo.id)).rejects.toThrow(
+      /Apenas o autor titular tem autorização/
+    );
+  });
+
+  it('deve permitir que o autor original salve e publique seu próprio ensaio', async () => {
+    const novo = await salvarRascunhoArtigo(
+      {
+        titulo: 'Ensaio Autoral para Teste de Publicação',
+        subtitulo_lead: 'Subtítulo do ensaio de teste',
+        conteudo: 'Um texto bem trabalhado e aprofundado com várias palavras para cálculo de tempo.',
+        categoria_id: 1,
+      },
+      autorLucas.id
+    );
+
+    expect(novo.status).toBe('edicao');
+    expect(novo.autor.id).toBe(autorLucas.id);
+    expect(novo.tempo_leitura_min).toBeGreaterThan(0);
+
+    // Publicação autônoma pelo autor
+    const publicado = await publicarArtigo(novo.id, autorLucas.id);
+    expect(publicado.status).toBe('publicado');
+    expect(publicado.publicado_em).not.toBeNull();
+  });
+
+  it('deve gerenciar comentários de revisão editorial entre colegas', async () => {
+    const emProducaoLucas = await getArtigosEmProducao(autorLucas.id);
+    const artigoDoLucas = emProducaoLucas[0];
+
+    // Danillo deixa um comentário de revisão no artigo do Lucas
+    const comentario = await adicionarComentarioRevisao({
+      artigo_id: artigoDoLucas.id,
+      autor_comentario_id: autorDanillo.id,
+      autor_nome: autorDanillo.nome,
+      autor_avatar_url: autorDanillo.avatar_url,
+      trecho_selecionado: 'teste de trecho',
+      conteudo: 'Excelente texto, sugiro revisar este trecho.',
+    });
+
+    expect(comentario.id).toBeDefined();
+    expect(comentario.resolvido).toBe(false);
+
+    // Alternar para resolvido
+    const resolvido = await alternarResolvidoComentario(comentario.id);
+    expect(resolvido?.resolvido).toBe(true);
+
+    const lista = await getComentariosRevisao(artigoDoLucas.id);
+    expect(lista.some((c) => c.id === comentario.id)).toBe(true);
+  });
+});
+
 

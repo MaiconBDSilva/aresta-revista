@@ -97,18 +97,27 @@ flowchart TD
 - [x] Validação com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`), Vitest (`24 testes aprovados`) e Build de Produção Next.js com 33 páginas estáticas SSG geradas com sucesso (`npm run build`).
 
 ### 2.4 Sprint 3: Editor do Autor (/painel), Publicação Autônoma & Revisão Colaborativa
-* Desenvolvimento do Painel do Colunista (`/painel` e `/painel/editor`):
-  * Abas: **Meus Textos Publicados (`publicado`)**, **Meus Textos em Edição (`edicao`)** e **Em Edição na Redação** (textos em `'edicao'` de outros colunistas);
-  * Editor WYSIWYG Tiptap com saída em Markdown leve e upload de capa com otimização client-side para **JPEG (`image/jpeg`, $\le 120\text{ KB}$)**;
-  * **Trava de Autoria:** Somente o autor original (`autor_id`) vê os controles de editar o texto e o botão carmim **"Publicar Agora"** (que muda o status de `'edicao'` para `'publicado'` e coloca o artigo no ar imediatamente);
-  * **Mural Lateral de Sugestões (`artigo_revisao_comentarios`):** Ao abrir um texto em `'edicao'` de outro autor, colunistas e admins visualizam o texto em modo leitura e podem enviar comentários e sugestões de ajustes para o autor titular.
+- [x] Criação da identidade centralizada com `AuthContext` e `PrototypeRoleSwitcher` consolidado em botão flutuante no canto inferior esquerdo para simulação de todos os perfis (Visitante Anônimo, Leitora Mariana Silva, os 5 Autores Oficiais e Administrador da Plataforma).
+- [x] Criação do asset oficial de fallback `/images/default-cover.svg` (fundo carmim `#B91C1C` com pílula branca e marca `aresta.`) e componente seguro `EditorialImage` com interceptação de erro para prevenir qualquer imagem quebrada.
+- [x] Desenvolvimento do Painel do Colunista (`/painel`) com as 3 abas objetivas:
+  - [x] **Publicados:** Artigos com `status = 'publicado'`, métricas de leitura, data, link direto para visualização pública e botão de edição.
+  - [x] **Em Produção:** Artigos com `status = 'edicao'`, botão de edição, botão de acesso rápido aos comentários/sugestões com contagem de pendências e botão carmim **"Publicar Agora"** com confirmação imediata.
+  - [x] **Redação Geral:** Textos em `status = 'edicao'` dos colegas de redação, com identificação do autor, última atualização e botão **"Visualizar Texto & Comentar"**.
+- [x] Editor imersivo e dedicado (`/painel/editor/novo` e `/painel/editor/[id]`):
+  - [x] Editor WYSIWYG Tiptap com toolbar editorial (negrito, itálico, títulos H2/H3, citações em destaque, listas, separadores e atalhos undo/redo).
+  - [x] Componente `ArticleCoverUploader` com compressão client-side proporcional em **JPEG (`image/jpeg`, qualidade 0.82, $\le 120\text{ KB}$)**, fallback para a capa padrão e opções de capas sugeridas do acervo.
+  - [x] Cálculo automático de tempo de leitura em tempo real a 200 palavras por minuto.
+  - [x] **Trava de Autoria Inviolável:** Se o usuário ativo for o autor titular, tem controle total de edição e botão "Publicar Agora"; se for outro autor ou admin, o texto é exibido em modo leitura/revisão com aviso de bloqueio.
+  - [x] **Mural Lateral de Sugestões (`EditorialReviewSidebar`):** Interface para submeter e gerenciar comentários de revisão (`artigo_revisao_comentarios`), com suporte à citação de trechos selecionados e marcação de resolvido/pendente.
+- [x] Criação do serviço `revisaoService.ts` e expansão de `artigosService.ts` com validação de travas e publicação autônoma.
+- [x] Validação com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`), Vitest (`31 testes aprovados`) e Build de Produção Next.js (`npm run build`).
 
 ### 2.5 Sprint 4: Painel Admin (/admin), Textos em Edição, Destaques da Capa & Seletor de Visão
 * Construção do painel `/admin`:
   * **Aba "Textos em Edição":** Listagem de todos os textos que estão em `status = 'edicao'` na revista, permitindo que os administradores leiam a prévia e deixem comentários/sugestões para o autor (respeitando a regra de que apenas o autor original modifica ou publica seu texto);
   * **Aba "Destaques da Capa":** Seleção visual de qual artigo publicado será a Manchete Principal (*Hero*) e quais serão os destaques secundários;
   * **Aba "Colunistas & Usuários":** Gestão de papéis (`leitor` ⇄ `autor` ⇄ `admin`) e cadastro de novas colunas.
-* Implementação do **`PrototypeRoleSwitcher`** (`.prototype-role-switcher`) no canto inferior direito para alternar em tempo real entre `Admin`, `Autor Titular`, `Autor Convidado`, `Leitor` e `Visitante Anônimo`.
+* Implementação do **`PrototypeRoleSwitcher`** (`.prototype-role-switcher`) no canto inferior esquerdo para alternar em tempo real entre `Admin`, `Autor Titular`, `Autor Convidado`, `Leitor` e `Visitante Anônimo`.
 
 ### 2.6 MARCO INTERMEDIÁRIO: Deploy do Protótipo Navegável Completo na Vercel
 * Deploy do repositório na Vercel (plano gratuito) gerando o link `aresta-revista.vercel.app`;

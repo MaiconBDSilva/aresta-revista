@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Clock } from 'lucide-react';
 import type { ArtigoCard as ArtigoCardType } from '@/types/artigo.types';
+import { EditorialImage } from '@/components/editorial/EditorialImage';
 
 interface ArticleCardProps {
   artigo: ArtigoCardType;
@@ -13,20 +14,18 @@ export function ArticleCard({ artigo, featured = false }: ArticleCardProps) {
 
   return (
     <article className={featured ? 'card-featured' : 'card-article'}>
-      {artigo.imagem_capa_url && (
-        <Link
-          href={`/coluna/${artigo.slug}`}
-          className="relative block aspect-[16/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800"
-        >
-          <Image
-            src={artigo.imagem_capa_url}
-            alt={artigo.titulo}
-            fill
-            className="object-cover transition-transform duration-300 hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        </Link>
-      )}
+      <Link
+        href={`/coluna/${artigo.slug}`}
+        className="relative block aspect-[16/9] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800"
+      >
+        <EditorialImage
+          src={artigo.imagem_capa_url}
+          alt={artigo.titulo}
+          fill
+          className="object-cover transition-transform duration-300 hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      </Link>
 
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-3 flex items-center justify-between gap-2">

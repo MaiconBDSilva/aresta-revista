@@ -131,3 +131,39 @@ export const COLUNAS_MOCK: Coluna[] = [
   },
 ];
 
+export const PERFIL_LEITOR_MOCK: Perfil = {
+  id: 'u0000000-0000-0000-0000-000000000088',
+  nome: 'Mariana Silva',
+  slug: 'mariana-silva',
+  papel: 'leitor',
+  email: 'mariana.silva@exemplo.com',
+  avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&h=400&q=80',
+  bio: 'Leitora assídua, arquiteta e pesquisadora urbana.',
+  twitter_url: null,
+  instagram_url: null,
+  linkedin_url: null,
+  website_url: null,
+  criado_em: '2026-02-01T10:00:00Z',
+};
+
+export const PERFIL_ADMIN_MOCK: Perfil = {
+  id: 'u0000000-0000-0000-0000-000000000099',
+  nome: 'Redação Aresta (Admin)',
+  slug: 'admin-redacao',
+  papel: 'admin',
+  email: 'admin@arestarevista.com',
+  avatar_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&h=400&q=80',
+  bio: 'Equipe de coordenação editorial e administração da Aresta Revista.',
+  twitter_url: 'https://x.com/arestarevista',
+  instagram_url: 'https://instagram.com/arestarevista',
+  linkedin_url: null,
+  website_url: 'https://arestarevista.com',
+  criado_em: '2026-01-01T10:00:00Z',
+};
+
+export const TODOS_PERFIS_PROTOTIPO: Perfil[] = [
+  ...PERFIS_AUTORES_MOCK,
+  PERFIL_LEITOR_MOCK,
+  PERFIL_ADMIN_MOCK,
+];
+

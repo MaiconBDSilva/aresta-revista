@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Clock } from 'lucide-react';
 import type { ArtigoCard } from '@/types/artigo.types';
 import { ArticleCard } from './ArticleCard';
+import { EditorialImage } from './EditorialImage';
 
 interface HeroArticleProps {
   hero: ArtigoCard;
@@ -18,21 +19,19 @@ export function HeroArticle({ hero, apoios = [] }: HeroArticleProps) {
         {/* Manchete Principal (Hero Article) */}
         <div className="card-featured flex flex-col justify-between">
           <div>
-            {hero.imagem_capa_url && (
-              <Link
-                href={`/coluna/${hero.slug}`}
-                className="relative mb-5 block aspect-[16/9] w-full overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800"
-              >
-                <Image
-                  src={hero.imagem_capa_url}
-                  alt={hero.titulo}
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-500 hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                />
-              </Link>
-            )}
+            <Link
+              href={`/coluna/${hero.slug}`}
+              className="relative mb-5 block aspect-[16/9] w-full overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800"
+            >
+              <EditorialImage
+                src={hero.imagem_capa_url}
+                alt={hero.titulo}
+                fill
+                priority
+                className="object-cover transition-transform duration-500 hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 66vw"
+              />
+            </Link>
 
             <div className="mb-3 flex items-center justify-between gap-2">
               <Link href={`/editoria/${hero.categoria.slug}`}>

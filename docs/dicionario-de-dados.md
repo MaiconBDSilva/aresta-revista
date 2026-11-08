@@ -115,7 +115,7 @@ Todas as cores e variáveis visuais do sistema são parametrizadas no arquivo ce
 | `.main-content-layout` | Container `<main>` principal de todas as páginas em coluna flexível. | • Container principal `<main>` no `src/app/layout.tsx` |
 | `.reading-progress` | Barra superior ultrafina (`2px`) na cor `--color-brand-accent` (`#B91C1C`) cuja largura varia de `0%` a `100%` conforme o scroll. | • Topo da tela na página de leitura `/coluna/[slug]` (`ReadingProgress.tsx`) |
 | `.footer-editorial` | Rodapé institucional com logotipo `aresta.` em `Svetze`, links das 5 editorias, formulário de captura de newsletter e expediente. | • Componente global `FooterEditorial.tsx` no `src/app/layout.tsx` |
-| `.prototype-role-switcher` | Barra flutuante compacta (`position: fixed`, canto inferior direito, `z-index: 60`) exclusiva do modo protótipo para alternar instantaneamente a sessão ativa (`Admin`, `Autor Titular`, `Autor Convidado`, `Leitor`, `Anônimo`). | • Componente `PrototypeRoleSwitcher.tsx` renderizado globalmente no protótipo da Vercel |
+| `.prototype-role-switcher` | Barra flutuante compacta (`position: fixed`, canto inferior esquerdo, `z-index: 60`) exclusiva do modo protótipo para alternar instantaneamente a sessão ativa (`Admin`, `Autor Titular`, `Autor Convidado`, `Leitor`, `Anônimo`). | • Componente `PrototypeRoleSwitcher.tsx` renderizado globalmente no protótipo da Vercel |
 
 #### C. Botões Semânticos (`src/styles/components/buttons.css`)
 
@@ -133,6 +133,10 @@ Todas as cores e variáveis visuais do sistema são parametrizadas no arquivo ce
 | `.input-field` | Campo de entrada de texto com borda sutil, foco em vermelho carmim (`#B91C1C`) e suporte a modo noturno. | • Campos de Título, Subtítulo/Lead, Tags, Busca (`/busca`) e e-mail de Newsletter |
 | `.label-field` | Rótulo tipográfico estruturado acima dos inputs com indicador de obrigatoriedade. | • Formulário do editor de artigos (`ArticleForm.tsx`) e edição de perfil/coluna |
 | `.textarea-editor` | Área de texto auto-expansível para comentários públicos e sugestões internas de revisão. | • Formulário de comentários públicos (`/coluna/[slug]`)<br>• Painel de sugestões de outros autores/admins em textos em `'edicao'` |
+| `.tiptap-editor-container` | Contêiner unificado do editor com borda sutil, foco carmim e transições suaves. | • Editor WYSIWYG de artigos em `/painel/editor/novo` e `/painel/editor/[id]` |
+| `.tiptap-toolbar` | Barra de ferramentas editorial com botões de formatação (H2, H3, negrito, itálico, citações, listas). | • Barra superior de formatação rápida do Tiptap |
+| `.tiptap-toolbar-btn` | Botão interativo da barra do Tiptap com estado ativo carmim e hover suave. | • Cada ação de formatação do editor |
+| `.tiptap-editor-content` | Área de escrita com tipografia editorial elegante (`.ProseMirror`), títulos destacados, citações com borda carmim e espaçamento de leitura. | • Área principal de redação e visualização em tempo real do texto formatado |
 
 #### E. Modais & Gavetas Unificadas (`src/styles/components/modals.css`)
 

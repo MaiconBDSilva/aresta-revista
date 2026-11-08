@@ -1,15 +1,28 @@
 import React from 'react';
+import { isHtml } from '@/lib/contentParser';
 
 interface MarkdownContentProps {
   content: string;
 }
 
 /**
- * Renderizador editorial de Markdown limpo e seguro para a Aresta Revista.
- * Trata parágrafos, subtítulos (h2, h3), citações em bloco (blockquote),
- * listas ordenadas e formatação inline (negrito, itálico).
+ * Renderizador editorial limpo e seguro para a Aresta Revista.
+ * Suporta tanto HTML formatado gerado pelo editor Tiptap quanto
+ * blocos em Markdown bruto para retrocompatibilidade.
  */
 export function MarkdownContent({ content }: MarkdownContentProps) {
+  if (!content) return null;
+
+  // Se já for HTML (gerado e salvo pelo Tiptap), renderiza diretamente com tipografia editorial
+  if (isHtml(content)) {
+    return (
+      <div
+        className="space-y-6 leading-relaxed article-reading-content"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  }
+
   const blocks = content.split(/\n\n+/);
 
   return (

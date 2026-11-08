@@ -5,6 +5,9 @@ import './globals.css';
 import { HeaderPortal } from '@/components/layout/HeaderPortal';
 import { HeaderFrostedGlass } from '@/components/layout/HeaderFrostedGlass';
 import { FooterEditorial } from '@/components/layout/FooterEditorial';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { PrototypeRoleSwitcher } from '@/components/common/PrototypeRoleSwitcher';
+import { Toaster } from 'sonner';
 
 const svetze = localFont({
   src: '../../public/fonts/Svetze.otf',
@@ -62,16 +65,24 @@ export default function RootLayout({
       className={`${svetze.variable} ${newsreader.variable} ${plusJakarta.variable} ${lora.variable}`}
     >
       <body className="antialiased min-h-screen flex flex-col">
-        {/* Menu Flutuante Fixo (Frosted Glass real: bg-white/30 backdrop-blur-md border-white/20 shadow-lg) */}
-        <HeaderFrostedGlass />
+        <AuthProvider>
+          {/* Menu Flutuante Fixo (Frosted Glass real: bg-white/30 backdrop-blur-md border-white/20 shadow-lg) */}
+          <HeaderFrostedGlass />
 
-        {/* Header Estático de Topo (Logo grande em Svetze + Clone do Menu embaixo) */}
-        <HeaderPortal />
+          {/* Header Estático de Topo (Logo grande em Svetze + Clone do Menu embaixo) */}
+          <HeaderPortal />
 
-        <main className="main-content-layout flex-1">
-          {children}
-        </main>
-        <FooterEditorial />
+          <main className="main-content-layout flex-1">
+            {children}
+          </main>
+          <FooterEditorial />
+
+          {/* Seletor Global de Papéis & Perfis para Validação do Protótipo */}
+          <PrototypeRoleSwitcher />
+
+          {/* Notificações do Sistema */}
+          <Toaster position="bottom-right" richColors />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { X, Bell, CheckCircle2, Mail, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface FollowColumnModalProps {
   isOpen: boolean;
@@ -14,17 +15,18 @@ export function FollowColumnModal({
   onClose,
   colunaNome,
 }: FollowColumnModalProps) {
+  const { perfil, isAutenticado } = useAuth();
   const [opcao, setOpcao] = useState<'coluna' | 'todas'>('coluna');
-  const [estaLogado, setEstaLogado] = useState(false);
   const [emailDigitado, setEmailDigitado] = useState('');
-  const [emailLogado] = useState('leitor.exemplo@arestarevista.com');
   const [sucesso, setSucesso] = useState(false);
+
+  const emailLogado = perfil?.email || 'leitor@arestarevista.com';
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!estaLogado && !emailDigitado.trim()) return;
+    if (!isAutenticado && !emailDigitado.trim()) return;
 
     setSucesso(true);
     setTimeout(() => {
@@ -72,7 +74,7 @@ export function FollowColumnModal({
             <p className="text-sm text-[var(--color-ink-secondary)]">
               Você receberá avisos editoriais{' '}
               {opcao === 'coluna' ? `de ${colunaNome}` : 'de todas as colunas da aresta'}{' '}
-              em <strong>{estaLogado ? emailLogado : emailDigitado}</strong>.
+              em <strong>{isAutenticado ? emailLogado : emailDigitado}</strong>.
             </p>
           </div>
         ) : (
@@ -132,31 +134,17 @@ export function FollowColumnModal({
               </label>
             </div>
 
-            {/* Alternador de simulação de login */}
-            <div className="flex items-center justify-between text-xs py-2 px-3 rounded bg-black/[0.03] dark:bg-white/[0.03] mb-4">
-              <span className="text-[var(--color-ink-muted)]">
-                Status da conta: <strong>{estaLogado ? 'Logado' : 'Visitante'}</strong>
-              </span>
-              <button
-                type="button"
-                onClick={() => setEstaLogado(!estaLogado)}
-                className="text-[var(--color-brand-accent)] hover:underline font-semibold"
-              >
-                {estaLogado ? 'Simular deslogado' : 'Simular logado'}
-              </button>
-            </div>
-
             {/* Campo de e-mail condicional */}
-            {estaLogado ? (
+            {isAutenticado ? (
               <div className="p-3 rounded-lg bg-[var(--color-paper-bg)] border border-[var(--color-border-subtle)] flex items-center gap-3 mb-5">
                 <div className="w-8 h-8 rounded-full bg-[var(--color-brand-accent)]/10 text-[var(--color-brand-accent)] flex items-center justify-center shrink-0">
                   <User className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
                   <span className="text-xs text-[var(--color-ink-muted)] block">
-                    Confirmar envio para o e-mail da sua conta:
+                    Inscrição vinculada à conta de {perfil?.nome}:
                   </span>
-                  <strong className="text-sm text-[var(--color-ink-primary)] truncate block">
+                  <strong className="text-sm text-[var(--color-ink-primary)] truncate block font-mono">
                     {emailLogado}
                   </strong>
                 </div>
@@ -164,7 +152,7 @@ export function FollowColumnModal({
             ) : (
               <div className="mb-5">
                 <label className="label-field text-xs mb-1 block">
-                  Seu melhor e-mail:
+                  Seu e-mail para receber notificações:
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-[var(--color-ink-muted)] absolute left-3 top-1/2 -translate-y-1/2" />

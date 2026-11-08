@@ -70,7 +70,7 @@ flowchart TD
 
 ### 1.3 Como Usar o Seletor de Visão no Protótipo (`PrototypeRoleSwitcher`)
 
-No link público de testes da Vercel (`aresta-revista.vercel.app`), há uma barra flutuante no canto inferior direito que permite alternar em 1 clique entre os autores reais do projeto (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**) e demais perfis:
+No link público de testes da Vercel (`aresta-revista.vercel.app`), há uma barra flutuante no canto inferior esquerdo que permite alternar em 1 clique entre os autores reais do projeto (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**) e demais perfis:
 * **✍️ Autor / Admin (Lucas, Danillo, Sergio, Lara ou Guliver):** Como **todo autor é um admin e tem sua própria coluna**, essa visão libera tanto o `/painel` (para editar e publicar textos da própria coluna) quanto o `/admin` (para gerir a capa e ver todos os textos em `'edicao'`). Ao abrir o texto em `'edicao'` de outro autor, o modo é somente leitura com envio de sugestões.
 * **🛡️ Admin Não-Autor (`admin@aresta.com.br`):** Demonstra que *nem todo admin é autor*: acessa o `/admin`, escolhe os destaques da capa e comenta sugestões nos textos em `'edicao'`, mas não possui coluna própria.
 * **📖 Leitor Logado:** Vê apenas artigos publicados e pode postar comentários públicos e favoritar artigos.
@@ -103,26 +103,33 @@ No link público de testes da Vercel (`aresta-revista.vercel.app`), há uma barr
 ## 3. Manual do Autor / Colunista: Escrita, Revisão Colaborativa e Publicação
 
 ### 3.1 Acessando o Painel do Autor (`/painel`)
-O painel do colunista organiza os textos em três visões simples:
-1. **Meus Textos em Edição (`edicao`):** Rascunhos e textos em preparo (invisíveis no site público, visíveis apenas para outros autores e admins).
-2. **Meus Textos Publicados (`publicado`):** Artigos já no ar na revista.
-3. **Em Edição na Redação:** Textos em `'edicao'` de outros colunistas da casa abertos para leitura interna e sugestões.
+O painel do colunista organiza a rotina da redação em três abas objetivas:
+1. **Em Produção:** Seus rascunhos e ensaios em fase de escrita (invisíveis no site público). Cada artigo conta com:
+   * Botão **"Editar"** (`/painel/editor/[id]`);
+   * Botão **"Comentários (n)"** que abre o modal de sugestões recebidas da redação com indicador de pendências;
+   * Botão carmim de destaque **"Publicar Agora"** com confirmação imediata.
+2. **Publicados:** Artigos de sua autoria que já estão no ar na revista, com data de publicação, link para a página pública no ar e botão de edição para correções.
+3. **Redação Geral:** Textos em fase de produção (`status = 'edicao'`) dos demais colunistas da revista, com identificação do colega titular e botão **"Visualizar Texto & Comentar"**.
 
-### 3.2 Redigindo um Artigo: Título, Lead, Editoria, Capa JPEG e Corpo
-1. Clique em **"Novo Texto"** para abrir `/painel/editor`.
-2. Preencha Título, Subtítulo/Lead, escolha 1 das 6 Editorias, adicione até 5 Tags e escreva o corpo no editor Tiptap.
-3. Faça o upload da imagem de capa: o sistema otimiza automaticamente no navegador para **JPEG (`image/jpeg`, $\le 120\text{ KB}$)**, garantindo carregamento instantâneo e 100% de compatibilidade com os cards do WhatsApp e Instagram.
-4. Ao salvar com status **`Em Edição (edicao)`**, o texto fica salvo e visível apenas internamente para autores e admins.
+### 3.2 Redigindo um Ensaio: Título, Lead, Editoria, Capa Otimizada e Editor Tiptap
+1. Clique em **"Novo Ensaio"** no topo do painel para abrir a página dedicada `/painel/editor/novo`.
+2. Preencha Título, Subtítulo/Lead, selecione 1 das 5 Editorias Oficiais e informe as Tags.
+3. Gerencie a imagem de capa:
+   * Faça upload de imagem: o sistema redimensiona e comprime proporcionalmente no navegador para **JPEG (`image/jpeg`, qualidade 0.82, $\le 120\text{ KB}$)**, exibindo o selo de otimização;
+   * Ou utilize em 1 clique o botão **"Usar Capa Padrão aresta."**, que aplica o asset oficial com fundo carmim `#B91C1C` e a logo dentro da pílula branca (`/images/default-cover.svg`), prevenindo qualquer falha de imagem no portal.
+4. Escreva no editor WYSIWYG **Tiptap**, com barra de ferramentas para negrito, itálico, subtítulos H2/H3, citações em destaque e listas, com cálculo automático em tempo real do tempo estimado de leitura (baseado em 200 palavras/minuto).
+5. Clique em **"Salvar Rascunho"** para persistir as alterações mantendo o status em produção.
 
-### 3.3 Comentando Textos em Edição de Outros Autores
-* Na aba **"Em Edição na Redação"**, clique em qualquer texto de outro colunista.
-* Você verá o artigo em modo leitura e, na coluna lateral (`.grid-split`), o **Mural de Sugestões Internas**.
-* Escreva comentários ou sugestões de ajustes: apenas você, os demais autores e os admins veem essas notas, ajudando o autor titular a lapidar o texto.
+### 3.3 Revisando Textos dos Colegas na Redação Geral
+* Na aba **"Redação Geral"**, clique em **"Visualizar Texto & Comentar"** em qualquer artigo de outro colunista.
+* A tela abrirá em **modo leitura/revisão** para proteger a autoria do colega (os botões de editar e publicar ficam bloqueados com aviso explicativo).
+* Selecione qualquer trecho do texto com o mouse para citá-lo automaticamente no **Mural Lateral de Sugestões** (`EditorialReviewSidebar`) ou digite observações gerais e clique em Enviar.
+* Apenas o autor titular do texto e o autor do comentário podem marcar sugestões como resolvidas.
 
 ### 3.4 Publicando Seu Próprio Texto (`edicao` → `publicado`)
-* **Autonomia Total do Autor:** Quando considerar seu texto pronto (após ler ou marcar como resolvidas as sugestões dos colegas), clique no botão carmim **"Publicar Agora"**.
-* **Somente você (autor original do texto)** pode clicar nesse botão. Assim que o status muda para `publicado`, o artigo entra imediatamente no ar no site público!
-* Caso precise fazer uma revisão profunda depois, você mesmo pode retornar o status do seu texto para `edicao`.
+* **Autonomia Total do Autor:** Quando considerar o texto pronto para o público, clique no botão carmim **"Publicar Agora"** no painel ou no topo do editor.
+* **Trava de Autoria Inviolável:** O sistema valida estritamente se o usuário conectado é o autor titular (`autor_id`). Ninguém além do autor original tem autorização técnica para colocar o texto no ar.
+* Assim que publicado, o artigo entra imediatamente na capa, na página da editoria, na página da coluna e no perfil do autor. Caso precise fazer ajustes depois, o autor pode reverter o artigo para o status de produção a qualquer momento.
 
 ---
 

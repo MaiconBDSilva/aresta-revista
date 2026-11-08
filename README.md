@@ -43,6 +43,7 @@ aresta-revista/
 │   │   ├── editoria/                     # Listagem de artigos filtrados por editoria (/editoria/[slug])
 │   │   ├── autor/                        # Página biográfica de perfil do colunista (/autor/[slug])
 │   │   ├── coluna-arquivo/               # Acervo histórico da coluna do autor (/coluna-arquivo/[slug])
+│   │   ├── painel/                       # Painel do Colunista (/painel) e Editor (/painel/editor/[id] e /novo)
 │   │   ├── login/                        # Autenticação de leitores, autores e admins (Google OAuth)
 │   │   ├── painel/                       # Painel do Colunista (Meus Textos em Edição/Publicados, Redação e Editor)
 │   │   ├── admin/                        # Administração (Listagem de Textos em Edição, Destaques da Capa e Usuários)
@@ -141,9 +142,8 @@ npm run start
 
 ## 4. Status do Roadmap & Próximos Passos
 
-* **Fase Atual:** **Sprint 1 Concluída (Capa Editorial & Navegação pelas 5 Editorias)** — Base Mock-First dos 5 autores reais com 15 artigos completos e aprofundados sobre Brasil e Goiás, URLs 100% semânticas (`/coluna/[slug]`), serviços `artigosService`, `autoresService` e `categoriasService`, Capa com Manchete Hero + 2 Apoios Secundários (`.grid-magazine-hero`), vitrine "Últimas das Colunas", páginas de editoria (`/editoria/[slug]`), busca em tempo real (`/busca`) e 22 testes unitários Vitest validados com 0 erros.
-* **Estratégia Adotada:** **Protótipo Navegável Completo (Mock-First)** — construção de todo o ecossistema (Capa, Leitura, Perfil `/autor`, Acervo `/coluna-arquivo`, Editor `/painel` com sugestões colaborativas e `/admin`) com dados fictícios ricos.
-* **Seletor de Visão para Testes (`PrototypeRoleSwitcher`):** O protótipo na Vercel contará com uma barra flutuante permitindo alternar em 1 clique entre `Admin`, `Autor Titular`, `Autor Convidado`, `Leitor` e `Visitante Anônimo`.
+* **Fase Atual:** **Sprint 3 Concluída (Editor do Autor `/painel`, Publicação Autônoma & Revisão Colaborativa)** — Painel do Colunista completo com as 3 abas essenciais (**Publicados**, **Em Produção** e **Redação Geral**), editor imersivo WYSIWYG Tiptap, otimização e compressão client-side em JPEG ($\le 120\text{ KB}$), fallback oficial `default-cover.svg` (`EditorialImage`), trava de autoria inviolável (apenas o autor titular modifica e publica), mural lateral de sugestões da redação (`EditorialReviewSidebar`), `AuthContext` e botão flutuante `PrototypeRoleSwitcher` para troca dinâmica de perfil em 1 clique.
+* **Cobertura de Testes Automatizados:** 31 testes unitários no Vitest aprovados com 100% de sucesso, validação estrita TypeScript (`tsc --noEmit`) e ESLint com 0 erros, compilação de produção com 35 páginas estáticas e dinâmicas geradas no build.
+* **Estratégia Adotada:** **Protótipo Navegável Completo (Mock-First)** — ecossistema autoral, editorial e público totalmente operacionais em dados mock tipados para validação prévia antes da conexão com banco real.
 * **Marco de Validação:** Deploy público na Vercel ao final da **Sprint 4** para testes com pessoas reais via link no WhatsApp.
-* **Integração com Supabase Oficial:** Executada na **Sprint 5** através de uma **nova conta dedicada no Supabase** após a aprovação visual completa.
-* **Próxima Etapa:** **Sprint 2 (Leitor Imersivo `/coluna/[slug]`, Perfil `/autor/[slug]` e Acervo `/coluna-arquivo/[slug]`)**.
+* **Próxima Etapa:** **Sprint 4 (Painel Admin `/admin`, Textos em Edição na Redação, Gestão dos Destaques da Capa Hero/Secundários e Gestão de Colunistas)**.

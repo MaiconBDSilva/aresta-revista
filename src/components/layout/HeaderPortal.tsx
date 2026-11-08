@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, PenSquare, Shield } from 'lucide-react';
 import { HeaderSearchBar } from './HeaderSearchBar';
+import { useAuth } from '@/contexts/AuthContext';
 import { COLUNAS_MOCK, ARTIGOS_MOCK, PERFIS_AUTORES_MOCK } from '@/services/mocks';
 
 export const CATEGORIAS_OFICIAIS = [
@@ -28,6 +29,7 @@ interface EditorialNavbarBarProps {
  * - Direita (colada): Busca, Escrever, Admin e ícone do Drawer Mobile no canto direito
  */
 export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: EditorialNavbarBarProps) {
+  const { isAutor, isAdmin, isAutenticado, perfil } = useAuth();
   const [menuAberto, setMenuAberto] = useState(false);
   const [colapsado, setColapsado] = useState(false);
   const colapsadoRef = useRef(false);
@@ -141,15 +143,29 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
         <div ref={actionsRef} className="navbar-actions">
           <HeaderSearchBar />
 
-          <Link href="/painel" className="navbar-btn-outline">
-            <PenSquare className="w-3.5 h-3.5" style={{ color: 'var(--color-brand-accent)' }} />
-            <span>Escrever</span>
-          </Link>
+          {/* Botão Escrever: Exclusivo para Colunistas e Editores (Invisível para Leitor e Anônimo) */}
+          {(isAutor || isAdmin) && (
+            <Link href="/painel" className="navbar-btn-outline" title="Painel do Colunista">
+              <PenSquare className="w-3.5 h-3.5" style={{ color: 'var(--color-brand-accent)' }} />
+              <span>Escrever</span>
+            </Link>
+          )}
 
-          <Link href="/admin" className="navbar-btn-solid">
-            <Shield className="w-3.5 h-3.5" />
-            <span>Admin</span>
-          </Link>
+          {/* Botão Admin: Exclusivo para Administradores e Colunistas Titulares */}
+          {isAdmin && (
+            <Link href="/admin" className="navbar-btn-solid" title="Mesa Editorial / Admin">
+              <Shield className="w-3.5 h-3.5" />
+              <span>Admin</span>
+            </Link>
+          )}
+
+          {/* Identificação amigável para o Leitor Autenticado */}
+          {isAutenticado && !isAutor && !isAdmin && perfil && (
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 border border-border-subtle text-xs font-sans text-ink-secondary">
+              <span className="w-2 h-2 rounded-full bg-blue-500" />
+              <span className="font-medium max-w-[100px] truncate">{perfil.nome.split(' ')[0]}</span>
+            </div>
+          )}
 
           <button
             type="button"
@@ -186,27 +202,32 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
             })}
           </div>
 
-          <div
-            className="pt-4 mt-2 flex flex-col gap-2"
-            style={{ borderTop: '1px solid var(--color-border-subtle)' }}
-          >
-            <Link
-              href="/painel"
-              onClick={() => setMenuAberto(false)}
-              className="navbar-link flex items-center gap-2 py-2"
+          {/* Links restritos no Drawer Mobile: Apenas para Autores e Admins */}
+          {(isAutor || isAdmin) && (
+            <div
+              className="pt-4 mt-2 flex flex-col gap-2"
+              style={{ borderTop: '1px solid var(--color-border-subtle)' }}
             >
-              <PenSquare className="w-4 h-4" style={{ color: 'var(--color-brand-accent)' }} />
-              <span>Painel do Colunista</span>
-            </Link>
-            <Link
-              href="/admin"
-              onClick={() => setMenuAberto(false)}
-              className="navbar-link flex items-center gap-2 py-2"
-            >
-              <Shield className="w-4 h-4" />
-              <span>Mesa Editorial / Admin</span>
-            </Link>
-          </div>
+              <Link
+                href="/painel"
+                onClick={() => setMenuAberto(false)}
+                className="navbar-link flex items-center gap-2 py-2"
+              >
+                <PenSquare className="w-4 h-4" style={{ color: 'var(--color-brand-accent)' }} />
+                <span>Painel do Colunista</span>
+              </Link>
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuAberto(false)}
+                  className="navbar-link flex items-center gap-2 py-2"
+                >
+                  <Shield className="w-4 h-4" />
+                  <span>Mesa Editorial / Admin</span>
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       )}
     </>
