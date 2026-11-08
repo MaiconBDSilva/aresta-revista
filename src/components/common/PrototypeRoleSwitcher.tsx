@@ -12,11 +12,12 @@ import {
   Check,
   X,
   ExternalLink,
+  RotateCcw,
 } from 'lucide-react';
 import { PERFIS_AUTORES_MOCK } from '@/services/mocks/autores.mock';
 
 export function PrototypeRoleSwitcher() {
-  const { perfil, papel, loginAs } = useAuth();
+  const { perfil, papel, loginAs, restaurarDadosOriginais } = useAuth();
   const [modalAberto, setModalAberto] = useState(false);
 
   const handleSelecionar = (perfilId: string | null, nomeLabel: string) => {
@@ -225,7 +226,20 @@ export function PrototypeRoleSwitcher() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-border-subtle flex items-center justify-between text-xs text-ink-muted">
-              <span>Sprint 3 • Aresta Revista Mock Auth</span>
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm('Deseja restaurar todos os dados dos mocks para o estado original de fábrica? Isso limpará seus rascunhos e edições locais.')) {
+                    restaurarDadosOriginais();
+                  }
+                }}
+                className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-red-500 transition-colors"
+                title="Limpar edições locais e restaurar mocks originais"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Restaurar Mocks Originais</span>
+              </button>
+
               <button
                 onClick={() => setModalAberto(false)}
                 className="btn-outline px-3 py-1.5 text-xs rounded"

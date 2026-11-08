@@ -3,9 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PenSquare } from 'lucide-react';
 import type { ArtigoCompleto, ArtigoComentarioPublico } from '@/types/artigo.types';
 import type { Perfil } from '@/types/autor.types';
+import { useAuth } from '@/contexts/AuthContext';
 import { EditorialImage } from '@/components/editorial/EditorialImage';
+import { getArtigoById } from '@/services/artigosService';
+import { subscribeToTableChanges, MOCK_DB_TABLES } from '@/services/mockRepository';
 import { ReadingProgressBar } from './ReadingProgressBar';
 import { ReadingToolbar, type TemaLeitura, type TamanhoFonte } from './ReadingToolbar';
 import { QuoteCardModal } from './QuoteCardModal';
@@ -25,6 +29,25 @@ export function ArticleReadingView({
   autorPerfil,
   comentariosIniciais,
 }: ArticleReadingViewProps) {
+  const { perfil, isAdmin } = useAuth();
+  const [artigoAtual, setArtigoAtual] = useState<ArtigoCompleto>(artigo);
+
+  useEffect(() => {
+    getArtigoById(artigo.id).then((att) => {
+      if (att) setArtigoAtual(att);
+    });
+
+    const unsubscribe = subscribeToTableChanges(MOCK_DB_TABLES.ARTIGOS, () => {
+      getArtigoById(artigo.id).then((att) => {
+        if (att) setArtigoAtual(att);
+      });
+    });
+
+    return unsubscribe;
+  }, [artigo.id]);
+
+  const art = artigoAtual;
+  const podeEditar = Boolean(perfil && (perfil.id === art.autor.id || isAdmin));
   const [tema, setTema] = useState<TemaLeitura>('claro');
   const [tamanhoFonte, setTamanhoFonte] = useState<TamanhoFonte>('md');
   const [quoteModalAberto, setQuoteModalAberto] = useState(false);
@@ -62,7 +85,7 @@ export function ArticleReadingView({
   };
 
   const badgeClass =
-    badgeClassPorCategoria[artigo.categoria.slug] || 'badge-ensaios';
+    badgeClassPorCategoria[art.categoria.slug] || 'badge-ensaios';
 
   const classeTamanhoFonte =
     tamanhoFonte === 'sm'
@@ -102,21 +125,21 @@ export function ArticleReadingView({
         onAlternarFonte={setTamanhoFonte}
         onAbrirQuoteCard={handleAbrirQuoteModal}
         onAbrirStoryCard={() => setStoryModalAberto(true)}
-        artigoTitulo={artigo.titulo}
-        artigoSubtitulo={artigo.subtitulo_lead}
-        artigoSlug={artigo.slug}
-        autorNome={artigo.autor.nome}
+        artigoTitulo={art.titulo}
+        artigoSubtitulo={art.subtitulo_lead}
+        artigoSlug={art.slug}
+        autorNome={art.autor.nome}
       />
 
       {/* Modal de Citação (Quote Card com Imagem do Artigo + Máscara Escura) */}
       <QuoteCardModal
         isOpen={quoteModalAberto}
         onClose={() => setQuoteModalAberto(false)}
-        artigoTitulo={artigo.titulo}
-        artigoSlug={artigo.slug}
-        imagemCapaUrl={artigo.imagem_capa_url}
-        autorNome={artigo.autor.nome}
-        colunaNome={artigo.coluna.nome}
+        artigoTitulo={art.titulo}
+        artigoSlug={art.slug}
+        imagemCapaUrl={art.imagem_capa_url}
+        autorNome={art.autor.nome}
+        colunaNome={art.coluna.nome}
         selectedQuote={textoCitacao}
       />
 
@@ -124,12 +147,12 @@ export function ArticleReadingView({
       <InstagramStoryModal
         isOpen={storyModalAberto}
         onClose={() => setStoryModalAberto(false)}
-        artigoTitulo={artigo.titulo}
-        artigoSubtitulo={artigo.subtitulo_lead}
-        artigoSlug={artigo.slug}
-        imagemCapaUrl={artigo.imagem_capa_url}
-        autorNome={artigo.autor.nome}
-        colunaNome={artigo.coluna.nome}
+        artigoTitulo={art.titulo}
+        artigoSubtitulo={art.subtitulo_lead}
+        artigoSlug={art.slug}
+        imagemCapaUrl={art.imagem_capa_url}
+        autorNome={art.autor.nome}
+        colunaNome={art.coluna.nome}
       />
 
       {/* Container Principal de Leitura */}
@@ -140,60 +163,60 @@ export function ArticleReadingView({
           <header className="mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <Link
-              href={`/editoria/${artigo.categoria.slug}`}
+              href={`/editoria/${art.categoria.slug}`}
               className={`badge-category ${badgeClass}`}
             >
-              {artigo.categoria.nome}
+              {art.categoria.nome}
             </Link>
 
             <span className="text-xs text-[var(--color-ink-muted)]">•</span>
 
             <Link
-              href={`/coluna-arquivo/${artigo.coluna.slug}`}
+              href={`/coluna-arquivo/${art.coluna.slug}`}
               className="text-xs uppercase tracking-wider font-semibold text-[var(--color-brand-accent)] hover:underline"
             >
-              {artigo.coluna.nome}
+              {art.coluna.nome}
             </Link>
           </div>
 
           <h1 className="title-article mb-4">
-            {artigo.titulo}
+            {art.titulo}
           </h1>
 
           <p className="text-lead mb-6">
-            {artigo.subtitulo_lead}
+            {art.subtitulo_lead}
           </p>
 
           {/* Assinatura de topo e metadados */}
           <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-[var(--color-border-subtle)] text-xs text-[var(--color-ink-muted)]">
             <div className="flex items-center gap-3">
-              <Link href={`/autor/${artigo.autor.slug}`} className="shrink-0 group">
+              <Link href={`/autor/${art.autor.slug}`} className="shrink-0 group">
                 <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[var(--color-border-subtle)] group-hover:border-[var(--color-brand-accent)] transition-colors">
-                  {artigo.autor.avatar_url ? (
+                  {art.autor.avatar_url ? (
                     <Image
-                      src={artigo.autor.avatar_url}
-                      alt={artigo.autor.nome}
+                      src={art.autor.avatar_url}
+                      alt={art.autor.nome}
                       fill
                       className="object-cover"
                       sizes="40px"
                     />
                   ) : (
                     <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center font-bold">
-                      {artigo.autor.nome[0]}
+                      {art.autor.nome[0]}
                     </div>
                   )}
                 </div>
               </Link>
               <div>
                 <Link
-                  href={`/autor/${artigo.autor.slug}`}
+                  href={`/autor/${art.autor.slug}`}
                   className="font-semibold text-sm text-[var(--color-ink-primary)] hover:text-[var(--color-brand-accent)] transition-colors block"
                 >
-                  {artigo.autor.nome}
+                  {art.autor.nome}
                 </Link>
-                {artigo.publicado_em && (
-                  <time dateTime={artigo.publicado_em}>
-                    {new Date(artigo.publicado_em).toLocaleDateString('pt-BR', {
+                {art.publicado_em && (
+                  <time dateTime={art.publicado_em}>
+                    {new Date(art.publicado_em).toLocaleDateString('pt-BR', {
                       day: '2-digit',
                       month: 'long',
                       year: 'numeric',
@@ -204,29 +227,40 @@ export function ArticleReadingView({
             </div>
 
             <div className="flex items-center gap-4">
-              <span>{artigo.tempo_leitura_min} min de leitura</span>
+              <span>{art.tempo_leitura_min} min de leitura</span>
+
+              {podeEditar && (
+                <Link
+                  href={`/painel/editor/${art.id}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md border border-[var(--color-brand-accent)] text-[var(--color-brand-accent)] hover:bg-[var(--color-brand-accent)] hover:text-white transition-colors"
+                  title="Editar este artigo no painel"
+                >
+                  <PenSquare className="w-3.5 h-3.5" />
+                  <span>Editar Artigo</span>
+                </Link>
+              )}
             </div>
           </div>
         </header>
 
         {/* Imagem de Capa com Legenda e Créditos */}
-        {artigo.imagem_capa_url && (
+        {art.imagem_capa_url && (
           <figure className="mb-10 -mx-4 sm:mx-0">
             <div className="relative aspect-[16/9] w-full rounded-none sm:rounded-xl overflow-hidden bg-neutral-200 dark:bg-neutral-800">
               <EditorialImage
-                src={artigo.imagem_capa_url}
-                alt={artigo.legenda_capa || artigo.titulo}
+                src={art.imagem_capa_url}
+                alt={art.legenda_capa || art.titulo}
                 fill
                 priority
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 850px"
               />
             </div>
-            {(artigo.legenda_capa || artigo.creditos_capa) && (
+            {(art.legenda_capa || art.creditos_capa) && (
               <figcaption className="text-caption mt-2.5 px-2 text-center">
-                {artigo.legenda_capa}{' '}
-                {artigo.creditos_capa && (
-                  <span className="opacity-75">({artigo.creditos_capa})</span>
+                {art.legenda_capa}{' '}
+                {art.creditos_capa && (
+                  <span className="opacity-75">({art.creditos_capa})</span>
                 )}
               </figcaption>
             )}
@@ -235,16 +269,16 @@ export function ArticleReadingView({
 
         {/* Corpo do Artigo em Tipografia de Leitura */}
         <div className={`text-body-reading ${classeTamanhoFonte}`}>
-          <MarkdownContent content={artigo.conteudo} />
+          <MarkdownContent content={art.conteudo} />
         </div>
 
         {/* Tags do Artigo */}
-        {artigo.tags.length > 0 && (
+        {art.tags.length > 0 && (
           <div className="mt-10 pt-6 border-t border-[var(--color-border-subtle)] flex flex-wrap items-center gap-2">
             <span className="text-xs uppercase tracking-wider font-semibold text-[var(--color-ink-muted)] mr-2">
               Tags:
             </span>
-            {artigo.tags.map((tag) => (
+            {art.tags.map((tag) => (
               <span key={tag.id} className="badge-tag">
                 #{tag.nome}
               </span>
@@ -254,14 +288,14 @@ export function ArticleReadingView({
 
           {/* Assinatura do Autor */}
           <AuthorSignature
-            autor={autorPerfil || artigo.autor}
-            coluna={artigo.coluna}
+            autor={autorPerfil || art.autor}
+            coluna={art.coluna}
           />
         </div>
 
         {/* Seção de Comentários Públicos */}
         <PublicCommentsSection
-          artigoId={artigo.id}
+          artigoId={art.id}
           comentariosIniciais={comentariosIniciais}
         />
       </div>

@@ -9,6 +9,16 @@ import {
   PERFIL_ADMIN_MOCK,
   TODOS_PERFIS_PROTOTIPO,
 } from '@/services/mocks/autores.mock';
+import { getPerfisStore } from '@/services/autoresService';
+import {
+  subscribeToTableChanges,
+  MOCK_DB_TABLES,
+  resetMockDatabase,
+} from '@/services/mockRepository';
+import { ARTIGOS_MOCK } from '@/services/mocks/artigos.mock';
+import { COLUNAS_MOCK } from '@/services/mocks/autores.mock';
+import { REVISAO_COMENTARIOS_MOCK } from '@/services/mocks/revisao.mock';
+import { COMENTARIOS_MOCK } from '@/services/mocks/comentarios.mock';
 
 export type PapelSessao = PapelUsuario | 'visitante';
 
@@ -21,6 +31,7 @@ export interface AuthContextType {
   loginAs: (perfilId: string | null) => void;
   logout: () => void;
   perfisDisponiveis: Perfil[];
+  restaurarDadosOriginais: () => void;
 }
 
 const STORAGE_KEY = 'aresta_mock_auth_profile_id';
@@ -30,47 +41,83 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Padrão inicial: Lucas Campos (primeiro autor titular) para conveniência no protótipo
   const [perfil, setPerfil] = useState<Perfil | null>(PERFIS_AUTORES_MOCK[0]);
+  const [perfisDisponiveis, setPerfisDisponiveis] = useState<Perfil[]>(TODOS_PERFIS_PROTOTIPO);
   const [carregado, setCarregado] = useState(false);
 
-  useEffect(() => {
+  const sincronizarPerfis = useCallback(() => {
     try {
+      const perfisAtuais = getPerfisStore();
+      setPerfisDisponiveis(perfisAtuais);
+
       const storedId = localStorage.getItem(STORAGE_KEY);
       if (storedId === 'anonimo') {
         setPerfil(null);
       } else if (storedId) {
-        const encontrado = TODOS_PERFIS_PROTOTIPO.find((p) => p.id === storedId);
+        const encontrado = perfisAtuais.find((p) => p.id === storedId);
         if (encontrado) {
           setPerfil(encontrado);
         }
+      } else {
+        // Se ainda não gravou, usa o primeiro autor da lista
+        setPerfil(perfisAtuais[0] || null);
       }
     } catch {
-      // Ignora erro de localStorage em ambientes restritos
+      // Ignora erro em ambientes restritos
     } finally {
       setCarregado(true);
     }
   }, []);
 
-  const loginAs = useCallback((perfilId: string | null) => {
-    if (!perfilId) {
-      setPerfil(null);
-      try {
-        localStorage.setItem(STORAGE_KEY, 'anonimo');
-      } catch {}
-      return;
-    }
+  useEffect(() => {
+    sincronizarPerfis();
 
-    const novo = TODOS_PERFIS_PROTOTIPO.find((p) => p.id === perfilId);
-    if (novo) {
-      setPerfil(novo);
-      try {
-        localStorage.setItem(STORAGE_KEY, novo.id);
-      } catch {}
-    }
-  }, []);
+    // Inscreve-se para atualizar dados em tempo real caso um perfil seja editado em outra tela
+    const unsubscribe = subscribeToTableChanges(MOCK_DB_TABLES.PERFIS, () => {
+      sincronizarPerfis();
+    });
+
+    return unsubscribe;
+  }, [sincronizarPerfis]);
+
+  const loginAs = useCallback(
+    (perfilId: string | null) => {
+      if (!perfilId) {
+        setPerfil(null);
+        try {
+          localStorage.setItem(STORAGE_KEY, 'anonimo');
+        } catch {}
+        return;
+      }
+
+      const perfisAtuais = getPerfisStore();
+      const novo = perfisAtuais.find((p) => p.id === perfilId);
+      if (novo) {
+        setPerfil(novo);
+        try {
+          localStorage.setItem(STORAGE_KEY, novo.id);
+        } catch {}
+      }
+    },
+    []
+  );
 
   const logout = useCallback(() => {
     loginAs(null);
   }, [loginAs]);
+
+  const restaurarDadosOriginais = useCallback(() => {
+    resetMockDatabase({
+      artigos: ARTIGOS_MOCK,
+      perfis: TODOS_PERFIS_PROTOTIPO,
+      colunas: COLUNAS_MOCK,
+      revisoes: REVISAO_COMENTARIOS_MOCK,
+      comentarios: COMENTARIOS_MOCK,
+    });
+    sincronizarPerfis();
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
+  }, [sincronizarPerfis]);
 
   const papel: PapelSessao = perfil ? perfil.papel : 'visitante';
   const isAutenticado = perfil !== null;
@@ -87,9 +134,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAdmin,
       loginAs,
       logout,
-      perfisDisponiveis: TODOS_PERFIS_PROTOTIPO,
+      perfisDisponiveis,
+      restaurarDadosOriginais,
     }),
-    [perfil, papel, isAutenticado, isAutor, isAdmin, loginAs, logout]
+    [perfil, papel, isAutenticado, isAutor, isAdmin, loginAs, logout, perfisDisponiveis, restaurarDadosOriginais]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

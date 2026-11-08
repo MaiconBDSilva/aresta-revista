@@ -4,9 +4,21 @@ import { PERFIS_AUTORES_MOCK, COLUNAS_MOCK } from './mocks/autores.mock';
 import { CATEGORIAS_MOCK } from './mocks/categorias.mock';
 import { calcularTempoLeitura } from '@/lib/readingTime';
 import { slugify } from '@/lib/slugify';
+import { loadTable, saveTable, MOCK_DB_TABLES } from './mockRepository';
 
-// Estado reativo em memória para o mock
-let artigosStore: ArtigoCompleto[] = [...ARTIGOS_MOCK];
+/**
+ * Recupera os artigos da camada de banco de dados mock (com persistência em localStorage).
+ */
+function getArtigosStore(): ArtigoCompleto[] {
+  return loadTable<ArtigoCompleto[]>(MOCK_DB_TABLES.ARTIGOS, ARTIGOS_MOCK);
+}
+
+/**
+ * Persiste alterações no banco de dados mock e notifica ouvintes.
+ */
+function saveArtigosStore(dados: ArtigoCompleto[]): void {
+  saveTable(MOCK_DB_TABLES.ARTIGOS, dados);
+}
 
 /**
  * Converte um ArtigoCompleto para ArtigoCard (removendo conteúdo extenso).
@@ -45,7 +57,8 @@ function normalizarTexto(texto: string): string {
  * Apenas artigos com status = 'publicado' podem ser exibidos.
  */
 export async function getHeroArticle(): Promise<ArtigoCard | null> {
-  const hero = artigosStore.find((a) => a.eh_destaque_hero && a.status === 'publicado');
+  const artigos = getArtigosStore();
+  const hero = artigos.find((a) => a.eh_destaque_hero && a.status === 'publicado');
   if (hero) return toArtigoCard(hero);
 
   const publicados = await getArtigosPublicados({ limit: 1 });
@@ -56,7 +69,7 @@ export async function getHeroArticle(): Promise<ArtigoCard | null> {
  * Recupera os 2 apoios secundários da grade Hero da Capa Editorial.
  */
 export async function getDestaquesSecao(): Promise<ArtigoCard[]> {
-  const apoios = artigosStore
+  const apoios = getArtigosStore()
     .filter((a) => a.eh_destaque_secao && !a.eh_destaque_hero && a.status === 'publicado')
     .slice(0, 2);
 
@@ -73,7 +86,7 @@ export async function getArtigosPublicados(params?: {
   limit?: number;
   offset?: number;
 }): Promise<ArtigoCard[]> {
-  let resultado = artigosStore.filter((a) => a.status === 'publicado');
+  let resultado = getArtigosStore().filter((a) => a.status === 'publicado');
 
   if (params?.categoriaSlug) {
     resultado = resultado.filter((a) => a.categoria.slug === params.categoriaSlug);
@@ -114,7 +127,7 @@ export async function getArtigosPorCategoria(
  * Recupera o artigo completo a partir do seu slug semântico (/coluna/[slug]).
  */
 export async function getArtigoBySlug(slug: string): Promise<ArtigoCompleto | null> {
-  const artigo = artigosStore.find((a) => a.slug === slug);
+  const artigo = getArtigosStore().find((a) => a.slug === slug);
   return artigo ? { ...artigo } : null;
 }
 
@@ -122,7 +135,7 @@ export async function getArtigoBySlug(slug: string): Promise<ArtigoCompleto | nu
  * Recupera o artigo completo pelo seu ID único.
  */
 export async function getArtigoById(id: string): Promise<ArtigoCompleto | null> {
-  const artigo = artigosStore.find((a) => a.id === id);
+  const artigo = getArtigosStore().find((a) => a.id === id);
   return artigo ? { ...artigo } : null;
 }
 
@@ -136,7 +149,7 @@ export async function buscarArtigos(
 ): Promise<ArtigoCard[]> {
   const termoNormalizado = normalizarTexto(termo.trim());
 
-  let candidatos = artigosStore.filter((a) => a.status === 'publicado');
+  let candidatos = getArtigosStore().filter((a) => a.status === 'publicado');
 
   if (categoriaSlug && categoriaSlug !== 'todas') {
     candidatos = candidatos.filter((a) => a.categoria.slug === categoriaSlug);
@@ -183,7 +196,7 @@ export async function buscarArtigos(
  * ABA "PUBLICADOS": Retorna todos os artigos já publicados pelo autor logado.
  */
 export async function getMeusArtigosPublicados(autorId: string): Promise<ArtigoCompleto[]> {
-  return artigosStore
+  return getArtigosStore()
     .filter((a) => a.autor.id === autorId && a.status === 'publicado')
     .sort((a, b) => {
       const dataA = a.publicado_em ? new Date(a.publicado_em).getTime() : 0;
@@ -196,7 +209,7 @@ export async function getMeusArtigosPublicados(autorId: string): Promise<ArtigoC
  * ABA "EM PRODUÇÃO": Retorna os artigos em rascunho/edição pertencentes ao autor logado.
  */
 export async function getArtigosEmProducao(autorId: string): Promise<ArtigoCompleto[]> {
-  return artigosStore
+  return getArtigosStore()
     .filter((a) => a.autor.id === autorId && a.status === 'edicao')
     .sort((a, b) => new Date(b.atualizado_em).getTime() - new Date(a.atualizado_em).getTime());
 }
@@ -206,7 +219,7 @@ export async function getArtigosEmProducao(autorId: string): Promise<ArtigoCompl
  * para leitura e comentários de revisão da redação.
  */
 export async function getArtigosRedacaoGeral(autorIdLogado?: string): Promise<ArtigoCompleto[]> {
-  return artigosStore
+  return getArtigosStore()
     .filter((a) => a.status === 'edicao' && (!autorIdLogado || a.autor.id !== autorIdLogado))
     .sort((a, b) => new Date(b.atualizado_em).getTime() - new Date(a.atualizado_em).getTime());
 }
@@ -247,6 +260,8 @@ export async function salvarRascunhoArtigo(
     slug: slugify(t),
   }));
 
+  const artigosStore = getArtigosStore();
+
   if (dados.id) {
     const indice = artigosStore.findIndex((a) => a.id === dados.id);
     if (indice === -1) {
@@ -281,6 +296,7 @@ export async function salvarRascunhoArtigo(
     };
 
     artigosStore[indice] = atualizado;
+    saveArtigosStore(artigosStore);
     return { ...atualizado };
   }
 
@@ -323,6 +339,7 @@ export async function salvarRascunhoArtigo(
   };
 
   artigosStore.unshift(novoArtigo);
+  saveArtigosStore(artigosStore);
   return { ...novoArtigo };
 }
 
@@ -331,6 +348,7 @@ export async function salvarRascunhoArtigo(
  * TRAVA DE AUTORIA INVIOLÁVEL: Apenas o autor original pode alterar de 'edicao' para 'publicado'.
  */
 export async function publicarArtigo(artigoId: string, autorId: string): Promise<ArtigoCompleto> {
+  const artigosStore = getArtigosStore();
   const indice = artigosStore.findIndex((a) => a.id === artigoId);
   if (indice === -1) {
     throw new Error(`Artigo com ID ${artigoId} não encontrado.`);
@@ -351,6 +369,7 @@ export async function publicarArtigo(artigoId: string, autorId: string): Promise
   };
 
   artigosStore[indice] = publicado;
+  saveArtigosStore(artigosStore);
   return { ...publicado };
 }
 
@@ -358,6 +377,7 @@ export async function publicarArtigo(artigoId: string, autorId: string): Promise
  * Despublica ou reverte um artigo publicado de volta para edição (apenas autor original).
  */
 export async function reverterParaEdicao(artigoId: string, autorId: string): Promise<ArtigoCompleto> {
+  const artigosStore = getArtigosStore();
   const indice = artigosStore.findIndex((a) => a.id === artigoId);
   if (indice === -1) {
     throw new Error(`Artigo com ID ${artigoId} não encontrado.`);
@@ -375,12 +395,71 @@ export async function reverterParaEdicao(artigoId: string, autorId: string): Pro
   };
 
   artigosStore[indice] = atualizado;
+  saveArtigosStore(artigosStore);
   return { ...atualizado };
+}
+
+/**
+ * Define um artigo publicado como Manchete Principal (Hero Article) da Capa.
+ * Garante que apenas 1 artigo ativo seja o Hero.
+ */
+export async function setArtigoHero(artigoId: string): Promise<ArtigoCompleto> {
+  let artigosStore = getArtigosStore();
+  const indice = artigosStore.findIndex((a) => a.id === artigoId);
+  if (indice === -1) {
+    throw new Error(`Artigo com ID ${artigoId} não encontrado.`);
+  }
+
+  // Remove o flag hero de todos os outros
+  artigosStore = artigosStore.map((art) => ({
+    ...art,
+    eh_destaque_hero: art.id === artigoId,
+    // Se virou hero, não pode ser apoio secundário ao mesmo tempo
+    eh_destaque_secao: art.id === artigoId ? false : art.eh_destaque_secao,
+  }));
+
+  saveArtigosStore(artigosStore);
+  return { ...artigosStore[indice] };
+}
+
+/**
+ * Alterna ou define um artigo como destaque de seção/apoio secundário da Capa.
+ */
+export async function setArtigoDestaqueSecao(artigoId: string, valor: boolean): Promise<ArtigoCompleto> {
+  const artigosStore = getArtigosStore();
+  const indice = artigosStore.findIndex((a) => a.id === artigoId);
+  if (indice === -1) {
+    throw new Error(`Artigo com ID ${artigoId} não encontrado.`);
+  }
+
+  artigosStore[indice] = {
+    ...artigosStore[indice],
+    eh_destaque_secao: valor,
+    // Se virou destaque de seção, remove do hero
+    eh_destaque_hero: valor ? false : artigosStore[indice].eh_destaque_hero,
+  };
+
+  saveArtigosStore(artigosStore);
+  return { ...artigosStore[indice] };
+}
+
+/**
+ * Retorna todos os artigos atualmente em edição em toda a redação.
+ */
+export async function getArtigosEmEdicao(): Promise<ArtigoCompleto[]> {
+  return getArtigosStore().filter((a) => a.status === 'edicao');
+}
+
+/**
+ * Retorna todos os artigos publicados para uso no painel de curadoria da capa.
+ */
+export async function getArtigosParaCuradoriaCapa(): Promise<ArtigoCompleto[]> {
+  return getArtigosStore().filter((a) => a.status === 'publicado');
 }
 
 /**
  * Reseta o store em memória (utilizado em testes unitários).
  */
 export function _resetArtigosStore(dados = ARTIGOS_MOCK) {
-  artigosStore = [...dados];
+  saveArtigosStore([...dados]);
 }

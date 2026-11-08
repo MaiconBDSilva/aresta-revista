@@ -67,7 +67,7 @@ flowchart LR
 
 Concentra 100% das operações de dados e regras de negócio sob a **estratégia Mock-First** em **7 serviços especializados**:
 
-> 💡 **Estratégia Mock-First (Integração Tardia):** Durante todo o desenvolvimento visual da aplicação (Sprints 0 a 4), os serviços operam fornecendo dados mockados tipados em memória e `localStorage`. Na Sprint 5 (Integração com o Banco), apenas o interior desses serviços é atualizado para chamar o cliente Supabase, mantendo as telas 100% intactas.
+> 💡 **Estratégia Mock-First & Camada de Banco Mock (`mockRepository.ts`):** Durante todo o desenvolvimento visual da aplicação (Sprints 0 a 4), os serviços operam através do adaptador [`mockRepository.ts`](../src/services/mockRepository.ts). Ele emula as tabelas relacionais do Supabase (`aresta_db_artigos`, `aresta_db_perfis`, `aresta_db_colunas`, `aresta_db_artigo_revisao_comentarios`, `aresta_db_artigo_comentarios`) com persistência no `localStorage` e eventos de sincronização reativa em tempo real. Na Sprint 5 (Integração com o Banco), apenas o interior desses serviços é atualizado para chamar o cliente Supabase (`supabase.from(...)`), mantendo todas as telas, componentes e contratos 100% intactos.
 
 1. [`artigosService.ts`](../src/services/artigosService.ts):
    * Consultas da vitrine e feeds de artigos com `status = 'publicado'`;

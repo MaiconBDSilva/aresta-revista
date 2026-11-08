@@ -112,12 +112,20 @@ flowchart TD
 - [x] Criação do serviço `revisaoService.ts` e expansão de `artigosService.ts` com validação de travas e publicação autônoma.
 - [x] Validação com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`), Vitest (`31 testes aprovados`) e Build de Produção Next.js (`npm run build`).
 
-### 2.5 Sprint 4: Painel Admin (/admin), Textos em Edição, Destaques da Capa & Seletor de Visão
-* Construção do painel `/admin`:
-  * **Aba "Textos em Edição":** Listagem de todos os textos que estão em `status = 'edicao'` na revista, permitindo que os administradores leiam a prévia e deixem comentários/sugestões para o autor (respeitando a regra de que apenas o autor original modifica ou publica seu texto);
-  * **Aba "Destaques da Capa":** Seleção visual de qual artigo publicado será a Manchete Principal (*Hero*) e quais serão os destaques secundários;
-  * **Aba "Colunistas & Usuários":** Gestão de papéis (`leitor` ⇄ `autor` ⇄ `admin`) e cadastro de novas colunas.
-* Implementação do **`PrototypeRoleSwitcher`** (`.prototype-role-switcher`) no canto inferior esquerdo para alternar em tempo real entre `Admin`, `Autor Titular`, `Autor Convidado`, `Leitor` e `Visitante Anônimo`.
+### 2.5 Sprint 4: Painel Admin (/admin), Destaques da Capa, Colunistas, Meu Perfil & Conta do Leitor (/conta)
+- [x] Construção da rota `/admin` com proteção RBAC (exclusiva para `admin` e `autor`) e cards de métricas de topo:
+  - [x] **Aba "Destaques da Capa":** Curadoria visual da Home — seleção da Manchete Principal (*Hero Article* `eh_destaque_hero`) e dos destaques secundários das editorias (`eh_destaque_secao`) com atualização reativa em tempo real;
+  - [x] **Aba "Colunistas":** Listagem exclusiva do corpo editorial titular com contagem de artigos e modal **"Registrar Membro da Equipe"** (busca de leitores para promoção a `autor`/`admin` com cadastro de nova coluna);
+  - [x] **Aba "Meu Perfil":** Edição completa dos dados do autor/admin (nome, email, avatar, minibiografia editorial, redes sociais X, Instagram, LinkedIn, website e manifesto da coluna).
+- [x] Desenvolvimento da página da conta do leitor ([`/conta`](file:///e:/Maicon/DEV/aresta-revista/src/app/conta)):
+  - [x] Dados cadastrais e foto de perfil;
+  - [x] Gestão de Newsletters e Colunas Seguidas (toggle interativo das 5 colunas oficiais e da *Aresta Semanal*);
+  - [x] Lista de artigos favoritos/salvos para leitura posterior;
+  - [x] Zona de Privacidade & LGPD com confirmação de segurança para exclusão definitiva de conta.
+- [x] Botão de atalho **"Editar Artigo"** contextual no cabeçalho de leitura pública ([`/coluna/[slug]`](file:///e:/Maicon/DEV/aresta-revista/src/app/coluna)), visível exclusivamente para o autor titular do texto e administradores, levando com 1 clique para [`/painel/editor/[id]`](file:///e:/Maicon/DEV/aresta-revista/src/app/painel/editor).
+- [x] Botão visual **"Entrar"** integrado ao Header de Topo e ao Drawer Mobile com modal de login simulado em 1 clique (`LoginVisualModal`), e redirecionamento da pílula do leitor autenticado diretamente para [`/conta`](file:///e:/Maicon/DEV/aresta-revista/src/app/conta).
+- [x] Criação de `interacoesService.ts` para persistência das preferências do leitor e expansão de `artigosService.ts` e `autoresService.ts`.
+- [x] Validação completa com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`) e Build de Produção Next.js (`npm run build`).
 
 ### 2.6 MARCO INTERMEDIÁRIO: Deploy do Protótipo Navegável Completo na Vercel
 * Deploy do repositório na Vercel (plano gratuito) gerando o link `aresta-revista.vercel.app`;

@@ -37,6 +37,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  referrer: 'no-referrer',
   title: {
     default: 'aresta. | Revista de Ensaios & Colunas Contemporâneas',
     template: '%s | aresta.',

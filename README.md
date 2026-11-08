@@ -43,10 +43,9 @@ aresta-revista/
 │   │   ├── editoria/                     # Listagem de artigos filtrados por editoria (/editoria/[slug])
 │   │   ├── autor/                        # Página biográfica de perfil do colunista (/autor/[slug])
 │   │   ├── coluna-arquivo/               # Acervo histórico da coluna do autor (/coluna-arquivo/[slug])
+│   │   ├── conta/                        # Área e configurações do Leitor (/conta - dados, colunas seguidas, newsletters e LGPD)
 │   │   ├── painel/                       # Painel do Colunista (/painel) e Editor (/painel/editor/[id] e /novo)
-│   │   ├── login/                        # Autenticação de leitores, autores e admins (Google OAuth)
-│   │   ├── painel/                       # Painel do Colunista (Meus Textos em Edição/Publicados, Redação e Editor)
-│   │   ├── admin/                        # Administração (Listagem de Textos em Edição, Destaques da Capa e Usuários)
+│   │   ├── admin/                        # Mesa Editorial (/admin - Destaques da Capa, Colunistas e Meu Perfil)
 │   │   ├── not-found.tsx                 # Página 404 personalizada e acolhedora com retorno à capa
 │   │   ├── error.tsx                     # Error boundary client-side com recuperação graciosa
 │   │   ├── sitemap.ts                    # Gerador dinâmico de sitemap.xml para indexação de artigos publicados

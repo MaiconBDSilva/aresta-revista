@@ -3,10 +3,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, PenSquare, Shield } from 'lucide-react';
+import { Menu, X, PenSquare, Shield, LogIn, User } from 'lucide-react';
 import { HeaderSearchBar } from './HeaderSearchBar';
 import { useAuth } from '@/contexts/AuthContext';
 import { COLUNAS_MOCK, ARTIGOS_MOCK, PERFIS_AUTORES_MOCK } from '@/services/mocks';
+import { LoginVisualModal } from '@/components/common/LoginVisualModal';
 
 export const CATEGORIAS_OFICIAIS = [
   { nome: 'Política', slug: 'politica', cor: 'var(--color-cat-politica)' },
@@ -31,6 +32,7 @@ interface EditorialNavbarBarProps {
 export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: EditorialNavbarBarProps) {
   const { isAutor, isAdmin, isAutenticado, perfil } = useAuth();
   const [menuAberto, setMenuAberto] = useState(false);
+  const [loginModalAberto, setLoginModalAberto] = useState(false);
   const [colapsado, setColapsado] = useState(false);
   const colapsadoRef = useRef(false);
   const pathname = usePathname();
@@ -143,6 +145,19 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
         <div ref={actionsRef} className="navbar-actions">
           <HeaderSearchBar />
 
+          {/* Botão Entrar: Visível para Visitantes Anônimos */}
+          {!isAutenticado && (
+            <button
+              type="button"
+              onClick={() => setLoginModalAberto(true)}
+              className="navbar-btn-outline"
+              title="Acessar sua conta"
+            >
+              <LogIn className="w-3.5 h-3.5" style={{ color: 'var(--color-brand-accent)' }} />
+              <span>Entrar</span>
+            </button>
+          )}
+
           {/* Botão Escrever: Exclusivo para Colunistas e Editores (Invisível para Leitor e Anônimo) */}
           {(isAutor || isAdmin) && (
             <Link href="/painel" className="navbar-btn-outline" title="Painel do Colunista">
@@ -159,12 +174,16 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
             </Link>
           )}
 
-          {/* Identificação amigável para o Leitor Autenticado */}
+          {/* Identificação amigável e link para /conta para o Leitor Autenticado */}
           {isAutenticado && !isAutor && !isAdmin && perfil && (
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 border border-border-subtle text-xs font-sans text-ink-secondary">
+            <Link
+              href="/conta"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-border-subtle text-xs font-sans text-ink-secondary transition-colors"
+              title="Minha Conta"
+            >
               <span className="w-2 h-2 rounded-full bg-blue-500" />
               <span className="font-medium max-w-[100px] truncate">{perfil.nome.split(' ')[0]}</span>
-            </div>
+            </Link>
           )}
 
           <button
@@ -202,34 +221,68 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
             })}
           </div>
 
-          {/* Links restritos no Drawer Mobile: Apenas para Autores e Admins */}
-          {(isAutor || isAdmin) && (
-            <div
-              className="pt-4 mt-2 flex flex-col gap-2"
-              style={{ borderTop: '1px solid var(--color-border-subtle)' }}
-            >
+          {/* Seção de Conta e Ações no Drawer Mobile */}
+          <div
+            className="pt-4 mt-2 flex flex-col gap-2"
+            style={{ borderTop: '1px solid var(--color-border-subtle)' }}
+          >
+            {!isAutenticado && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuAberto(false);
+                  setLoginModalAberto(true);
+                }}
+                className="navbar-btn-outline w-full flex items-center justify-center gap-2 py-2.5"
+              >
+                <LogIn className="w-4 h-4" style={{ color: 'var(--color-brand-accent)' }} />
+                <span>Entrar na sua conta</span>
+              </button>
+            )}
+
+            {isAutenticado && (
               <Link
-                href="/painel"
+                href="/conta"
                 onClick={() => setMenuAberto(false)}
                 className="navbar-link flex items-center gap-2 py-2"
               >
-                <PenSquare className="w-4 h-4" style={{ color: 'var(--color-brand-accent)' }} />
-                <span>Painel do Colunista</span>
+                <User className="w-4 h-4" />
+                <span>Minha Conta</span>
               </Link>
-              {isAdmin && (
+            )}
+
+            {/* Links restritos no Drawer Mobile: Apenas para Autores e Admins */}
+            {(isAutor || isAdmin) && (
+              <>
                 <Link
-                  href="/admin"
+                  href="/painel"
                   onClick={() => setMenuAberto(false)}
                   className="navbar-link flex items-center gap-2 py-2"
                 >
-                  <Shield className="w-4 h-4" />
-                  <span>Mesa Editorial / Admin</span>
+                  <PenSquare className="w-4 h-4" style={{ color: 'var(--color-brand-accent)' }} />
+                  <span>Painel do Colunista</span>
                 </Link>
-              )}
-            </div>
-          )}
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setMenuAberto(false)}
+                    className="navbar-link flex items-center gap-2 py-2"
+                  >
+                    <Shield className="w-4 h-4" />
+                    <span>Mesa Editorial / Admin</span>
+                  </Link>
+                )}
+              </>
+            )}
+          </div>
         </div>
       )}
+
+      {/* Modal Visual de Login */}
+      <LoginVisualModal
+        isOpen={loginModalAberto}
+        onClose={() => setLoginModalAberto(false)}
+      />
     </>
   );
 }

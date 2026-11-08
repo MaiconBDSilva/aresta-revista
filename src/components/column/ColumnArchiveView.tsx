@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Bell, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -8,6 +8,9 @@ import type { Coluna, Perfil } from '@/types/autor.types';
 import type { ArtigoCard as ArtigoCardType } from '@/types/artigo.types';
 import { ArticleCard } from '@/components/editorial/ArticleCard';
 import { FollowColumnModal } from './FollowColumnModal';
+import { getColunaBySlug } from '@/services/autoresService';
+import { getArtigosPublicados } from '@/services/artigosService';
+import { subscribeToTableChanges } from '@/services/mockRepository';
 
 interface ColumnArchiveViewProps {
   coluna: Coluna;
@@ -18,12 +21,31 @@ interface ColumnArchiveViewProps {
 const ITENS_POR_PAGINA = 6;
 
 export function ColumnArchiveView({
-  coluna,
-  autor,
-  artigos,
+  coluna: initialColuna,
+  autor: initialAutor,
+  artigos: initialArtigos,
 }: ColumnArchiveViewProps) {
+  const [coluna, setColuna] = useState<Coluna>(initialColuna);
+  const [autor, setAutor] = useState<Perfil>(initialAutor);
+  const [artigos, setArtigos] = useState<ArtigoCardType[]>(initialArtigos);
   const [modalSeguirAberto, setModalSeguirAberto] = useState(false);
   const [paginaAtual, setPaginaAtual] = useState(1);
+
+  useEffect(() => {
+    const sincronizar = async () => {
+      const col = await getColunaBySlug(initialColuna.slug);
+      if (col) {
+        setColuna(col);
+        if (col.autor) setAutor(col.autor);
+      }
+      const novosArtigos = await getArtigosPublicados({ colunaSlug: initialColuna.slug });
+      setArtigos(novosArtigos);
+    };
+
+    sincronizar();
+    const unsubscribe = subscribeToTableChanges('all', sincronizar);
+    return unsubscribe;
+  }, [initialColuna.slug]);
 
   const totalPaginas = Math.ceil(artigos.length / ITENS_POR_PAGINA) || 1;
   const indiceInicio = (paginaAtual - 1) * ITENS_POR_PAGINA;

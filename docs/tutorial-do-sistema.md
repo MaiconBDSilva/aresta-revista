@@ -21,13 +21,16 @@
   - [3.2 Redigindo um Artigo: Título, Lead, Editoria, Capa JPEG e Corpo](#32-redigindo-um-artigo-título-lead-editoria-capa-jpeg-e-corpo)
   - [3.3 Comentando Textos em Edição de Outros Autores](#33-comentando-textos-em-edição-de-outros-autores)
   - [3.4 Publicando Seu Próprio Texto (`edicao` → `publicado`)](#34-publicando-seu-próprio-texto-edicao--publicado)
-- [4. Manual do Administrador (`/admin`): Textos em Edição e Destaques da Capa](#4-manual-do-administrador-admin-textos-em-edição-e-destaques-da-capa)
-  - [4.1 Visualizando Textos em Edição e Enviando Sugestões](#41-visualizando-textos-em-edição-e-enviando-sugestões)
-  - [4.2 Montando a Grade de Destaques da Capa (Hero e Seções)](#42-montando-a-grade-de-destaques-da-capa-hero-e-seções)
-  - [4.3 Gerenciando Colunistas e Permissões](#43-gerenciando-colunistas-e-permissões)
-- [5. Guia Rápido de Manutenção para Desenvolvedores](#5-guia-rápido-de-manutenção-para-desenvolvedores)
-  - [5.1 Onde Alterar Cada Regra, Estilo ou Dado?](#51-onde-alterar-cada-regra-estilo-ou-dado)
-  - [5.2 Comandos e Validação Local](#52-comandos-e-validação-local)
+- [4. Manual do Administrador (`/admin`): Destaques da Capa, Colunistas e Meu Perfil](#4-manual-do-administrador-admin-destaques-da-capa-colunistas-e-meu-perfil)
+  - [4.1 Montando a Grade de Destaques da Capa (Hero e Apoios)](#41-montando-a-grade-de-destaques-da-capa-hero-e-apoios)
+  - [4.2 Gerenciando o Corpo de Colunistas e Registrando Novos Membros da Equipe](#42-gerenciando-o-corpo-de-colunistas-e-registrando-novos-membros-da-equipe)
+  - [4.3 Editando Seu Próprio Perfil e Assinatura Editorial](#43-editando-seu-próprio-perfil-e-assinatura-editorial)
+- [5. Manual da Área do Leitor (`/conta`)](#5-manual-da-área-do-leitor-conta)
+  - [5.1 Acessando a Conta](#51-acessando-a-conta)
+  - [5.2 Funcionalidades Disponíveis para o Leitor](#52-funcionalidades-disponíveis-para-o-leitor)
+- [6. Guia Rápido de Manutenção para Desenvolvedores](#6-guia-rápido-de-manutenção-para-desenvolvedores)
+  - [6.1 Onde Alterar Cada Regra, Estilo ou Dado?](#61-onde-alterar-cada-regra-estilo-ou-dado)
+  - [6.2 Comandos e Validação Local](#62-comandos-e-validação-local)
 
 ---
 
@@ -61,10 +64,11 @@ flowchart TD
 | **`/editoria/[slug]`** | Público Geral | Arquivo de artigos publicados filtrados por uma das **6 grandes editorias** (*Política & Poder*, *Cultura & Artes*, *Entretenimento & Pop*, *Subjetividades*, *Opinião & Ensaios*, *Esporte & Sociedade*). |
 | **`/autor/[slug]`** | Público Geral | **Página de Perfil do Colunista:** biografia completa, foto, redes sociais, destaque da sua coluna titular e seus 3 textos mais recentes. |
 | **`/coluna-arquivo/[slug]`** | Público Geral | **Acervo da Coluna do Autor:** banner, manifesto da coluna, botão *"Seguir esta Coluna"* e listagem cronológica completa de todos os textos publicados na coluna. |
-| **`/busca`** | Público Geral | Busca em tempo real de artigos publicados por termos no título, resumo ou conteúdo. |
-| **`/painel`** | Autores e Admins | Centro de controle do colunista com seus textos (`edicao` e `publicado`) e a aba *"Em Edição na Redação"* para ver e comentar textos de outros autores. |
-| **`/painel/editor`** | Autores e Admins | Editor Tiptap/Markdown (editável **apenas pelo autor dono do texto**) + Painel Lateral de Sugestões de outros autores e admins. |
-| **`/admin`** | Administradores | Painel administrativo para visualizar todos os textos em `edicao` (e comentar sugestões), selecionar a Manchete Hero da capa e gerenciar usuários. |
+| **`/conta`** | Leitores Autenticados | **Área do Leitor:** dados cadastrais, preferências de newsletters, colunas que está seguindo e zona de privacidade/LGPD com exclusão de conta. |
+| **`/busca`** | Público Geral | Busca em tempo real integrada ao Header com popover e resultados instantâneos. |
+| **`/painel`** | Autores e Admins | Centro de controle do colunista com seus textos (`edicao` e `publicado`) e a aba *"Redação Geral"* para ver e comentar textos em edição de outros autores. |
+| **`/painel/editor`** | Autores e Admins | Editor Tiptap/Markdown (editável **apenas pelo autor titular do texto**) + Mural Lateral de Revisão Colaborativa para outros autores e admins. |
+| **`/admin`** | Administradores e Autores | Mesa editorial: curadoria dos Destaques da Capa (Hero e seções), gestão do corpo de Colunistas (com modal para registrar membros da equipe) e Meu Perfil. |
 
 ---
 
@@ -133,31 +137,53 @@ O painel do colunista organiza a rotina da redação em três abas objetivas:
 
 ---
 
-## 4. Manual do Administrador (`/admin`): Textos em Edição e Destaques da Capa
+## 4. Manual do Administrador (`/admin`): Destaques da Capa, Colunistas e Meu Perfil
 
-### 4.1 Visualizando Textos em Edição e Enviando Sugestões
-1. Acesse `/admin` e abra a aba **"Textos em Edição"**.
-2. Visualize todos os artigos com `status = 'edicao'` que estão sendo preparados pelos colunistas.
-3. Clique em um artigo para ler a prévia e enviar comentários/sugestões de melhoria no painel lateral para o autor original. *(Por regra editorial, o admin não altera o texto do autor nem o publica por conta própria).*
+### 4.1 Montando a Grade de Destaques da Capa (Hero e Apoios)
+1. Acesse `/admin` e abra a aba **"Destaques da Capa"**.
+2. Veja a Manchete Principal (*Hero Article*) atual. Para alterá-la, clique em **"Trocar Manchete Principal"**, selecione qualquer artigo publicado no modal e confirme. O sistema atribui o destaque Hero e remove o status anterior automaticamente.
+3. Clique em **"Gerenciar Apoios Secundários"** para ativar ou remover artigos secundários da grade de apoio superior da Home.
 
-### 4.2 Montando a Grade de Destaques da Capa (Hero e Seções)
-1. Na aba **"Destaques da Capa"**, são listados os artigos que já estão com `status = 'publicado'`.
-2. Marque 1 artigo como **Manchete Principal (`eh_destaque_hero`)** — o sistema desmarca automaticamente o Hero anterior.
-3. Marque os artigos de apoio (`eh_destaque_secao`) para compor o mosaico superior da Home.
+### 4.2 Gerenciando o Corpo de Colunistas e Registrando Novos Membros da Equipe
+1. Na aba **"Colunistas"**, visualize a listagem exclusiva dos colunistas titulares da casa, contagem de artigos publicados e links diretos para seus perfis e acervos.
+2. Clique no botão **"Registrar Membro da Equipe"**:
+   * O modal permite buscar um leitor cadastrado na base (por exemplo, buscando por "Mariana") ou registrar um novo membro.
+   * Selecione o papel (`Autor Titular` ou `Administrador`).
+   * Se for promovido a `Autor`, insira o **Nome da Coluna** e o **Manifesto da Coluna** (garantindo a regra inviolável de que *todo autor tem uma coluna exclusiva*).
 
-### 4.3 Gerenciando Colunistas e Permissões
-* Na aba **"Usuários & Colunas"**, promova leitores autenticados com Google para `autor` (criando sua coluna titular) ou `admin` em 1 clique.
+### 4.3 Editando Seu Próprio Perfil e Assinatura Editorial
+1. Na aba **"Meu Perfil"**, o autor ou administrador pode editar em tempo real:
+   * Nome completo e e-mail institucional;
+   * URL da foto de perfil (avatar);
+   * Minibiografia editorial (utilizada na assinatura de rodapé dos ensaios e na página biográfica `/autor/[slug]`);
+   * Presença digital: perfis no X (Twitter), Instagram, LinkedIn e site pessoal;
+   * Nome e manifesto da sua coluna titular (para colunistas).
+2. As alterações são persistidas imediatamente e refletem em todas as páginas públicas do site.
 
 ---
 
-## 5. Guia Rápido de Manutenção para Desenvolvedores
+## 5. Manual da Área do Leitor (`/conta`)
 
-### 5.1 Onde Alterar Cada Regra, Estilo ou Dado?
+### 5.1 Acessando a Conta
+* Visitantes anônimos contam com o botão **"Entrar"** no cabeçalho do portal, que abre o modal de boas-vindas com simulação de login com Google em 1 clique.
+* Leitores autenticados podem clicar em seu nome no topo para acessar diretamente [`/conta`](file:///e:/Maicon/DEV/aresta-revista/src/app/conta).
+
+### 5.2 Funcionalidades Disponíveis para o Leitor
+* **Meus Dados:** Edição de nome, e-mail e foto de perfil.
+* **Newsletters & Colunas Seguidas:** Controle da inscrição na *Newsletter Semanal Aresta* e gerenciamento com 1 clique das colunas que está seguindo (com botões de toggle ativo/inativo).
+* **Artigos Salvos para Depois:** Lista de leitura particular com ensaios favoritados.
+* **Privacidade & LGPD:** Esclarecimento de direitos e botão de **Exclusão Definitiva de Conta** com modal de segurança exigindo digitação da palavra "EXCLUIR" para confirmação.
+
+---
+
+## 6. Guia Rápido de Manutenção para Desenvolvedores
+
+### 6.1 Onde Alterar Cada Regra, Estilo ou Dado?
 * **Cores (`#B91C1C`), Fontes e Classes Semânticas:** `src/styles/theme.css` e [`docs/dicionario-de-dados.md`](./dicionario-de-dados.md).
 * **Regras de Negócio e Fluxo `edicao`/`publicado`:** [`docs/regras-de-negocio.md`](./regras-de-negocio.md).
 * **Camada de Serviços (7 Repositórios):** `src/services/` (`artigosService`, `revisaoService`, `autoresService`, `categoriasService`, `interacoesService`, `authService`, `storageService`).
 
-### 5.2 Comandos e Validação Local
+### 6.2 Comandos e Validação Local
 ```bash
 # Servidor de desenvolvimento
 npm run dev

@@ -2,9 +2,7 @@ import React from 'react';
 import { getHeroArticle, getDestaquesSecao, getArtigosPorCategoria } from '@/services/artigosService';
 import { getColunistasVitrine } from '@/services/autoresService';
 import { getCategorias } from '@/services/categoriasService';
-import { HeroArticle } from '@/components/editorial/HeroArticle';
-import { ColumnistShowcase } from '@/components/editorial/ColumnistShowcase';
-import { CategorySection } from '@/components/editorial/CategorySection';
+import { HomeClientView } from '@/components/editorial/HomeClientView';
 
 export const revalidate = 60; // ISR leve
 
@@ -43,22 +41,14 @@ export default async function HomePage() {
         </p>
       </div>
 
-      {/* Manchete Principal (Hero) + 2 Apoios Secundários */}
-      {hero && <HeroArticle hero={hero} apoios={apoios} />}
-
-      {/* Vitrine Horizontal "Últimas das Colunas" */}
-      <ColumnistShowcase colunistas={colunistas} />
-
-      {/* Seções Modulares para as 5 Editorias Oficiais */}
-      <div className="space-y-12">
-        {artigosPorCategoria.map(({ categoria, artigos }) => (
-          <CategorySection
-            key={categoria.id}
-            categoria={categoria}
-            artigos={artigos}
-          />
-        ))}
-      </div>
+      {/* Visão da Home com Suporte a Hidratação Reativa em Tempo Real */}
+      <HomeClientView
+        initialHero={hero}
+        initialApoios={apoios}
+        initialColunistas={colunistas}
+        initialArtigosPorCategoria={artigosPorCategoria}
+        categorias={categorias}
+      />
     </div>
   );
 }
