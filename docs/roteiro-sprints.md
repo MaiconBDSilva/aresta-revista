@@ -11,7 +11,7 @@
 - [1. Visão Geral da Estratégia de Desenvolvimento & Prototipagem](#1-visão-geral-da-estratégia-de-desenvolvimento--prototipagem)
 - [2. Detalhamento das Sprints](#2-detalhamento-das-sprints)
   - [2.1 Sprint 0: Fundação, Tokens Carmim (#B91C1C) & Design System Editorial](#21-sprint-0-fundação-tokens-carmim-b91c1c--design-system-editorial)
-  - [2.2 Sprint 1: Capa Editorial & Navegação pelas 6 Editorias (Mock-First)](#22-sprint-1-capa-editorial--navegação-pelas-6-editorias-mock-first)
+  - [2.2 Sprint 1: Capa Editorial & Navegação pelas 5 Editorias (Mock-First)](#22-sprint-1-capa-editorial--navegação-pelas-6-editorias-mock-first)
   - [2.3 Sprint 2: Leitor Imersivo, Perfil (/autor) & Acervo da Coluna (/coluna-arquivo)](#23-sprint-2-leitor-imersivo-perfil-autor--acervo-da-coluna-coluna-arquivo)
   - [2.4 Sprint 3: Editor do Autor (/painel), Publicação Autônoma & Revisão Colaborativa](#24-sprint-3-editor-do-autor-painel-publicação-autônoma--revisão-colaborativa)
   - [2.5 Sprint 4: Painel Admin (/admin), Textos em Edição, Destaques da Capa & Seletor de Visão](#25-sprint-4-painel-admin-admin-textos-em-edição-destaques-da-capa--seletor-de-visão)
@@ -33,7 +33,7 @@ Isso gera um **link público na Vercel** (`aresta-revista.vercel.app`) pronto pa
 flowchart TD
     subgraph FASE_1["FASE 1: Protótipo Navegável Completo na Vercel (Mocks + Role Switcher)"]
         S0["Sprint 0: Setup, Tokens Carmim (#B91C1C) & Header Frosted Glass"]
-        S1["Sprint 1: Capa & 6 Editorias"]
+        S1["Sprint 1: Capa & 5 Editorias"]
         S2["Sprint 2: Leitor Imersivo, /autor/[slug] & /coluna-arquivo/[slug]"]
         S3["Sprint 3: Editor (/painel), Status Edição/Publicado & Sugestões"]
         S4["Sprint 4: Painel /admin, Listagem em Edição, Capa & Seletor de Visão"]
@@ -52,7 +52,7 @@ flowchart TD
 | Sprint | Foco Principal | Estado de Dados / Sessão | Entregáveis Técnicos |
 | :---: | :--- | :---: | :--- |
 | **Sprint 0** | Fundação & Design System Editorial | N/A | Next.js 15/16, Tailwind 4, `theme.css` (destaque `#B91C1C`), primitivas semânticas, Header *frosted glass* e `.main-content-layout`. |
-| **Sprint 1** | Capa Editorial & 6 Editorias | Mock-First | Capa com Manchete Hero, vitrine *"Últimas das Colunas"*, mosaicos das 6 editorias e busca textual (`/busca`). |
+| **Sprint 1** | Capa Editorial & 5 Editorias | Mock-First | Capa com Manchete Hero, vitrine *"Últimas das Colunas"*, mosaicos das 5 editorias e busca textual (`/busca`). |
 | **Sprint 2** | Leitor, Perfil do Autor & Acervo da Coluna | Mock-First | Leitor em `/coluna/[slug]`, página biográfica em `/autor/[slug]` e acervo completo da coluna em `/coluna-arquivo/[slug]`. |
 | **Sprint 3** | Editor, Publicação Autônoma & Revisão | Mock / Autores | Rota `/painel`, editor Tiptap, status `'edicao'` ⇄ `'publicado'` (exclusivo do autor dono) e mural de sugestões para outros autores. |
 | **Sprint 4** | Painel `/admin`, Destaques & Seletor de Visão | **Role Switcher Ativo** | Rota `/admin` com listagem de textos em `'edicao'` (leitura + sugestões), gestão da capa (Hero) e componente `PrototypeRoleSwitcher`. |
@@ -65,17 +65,20 @@ flowchart TD
 ## 2. Detalhamento das Sprints
 
 ### 2.1 Sprint 0: Fundação, Tokens Carmim (#B91C1C) & Design System Editorial
-* Inicialização da aplicação Next.js (App Router, TypeScript estrito, Turbopack, Tailwind CSS 4).
-* Configuração do design system editorial em `src/styles/theme.css` (com cor de destaque centralizada em `--color-brand-accent: #B91C1C`) e das classes semânticas documentadas no dicionário de dados.
-* Construção do Header fixo com efeito *frosted glass* (`backdrop-filter: blur(12px)`) e logotipo `aresta.`.
-* Implementação obrigatória da classe `.main-content-layout` com padding superior padronizado (`4.5rem` desktop / `4rem` mobile).
+- [x] Inicialização da aplicação Next.js (App Router, TypeScript estrito, Turbopack, Tailwind CSS 4).
+- [x] Configuração do design system editorial em `src/styles/theme.css` (com cor de destaque centralizada em `--color-brand-accent: #B91C1C`) e das classes semânticas documentadas no dicionário de dados (`primitives.css`, `layout.css`, `buttons.css`, `forms.css`, `modals.css`).
+- [x] Construção do Header fixo com efeito *frosted glass* (`backdrop-filter: blur(12px)`) e logotipo `aresta.`.
+- [x] Implementação obrigatória da classe `.main-content-layout` com padding superior padronizado (`4.5rem` desktop / `4rem` mobile).
+- [x] Configuração de tipagem de domínio (`database.types.ts`, `artigo.types.ts`, `autor.types.ts`) e utilitários com testes (`readingTime`, `slugify`).
+- [x] Validação com 0 erros: `npx tsc --noEmit`, `npm run lint` e `npx vitest run` (9 testes aprovados).
+- [x] Compilação estática (`npm run build`) validada com sucesso.
 
-### 2.2 Sprint 1: Capa Editorial & Navegação pelas 6 Editorias (Mock-First)
-* Criação dos mocks tipados para os 7 serviços em `src/services/mocks/` utilizando os **5 autores reais do projeto** (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**), suas respectivas colunas (*"Coluna de Lucas"*, *"Coluna de Danillo"*, *"Coluna de Sergio"*, *"Coluna de Lara"* e *"Coluna de Guliver"*) e **pelo menos 3 textos por autor (mínimo de 15 textos)** divididos entre as 6 editorias.
+### 2.2 Sprint 1: Capa Editorial & Navegação pelas 5 Editorias (Mock-First)
+* Criação dos mocks tipados para os 7 serviços em `src/services/mocks/` utilizando os **5 autores reais do projeto** (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**), suas respectivas colunas (*"Coluna de Lucas"*, *"Coluna de Danillo"*, *"Coluna de Sergio"*, *"Coluna de Lara"* e *"Coluna de Guliver"*) e **pelo menos 3 textos por autor (mínimo de 15 textos)** divididos entre as 5 editorias.
 * Capa Editorial completa exibindo apenas artigos com `status = 'publicado'`:
   * Manchete Principal (*Hero Article*) de grande destaque + 2 apoios secundários;
   * Vitrine horizontal *"Últimas das Colunas"* com avatares dos 5 colunistas e link para `/coluna-arquivo/[slug]`;
-  * Seções modulares dedicadas a cada uma das 6 editorias;
+  * Seções modulares dedicadas a cada uma das 5 editorias;
   * Páginas de filtro por editoria (`/editoria/[slug]`) e busca em tempo real (`/busca`).
 
 ### 2.3 Sprint 2: Leitor Imersivo, Perfil (/autor) & Acervo da Coluna (/coluna-arquivo)

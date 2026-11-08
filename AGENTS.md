@@ -9,8 +9,8 @@ Este arquivo define as **regras obrigatórias e permanentes** de atuação para 
 Ao iniciar uma nova sessão de chat, antes de propor ou executar qualquer alteração no código, você **DEVE consultar os seguintes documentos** para carregar o contexto completo e atualizado do projeto:
 
 1. **[`docs/contexto-ia.md`](./docs/contexto-ia.md):** Visão editorial da marca, resumo executivo da plataforma e índice mestre de navegação.
-2. **[`docs/identidade-visual.md`](./docs/identidade-visual.md):** Manual oficial da marca `aresta.`, cor de destaque centralizada no vermelho carmim (`#B91C1C`), menu *frosted glass* e regra de padding superior.
-3. **[`docs/regras-de-negocio.md`](./docs/regras-de-negocio.md):** Catálogo oficial de regras de negócio (as 6 editorias, `/autor/[slug]` vs `/coluna-arquivo/[slug]`, papéis RBAC, ciclo de 2 status `edicao` e `publicado`, revisão colaborativa e compartilhamento dinâmico).
+2. **[`docs/identidade-visual.md`](./docs/identidade-visual.md):** Manual oficial da marca `aresta.` e `a.` em **Svetze** (`public/fonts/Svetze.otf`), cor de destaque centralizada no vermelho carmim (`#B91C1C`), Header Duplo (Portal/G1 + Menu Flutuante *Frosted Glass* real com `bg-white/30` e `blur(12px)`) e contraste escuro (`#09090B`).
+3. **[`docs/regras-de-negocio.md`](./docs/regras-de-negocio.md):** Catálogo oficial de regras de negócio (as 5 editorias oficiais: Política, Cultura, Entretenimento, Ensaios e Esporte; `/autor/[slug]` vs `/coluna-arquivo/[slug]`; papéis RBAC; ciclo de 2 status `edicao` e `publicado`; revisão colaborativa e compartilhamento dinâmico).
 4. **[`docs/dicionario-de-dados.md`](./docs/dicionario-de-dados.md):** Fonte única da verdade para esquemas de banco Supabase (tabelas, colunas, enums, RLS), Design Tokens editoriais e Catálogo Completo de Classes CSS Semânticas (com mapeamento de onde são usadas).
 5. **[`docs/guia-de-desenvolvimento.md`](./docs/guia-de-desenvolvimento.md):** Guia arquitetural, estratégia Mock-First nos 7 serviços (`src/services/`), Seletor de Visão (`PrototypeRoleSwitcher`), governança Anti-Class Boom e testes automatizados.
 6. **[`docs/roteiro-sprints.md`](./docs/roteiro-sprints.md):** Cronograma de sprints (0 a 6), roteiro de deploy, checklist de validação e backlog evolutivo.
@@ -23,7 +23,7 @@ Ao iniciar uma nova sessão de chat, antes de propor ou executar qualquer altera
 
 Todos os documentos em `docs/` possuem responsabilidade única (sem repetição de conteúdo entre arquivos) e **DEVEM manter um Sumário (`## 📑 Sumário`) atualizado no topo**. Sempre que realizar alterações consideráveis no projeto, atualize o documento canônico correspondente antes de encerrar o turno:
 
-* **Mudança em Marca, Logotipo, Cores Institucionais (`#B91C1C`), Tipografia ou Header:**
+* **Mudança em Marca, Logotipo (`Svetze`), Cores Institucionais (`#B91C1C`), Tipografia ou Header:**
   👉 Atualizar [`docs/identidade-visual.md`](./docs/identidade-visual.md).
 * **Mudança em Regras de Publicação (`edicao`/`publicado`), Permissões, Editorias ou Políticas Editoriais:**
   👉 Atualizar [`docs/regras-de-negocio.md`](./docs/regras-de-negocio.md).
@@ -40,16 +40,16 @@ Todos os documentos em `docs/` possuem responsabilidade única (sem repetição 
 
 ## 3. 🎨 Limpeza de Código CSS, Reutilização e Prevenção Anti-Class Boom
 
-1. **Proibição de classNames Gigantescos no JSX:**
-   * É estritamente **proibido aninhar dezenas de classes utilitárias inline** no JSX (ex: cadeias intermináveis poluindo os componentes).
-   * O JSX deve ser limpo, legível, semântico e declarativo, focado na estrutura e na lógica do componente.
+1. **Proibição de classNames Gigantescos no JSX & Prevenção de Letras Brancas em Fundo Branco:**
+   * É estritamente **proibido aninhar dezenas de classes utilitárias inline** no JSX ou espalhar classes `dark:text-...` soltas que conflitem com o fundo claro (`--color-paper-bg: #FBFBF9`).
+   * Em `src/app/globals.css`, manter obrigatoriamente `@custom-variant dark (&:where(.dark, .dark *));`.
 2. **Prioridade Absoluta para o Catálogo de Classes Semânticas (`docs/dicionario-de-dados.md` — Seção 1.3):**
    * Antes de propor qualquer estilo novo, **o agente DEVE consultar o catálogo da Seção 1.3 de `docs/dicionario-de-dados.md`**:
      * **Cards de Artigos (`primitives.css`):** `.card-article`, `.card-featured`, `.card-compact`, `.card-columnist`.
      * **Tipografia Editorial (`primitives.css`):** `.title-display`, `.title-article`, `.title-section`, `.text-lead`, `.text-body-reading`, `.text-caption`, `.section-kicker`.
-     * **Badges & Tags (`primitives.css`):** `.badge-category` (`.badge-politica` ... `.badge-esporte`), `.badge-tag`, `.badge-status` (`.badge-status-edicao`, `.badge-status-publicado`).
+     * **Badges & Tags (`primitives.css`):** `.badge-category` (`.badge-politica`, `.badge-cultura`, `.badge-entretenimento`, `.badge-ensaios`, `.badge-esporte`), `.badge-tag`, `.badge-status` (`.badge-status-edicao`, `.badge-status-publicado`).
      * **Grids & Containers (`primitives.css`):** `.grid-magazine-hero`, `.grid-magazine-feed`, `.grid-split`, `.article-reading-container`, `.author-signature`.
-     * **Layout, Botões, Forms & Modais:** `.header-editorial-frosted`, `.main-content-layout`, `.reading-progress`, `.footer-editorial`, `.prototype-role-switcher`, `.btn-primary`, `.btn-accent`, `.btn-outline`, `.btn-ghost`, `.input-field`, `.label-field`, `.textarea-editor`, `.modal-backdrop`, `.modal-container`.
+     * **Layout, Header Duplo, Botões, Forms & Modais:** `.header-portal-top`, `.header-portal-title`, `.header-portal-bar`, `.header-editorial-frosted`, `.navbar-inner`, `.navbar-logo-compact`, `.navbar-center-links`, `.navbar-link`, `.navbar-actions`, `.navbar-btn-outline`, `.navbar-btn-solid`, `.main-content-layout`, `.reading-progress`, `.footer-editorial`, `.prototype-role-switcher`, `.btn-primary`, `.btn-accent`, `.btn-outline`, `.btn-ghost`, `.input-field`, `.label-field`, `.textarea-editor`, `.modal-backdrop`, `.modal-container`.
 3. **Prevenção Ativa do Anti-Padrão "Class Boom" (Explosão de Classes):**
    * É **estritamente proibido criar uma classe CSS hiper-específica para cada tag HTML** de um componente.
    * **Consolidação Obrigatória:** Se duas regras visuais em arquivos diferentes tiverem a mesma finalidade ou propriedades semelhantes, elas **DEVEM ser consolidadas em uma única classe comum** nas primitivas ou no módulo centralizado.
@@ -60,11 +60,12 @@ Todos os documentos em `docs/` possuem responsabilidade única (sem repetição 
 
 ## 4. ⚖️ Regras de Domínio Editorial, Design & Engenharia Invioláveis
 
-1. **Logotipo Oficial e Cor Carmim Centralizada:**
-   * O nome da revista é estilizado como **`aresta.`** (sempre em caixa baixa) e toda a cor de destaque institucional do sistema é centralizada no **vermelho carmim `#B91C1C`** (`--color-brand-accent`).
-2. **Regra de Layout do Menu Fixo (*Frosted Glass*):**
-   * O menu superior possui efeito de vidro fosco (`backdrop-filter: blur(12px)` e fundo translúcido) com posicionamento fixo no topo (`.header-editorial-frosted`).
-   * **OBRIGATÓRIO:** Toda página (`page.tsx`) ou o container principal `<main>` deve aplicar a classe `.main-content-layout` com `padding-top` igual à altura do menu (`--header-height: 4.5rem;` no desktop e `4rem;` no mobile), impedindo categoricamente que o menu corte ou sobreponha o início do conteúdo da página.
+1. **Logotipo Oficial em `Svetze` e Cor Carmim Centralizada:**
+   * O nome da revista é estilizado como **`aresta.`** (no Header de Topo e Rodapé) e **`a.`** (na barra de navegação) usando a fonte **`Svetze`** (`public/fonts/Svetze.otf`, `--font-logo`, peso 400), em caixa baixa e com ponto final no **vermelho carmim `#B91C1C`** (`--color-brand-accent`).
+2. **Regra de Layout do Header Duplo (Portal / G1 + Menu Flutuante *Frosted Glass*):**
+   * No topo da página (`HeaderPortal.tsx`), exibe o título grande em `Svetze` (`aresta.` na capa ou o nome da categoria `política.`, `cultura.`, `entretenimento.`, `ensaios.`, `esporte.` nas editorias) e, logo abaixo, um clone completo da barra de menu (`EditorialNavbarBar`).
+   * Ao rolar a página e ultrapassar a área do título grande, o menu flutuante fixo (`HeaderFrostedGlass.tsx`, `.header-editorial-frosted`) assume no topo com verdadeiro efeito de vidro fosco (`background-color: rgba(255, 255, 255, 0.30)`, `backdrop-filter: blur(12px)` e `border-bottom: 1px solid rgba(255, 255, 255, 0.20)`), borrando o conteúdo que passa por baixo.
+   * Na barra de menu, o logo compacto `a.` fica colado à esquerda, os links das 5 categorias ficam centralizados absolutamente ao centro da tela (`left: 50%; transform: translate(-50%, -50%)`), e as ações/ícone do menu drawer mobile ficam colados à direita.
 3. **Hierarquia Autor/Admin, Ciclo de 2 Estados (`edicao` e `publicado`), Autonomia do Autor & Revisão Colaborativa:**
    * **Todo autor é um admin, mas nem todo admin é autor; e todo autor tem obrigatoriamente uma coluna:** Usuários com papel `'autor'` acumulam 100% das permissões administrativas do portal (`/admin`, gestão de capa, moderação) e possuem sua coluna exclusiva em `colunas`. Usuários com papel `'admin'` exercem a administração da plataforma sem possuir coluna própria.
    * Não existe agendamento: os artigos possuem apenas os status `'edicao'` e `'publicado'`.
@@ -74,7 +75,7 @@ Todos os documentos em `docs/` possuem responsabilidade única (sem repetição 
 4. **Duas Rotas Autorais Públicas Complementares:**
    * `/autor/[slug]` é a página biográfica de perfil do colunista; `/coluna-arquivo/[slug]` é o acervo cronológico da sua coluna.
 5. **Estratégia Mock-First, Elenco Oficial de Autores & Seletor de Visão (`PrototypeRoleSwitcher`):**
-   * Nos dados gerados para o protótipo (`src/services/mocks/`), utilizar obrigatoriamente os **5 autores reais do projeto**: **Lucas Campos** (*Coluna de Lucas*), **Danillo Reis** (*Coluna de Danillo*), **Sergio Rodrigues** (*Coluna de Sergio*), **Lara Lima** (*Coluna de Lara*) e **Guliver Elias** (*Coluna de Guliver*), com **pelo menos 3 textos de cada autor (mínimo de 15 textos)** divididos entre as 6 editorias, acompanhados do componente `PrototypeRoleSwitcher`.
+   * Nos dados gerados para o protótipo (`src/services/mocks/`), utilizar obrigatoriamente os **5 autores reais do projeto**: **Lucas Campos** (*Coluna de Lucas*), **Danillo Reis** (*Coluna de Danillo*), **Sergio Rodrigues** (*Coluna de Sergio*), **Lara Lima** (*Coluna de Lara*) e **Guliver Elias** (*Coluna de Guliver*), com **pelo menos 3 textos de cada autor (mínimo de 15 textos)** divididos entre as 5 editorias, acompanhados do componente `PrototypeRoleSwitcher`.
 6. **Tempo de Leitura Determinístico:**
    * O cálculo de tempo estimado de leitura deve ser automático e calculado no salvamento do artigo com base em 200 palavras por minuto.
 7. **Política de Otimização de Imagens (Compatibilidade 100% Open Graph):**

@@ -16,7 +16,7 @@
 - [2. Esquema do Banco de Dados (PostgreSQL / Supabase)](#2-esquema-do-banco-de-dados-postgresql--supabase)
   - [2.1 Tabela `perfis`](#21-tabela-perfis)
   - [2.2 Tabela `colunas`](#22-tabela-colunas)
-  - [2.3 Tabela `categorias` (As 6 Editorias)](#23-tabela-categorias-as-6-editorias)
+  - [2.3 Tabela `categorias` (As 5 Editorias)](#23-tabela-categorias-as-5-editorias)
   - [2.4 Tabela `tags`](#24-tabela-tags)
   - [2.5 Tabela `artigos`](#25-tabela-artigos)
   - [2.6 Tabela `artigo_tags`](#26-tabela-artigo_tags)
@@ -34,26 +34,25 @@
 
 ## 1. Dicionário de Design Tokens & Classes CSS Semânticas
 
-Todas as cores e variáveis visuais do sistema são parametrizadas no arquivo central `src/styles/theme.css` via CSS Custom Properties. A cor de destaque da marca é unificada no **vermelho carmim (`#B91C1C`)**.
+Todas as cores e variáveis visuais do sistema são parametrizadas no arquivo central `src/styles/theme.css` via CSS Custom Properties. A cor de destaque da marca é unificada no **vermelho carmim (`#B91C1C`)** e a cor primária de texto no modo claro utiliza preto carvão profundo (`#09090B`) para alto contraste.
 
 ### 1.1 Paleta de Cores Editorial (`src/styles/theme.css`)
 
 | Token Semântico | Variável CSS | HEX (Claro) | HEX (Noturno `.dark`) | Tailwind Class | Finalidade / Regra de Uso |
 | :--- | :--- | :---: | :---: | :--- | :--- |
-| **Ink Primary** | `--color-ink-primary` | `#111827` | `#FBFBF9` | `text-ink-primary`, `bg-ink-primary` | Preto tipográfico profundo para títulos, manchetes e logotipo `aresta.`. |
-| **Ink Secondary** | `--color-ink-secondary` | `#374151` | `#D4D4D8` | `text-ink-secondary` | Corpo de leitura de artigos de longa duração (alto contraste sem fadiga visual). |
-| **Ink Muted** | `--color-ink-muted` | `#6B7280` | `#A1A1AA` | `text-ink-muted` | Metadados, tempo de leitura, datas, legendas de imagens e notas de rodapé. |
+| **Ink Primary** | `--color-ink-primary` | `#09090B` | `#FBFBF9` | `text-ink-primary`, `bg-ink-primary` | Preto carvão profundo para logotipo `aresta.` / `a.`, links do menu, manchetes e títulos. |
+| **Ink Secondary** | `--color-ink-secondary` | `#18181B` | `#E4E4E7` | `text-ink-secondary` | Corpo de leitura de artigos de longa duração e subtítulos (nitidez máxima sem fadiga). |
+| **Ink Muted** | `--color-ink-muted` | `#3F3F46` | `#A1A1AA` | `text-ink-muted` | Metadados, tempo de leitura, datas, legendas de imagens e notas de rodapé. |
 | **Paper Background** | `--color-paper-bg` | `#FBFBF9` | `#09090B` | `bg-paper-bg` | Fundo principal da revista (papel linho no modo claro; carvão no modo escuro). |
 | **Paper Surface** | `--color-paper-surface` | `#FFFFFF` | `#18181B` | `bg-paper-surface` | Superfície de cartões, gavetas de navegação, painéis e modais. |
-| **Brand Accent (Carmim)** | `--color-brand-accent` | `#B91C1C` | `#DC2626` | `text-brand-accent`, `bg-brand-accent` | **Cor central de destaque da marca.** Usada no ponto final de `aresta.`, barra de progresso de leitura, kickers de seção e botões nobres. |
+| **Brand Accent (Carmim)** | `--color-brand-accent` | `#B91C1C` | `#DC2626` | `text-brand-accent`, `bg-brand-accent` | **Cor central de destaque da marca.** Usada no ponto final de `aresta.` e `a.`, barra de progresso de leitura, kickers de seção e botões nobres. |
 | **Brand Accent Hover** | `--color-brand-accent-hover` | `#991B1B` | `#B91C1C` | `bg-brand-accent-hover` | Estados de hover/active para botões e links em vermelho carmim. |
-| **Category Política** | `--color-cat-politica` | `#1E3A8A` | `#3B82F6` | `text-cat-politica` | Azul sóbrio para a editoria de Política & Poder. |
-| **Category Cultura** | `--color-cat-cultura` | `#854D0E` | `#D97706` | `text-cat-cultura` | Âmbar terroso para Cultura & Artes. |
-| **Category Entretenimento** | `--color-cat-entretenimento` | `#701A75` | `#C026D3` | `text-cat-entretenimento` | Roxo fúcsia refinado para Entretenimento & Pop. |
-| **Category Subjetividades** | `--color-cat-subjetividades` | `#065F46` | `#10B981` | `text-cat-subjetividades` | Verde esmeralda profundo para Subjetividades. |
-| **Category Opinião** | `--color-cat-opiniao` | `#9A3412` | `#F97316` | `text-cat-opiniao` | Laranja ferrugem/terracota para Opinião & Ensaios. |
-| **Category Esporte** | `--color-cat-esporte` | `#0F766E` | `#14B8A6` | `text-cat-esporte` | Verde petróleo para Esporte & Sociedade. |
-| **Border Subtle** | `--color-border-subtle` | `#E5E7EB` | `#27272A` | `border-border-subtle` | Fios de corte tipográficos e bordas divisórias sutis. |
+| **Category Política** | `--color-cat-politica` | `#1E3A8A` | `#3B82F6` | `text-cat-politica` | Azul sóbrio para a editoria de Política. |
+| **Category Cultura** | `--color-cat-cultura` | `#854D0E` | `#D97706` | `text-cat-cultura` | Âmbar terroso para Cultura. |
+| **Category Entretenimento** | `--color-cat-entretenimento` | `#701A75` | `#C026D3` | `text-cat-entretenimento` | Roxo fúcsia refinado para Entretenimento. |
+| **Category Ensaios** | `--color-cat-ensaios` | `#9A3412` | `#F97316` | `text-cat-ensaios` | Terracota / ferrugem para Ensaios. |
+| **Category Esporte** | `--color-cat-esporte` | `#0F766E` | `#14B8A6` | `text-cat-esporte` | Verde petróleo para Esporte. |
+| **Border Subtle** | `--color-border-subtle` | `#E4E4E7` | `#27272A` | `border-border-subtle` | Fios de corte tipográficos e bordas divisórias sutis. |
 
 ---
 
@@ -61,15 +60,16 @@ Todas as cores e variáveis visuais do sistema são parametrizadas no arquivo ce
 
 | Token Tipográfico | Variável CSS | Família Tipográfica | Pesos | Finalidade |
 | :--- | :--- | :--- | :--- | :--- |
-| **Font Serif** | `--font-serif` | `'Newsreader', 'Playfair Display', Georgia, serif` | 400, 500, 600, 700 | Logotipo `aresta.`, manchetes, títulos de artigos e citações de destaque. |
-| **Font Sans** | `--font-sans` | `'Plus Jakarta Sans', system-ui, sans-serif` | 400, 500, 600, 700 | Interface do usuário, navegação, botões, metadados e formulários. |
+| **Font Logo** | `--font-logo` | `var(--font-svetze, 'Svetze'), 'Svetze', Georgia, serif` | 400 (Regular) | Logotipo completo `aresta.`, títulos de editoria no Header de Topo (`política.`, `cultura.`, etc.) e logo compacto `a.` (`public/fonts/Svetze.otf`). |
+| **Font Serif** | `--font-serif` | `'Newsreader', 'Playfair Display', Georgia, serif` | 400, 500, 600, 700 | Manchetes de artigos, títulos de seções e citações de destaque. |
+| **Font Sans** | `--font-sans` | `'Plus Jakarta Sans', system-ui, sans-serif` | 400, 500, 600, 700 | Interface do usuário, links do menu, botões, metadados e formulários. |
 | **Font Reading** | `--font-reading` | `'Lora', 'Charter', Georgia, serif` | 400, 400i, 600 | Corpo dos textos das colunas (otimizada para leitura confortável e ritmo visual). |
 
 ---
 
 ### 1.3 Catálogo Oficial de Classes Semânticas (Regra Anti-Class Boom)
 
-> **Regra Obrigatória:** É proibido aninhar longas cadeias utilitárias inline (`className="..."`) nos componentes JSX. Utilize as classes semânticas definidas e comentadas abaixo:
+> **Regra Obrigatória:** É proibido aninhar longas cadeias utilitárias inline (`className="..."`) nos componentes JSX ou espalhar classes `dark:text-...` soltas que conflitem com o fundo claro. Utilize as classes semânticas definidas e comentadas abaixo:
 
 #### A. Primitivas Editoriais Universais (`src/styles/components/primitives.css`)
 
@@ -81,28 +81,39 @@ Todas as cores e variáveis visuais do sistema são parametrizadas no arquivo ce
 | `.card-columnist` | Cartão autoral exibindo avatar redondo do colunista, nome da coluna em destaque, slogan/manifesto e link para o último texto. | • Vitrine horizontal *"Últimas das Colunas"* na Capa (`/`)<br>• Cabeçalho do acervo (`/coluna-arquivo/[slug]`)<br>• Bloco de vínculo da coluna no perfil (`/autor/[slug]`) |
 | `.title-display` | Manchete de impacto máximo em `--font-serif` (`2.25rem` mobile a `3.5rem` desktop, `line-height: 1.1`). | • Título do *Hero Article* na Capa (`/`)<br>• Cabeçalho principal do acervo da coluna (`/coluna-arquivo/[slug]`) |
 | `.title-article` | Título nobre de leitura em `--font-serif` (`1.875rem` a `2.75rem`, `line-height: 1.15`). | • Topo da página de leitura do artigo (`/coluna/[slug]`)<br>• Pré-visualização de texto em edição no `/painel` e `/admin` |
-| `.title-section` | Título de divisão de seção com fio superior e acento carmim (`1.35rem` a `1.85rem`). | • Cabeçalhos dos blocos das 6 Editorias na Capa (`/`)<br>• Títulos de seções no `/painel` e na Mesa Editorial (`/admin`) |
-| `.text-lead` | Subtítulo / linha-fina com `--font-sans` ou serifa leve (`1.125rem` a `1.25rem`, cor `--color-ink-secondary`, `line-height: 1.6`). | • Abaixo do título em `/coluna/[slug]`<br>• Abaixo da manchete principal no `HeroArticle` (`/`) |
+| `.title-section` | Título de divisão de seção com fio superior e acento carmim (`1.35rem` a `1.85rem`). | • Cabeçalhos dos blocos das 5 Editorias na Capa (`/`)<br>• Títulos de seções no `/painel` e na Mesa Editorial (`/admin`) |
+| `.text-lead` | Subtítulo / linha-fina com `--font-sans` (`1.125rem` a `1.25rem`, cor `--color-ink-secondary`, `line-height: 1.6`). | • Abaixo do título em `/coluna/[slug]`<br>• Abaixo da manchete principal no `HeroArticle` (`/`) |
 | `.text-body-reading` | Corpo de leitura imersiva em `--font-reading` (`1.125rem` / 18px padrão, `line-height: 1.75`, `max-w-[68ch]`). Suporta modificadores `.font-size-sm` (16px), `.font-size-md` (18px) e `.font-size-lg` (21px). | • Corpo do artigo em `/coluna/[slug]` (`ArticleBody.tsx`)<br>• Área de escrita e pré-visualização do `TiptapEditor.tsx` em `/painel/editor` |
 | `.text-caption` | Texto auxiliar discreto em `--font-sans` (`0.75rem` a `0.875rem`, cor `--color-ink-muted`). | • Datas de publicação, tempo de leitura (`5 min de leitura`), legendas e créditos fotográficos de capa |
 | `.section-kicker` | Rótulo pré-título em caixa alta (`0.75rem`, `font-weight: 700`, `letter-spacing: 0.08em`, cor `--color-brand-accent`). | • Acima de títulos de seções na Capa (`/`)<br>• Identificador do nome da Coluna acima do título do artigo |
-| `.badge-category` | Pílula temática de editoria com modificadores `.badge-politica`, `.badge-cultura`, `.badge-entretenimento`, `.badge-subjetividades`, `.badge-opiniao` e `.badge-esporte`. | • Cards de artigos (`HeroArticle`, `CategoryFeed`)<br>• Topo do artigo (`/coluna/[slug]`)<br>• Card dinâmico Open Graph (`/api/og`) |
+| `.badge-category` | Pílula temática de editoria com modificadores `.badge-politica`, `.badge-cultura`, `.badge-entretenimento`, `.badge-ensaios` e `.badge-esporte`. | • Cards de artigos (`HeroArticle`, `CategoryFeed`)<br>• Topo do artigo (`/coluna/[slug]`)<br>• Card dinâmico Open Graph (`/api/og`) |
 | `.badge-tag` | Pílula neutra de cantos arredondados para marcadores livres (`#psicanalise`, `#eleicoes-2026`). | • Rodapé do artigo (`/coluna/[slug]`)<br>• Filtros rápidos na página de busca (`/busca`) |
 | `.badge-status` | Indicador visual do estado do artigo com variações `.badge-status-edicao` (âmbar) e `.badge-status-publicado` (verde esmeralda). | • Listagem de textos do autor em `/painel`<br>• Vitrine de textos em edição em `/admin` e na bancada colaborativa |
 | `.grid-magazine-hero` | Grid assimétrico de capa (8 colunas para a manchete Hero + 4 colunas para os 2 destaques secundários no desktop; empilhado no mobile). | • Dobra principal da Capa (`/`, componente `HeroArticle.tsx` + `SecondaryGrid.tsx`) |
-| `.grid-magazine-feed` | Grid responsivo de 1 coluna (mobile), 2 colunas (tablet) e 3 colunas (desktop) com espaçamento editorial. | • Blocos das 6 editorias na Capa (`/`)<br>• Listagem de artigos em `/editoria/[slug]`, `/coluna-arquivo/[slug]` e `/busca` |
+| `.grid-magazine-feed` | Grid responsivo de 1 coluna (mobile), 2 colunas (tablet) e 3 colunas (desktop) com espaçamento editorial. | • Blocos das 5 editorias na Capa (`/`)<br>• Listagem de artigos em `/editoria/[slug]`, `/coluna-arquivo/[slug]` e `/busca` |
 | `.grid-split` | Layout de 2 colunas assimétricas (conteúdo principal largo + barra lateral de apoio sticky). | • Página de revisão de texto em edição (Artigo à esquerda + Painel de Comentários/Sugestões de outros autores à direita)<br>• Página de perfil (`/autor/[slug]`) |
 | `.article-reading-container` | Container centralizado de leitura imersiva com margens confortáveis e suporte aos temas `.theme-paper`, `.theme-white` e `.theme-dark`. | • Envoltório principal da rota `/coluna/[slug]` |
 | `.author-signature` | Bloco de encerramento de artigo com borda superior carmim, avatar, minibiografia, redes sociais e botões para `/autor/[slug]` e `/coluna-arquivo/[slug]`. | • Final de todo artigo publicado em `/coluna/[slug]` (`AuthorSignature.tsx`) |
 
-#### B. Layout Mestre, Navegação & Protótipo (`src/styles/components/layout.css`)
+#### B. Layout Mestre, Header Duplo, Navegação & Protótipo (`src/styles/components/layout.css`)
 
 | Classe Semântica | Definição Visual | Onde Será Utilizada (Telas e Componentes) |
 | :--- | :--- | :--- |
-| `.header-editorial-frosted` | Header fixo no topo (`height: var(--header-height)`, `z-index: 50`, `backdrop-filter: blur(12px)` e fundo papel translúcido). | • Componente global `HeaderFrostedGlass.tsx` presente no `src/app/layout.tsx` |
-| `.main-content-layout` | **Obrigatória:** Container `<main>` com `min-height: 100vh` e `padding-top: var(--header-height)` (`4.5rem` desktop / `4rem` mobile) para impedir sobreposição pelo menu fixo. | • Container principal `<main>` de todas as páginas (`layout.tsx` / `page.tsx`) |
+| `.header-editorial-frosted` | Menu flutuante fixo no topo (`height: var(--header-height)`, `z-index: 50`, `background-color: rgba(255, 255, 255, 0.30)`, `backdrop-filter: blur(12px)`, `border-bottom: 1px solid rgba(255, 255, 255, 0.20)`), borrando o conteúdo que passa por baixo ao rolar a página. Suporta `.is-hidden` quando o Header de Topo está visível. | • Componente global `HeaderFrostedGlass.tsx` presente no `src/app/layout.tsx` |
+| `.header-portal-top` | Container estático no topo da página que abriga a logo grande e o clone da barra de navegação. | • Componente `HeaderPortal.tsx` no `src/app/layout.tsx` |
+| `.header-portal-brand-area` | Faixa superior do Header de Topo que centraliza o título editorial da marca ou editoria. | • Componente `HeaderPortal.tsx` |
+| `.header-portal-title` | Título gigante em `--font-logo` (`Svetze`, peso 400) exibindo `aresta.` ou a categoria explícita (`política.`, `cultura.`, etc.). | • Componente `HeaderPortal.tsx` |
+| `.header-portal-bar` | Faixa inferior do Header de Topo que renderiza o clone completo da barra de menu (`EditorialNavbarBar`). | • Componente `HeaderPortal.tsx` |
+| `.navbar-inner` | Container flexível full-width (`justify-content: space-between; position: relative`) compartilhado entre a barra do Header de Topo e o Menu Flutuante. | • Componente `EditorialNavbarBar` em `HeaderPortal.tsx` |
+| `.navbar-logo-compact` | Logotipo compacto `a.` em `--font-logo` (`Svetze`, peso 400) colado na margem esquerda da barra de navegação. | • Componente `EditorialNavbarBar` |
+| `.navbar-center-links` | Container de navegação posicionado no centro absoluto da tela (`position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)`), com espaçamento variável fluido (`gap: clamp(0.5rem, 1.4vw, 2rem)`) e auto-colapso via medição geométrica contínua (`.is-collapsed`) ao se aproximar de qualquer elemento lateral. | • Componente `EditorialNavbarBar` |
+| `.navbar-link` | Link de categoria do menu em caixa alta, negrito (`#09090B`), padding adaptativo e hover/ativo (`is-active`) em vermelho carmim (`#B91C1C`). | • Componente `EditorialNavbarBar` e drawer mobile |
+| `.navbar-actions` | Container colado à direita na barra de menu para os controles de busca, escrita, admin e toggle mobile. | • Componente `EditorialNavbarBar` |
+| `.navbar-icon-btn`, `.navbar-btn-outline`, `.navbar-btn-solid` | Botões de ação da barra de menu com contraste escuro explícito e hover carmim. | • Botões de Busca, "Escrever" (`/painel`) e "Admin" (`/admin`) em `EditorialNavbarBar` |
+| `.navbar-mobile-toggle`, `.navbar-mobile-drawer` | Botão hambúrguer no canto direito mobile (e ativado em desktop quando os links centrais colapsam via `.is-visible`) e gaveta expansível de navegação mobile com vidro fosco. | • Componente `EditorialNavbarBar` |
+| `.main-content-layout` | Container `<main>` principal de todas as páginas em coluna flexível. | • Container principal `<main>` no `src/app/layout.tsx` |
 | `.reading-progress` | Barra superior ultrafina (`2px`) na cor `--color-brand-accent` (`#B91C1C`) cuja largura varia de `0%` a `100%` conforme o scroll. | • Topo da tela na página de leitura `/coluna/[slug]` (`ReadingProgress.tsx`) |
-| `.footer-editorial` | Rodapé institucional com logotipo `aresta.`, links das 6 editorias, formulário de captura de newsletter e expediente. | • Componente global `FooterEditorial.tsx` no `src/app/layout.tsx` |
+| `.footer-editorial` | Rodapé institucional com logotipo `aresta.` em `Svetze`, links das 5 editorias, formulário de captura de newsletter e expediente. | • Componente global `FooterEditorial.tsx` no `src/app/layout.tsx` |
 | `.prototype-role-switcher` | Barra flutuante compacta (`position: fixed`, canto inferior direito, `z-index: 60`) exclusiva do modo protótipo para alternar instantaneamente a sessão ativa (`Admin`, `Autor Titular`, `Autor Convidado`, `Leitor`, `Anônimo`). | • Componente `PrototypeRoleSwitcher.tsx` renderizado globalmente no protótipo da Vercel |
 
 #### C. Botões Semânticos (`src/styles/components/buttons.css`)
@@ -169,7 +180,7 @@ CREATE TABLE IF NOT EXISTS public.colunas (
 );
 ```
 
-### 2.3 Tabela `categorias` (As 6 Editorias)
+### 2.3 Tabela `categorias` (As 5 Editorias)
 ```sql
 CREATE TABLE IF NOT EXISTS public.categorias (
     id SERIAL PRIMARY KEY,

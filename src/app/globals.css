@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* Vincula a variante dark: do Tailwind exclusivamente à classe .dark (nunca à media query solta) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design System Editorial */
+@import "../styles/theme.css";
+
+/* Primitivas e Componentes Canônicos */
+@import "../styles/components/primitives.css";
+@import "../styles/components/layout.css";
+@import "../styles/components/buttons.css";
+@import "../styles/components/forms.css";
+@import "../styles/components/modals.css";
+
+/* Reset e Regras de Base */
+html,
+body {
+  background-color: var(--color-paper-bg);
+  color: var(--color-ink-primary);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(185, 28, 28, 0.2);
+  color: var(--color-ink-primary);
+}

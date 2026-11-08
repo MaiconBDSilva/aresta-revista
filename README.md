@@ -3,7 +3,7 @@
 Plataforma editorial contemporânea e independente para publicação e leitura de colunas de opinião, ensaios culturais e crônicas autorais.
 
 * **Logotipo Oficial & Cor de Destaque:** **`aresta.`** (em caixa baixa com ponto final e destaques em vermelho carmim `#B91C1C` / `--color-brand-accent`)
-* **As 6 Editorias:** Política & Poder, Cultura & Artes, Entretenimento & Pop, Subjetividades, Opinião & Ensaios e Esporte & Sociedade.
+* **As 5 Editorias:** Política & Poder, Cultura & Artes, Entretenimento & Pop, Subjetividades, Opinião & Ensaios e Esporte & Sociedade.
 * **Autores & Colunas Oficiais:** **Lucas Campos** (*Coluna de Lucas*), **Danillo Reis** (*Coluna de Danillo*), **Sergio Rodrigues** (*Coluna de Sergio*), **Lara Lima** (*Coluna de Lara*) e **Guliver Elias** (*Coluna de Guliver*) — com no mínimo 3 textos de cada autor distribuídos entre as editorias no protótipo.
 * **Modelo Operacional:** **Todo autor é um admin, mas nem todo admin é autor; e todo autor tem uma coluna.** Fluxo direto de **2 estados (`edicao` e `publicado`)**, publicação autônoma exclusiva pelo autor original e espaço de sugestões/comentários internos para outros autores e administradores.
 * **Stack Tecnológica:** Next.js 15/16 (App Router, Turbopack, React 19, TypeScript), Tailwind CSS 4, Supabase (PostgreSQL + RLS + Auth + Storage), React Hook Form, Zod, Lucide React, Sonner, Vitest e Vercel.
@@ -26,7 +26,7 @@ aresta-revista/
 ├── docs/                                 # Documentação técnica oficial (DRY — 7 documentos canônicos)
 │   ├── contexto-ia.md                    # 1. Contexto mestre, linha editorial da revista e índice de navegação
 │   ├── identidade-visual.md              # 2. Manual da marca aresta., cor carmim (#B91C1C), menu frosted e padding
-│   ├── regras-de-negocio.md              # 3. As 6 editorias, /autor vs /coluna-arquivo, RBAC e status edicao/publicado
+│   ├── regras-de-negocio.md              # 3. As 5 editorias, /autor vs /coluna-arquivo, RBAC e status edicao/publicado
 │   ├── dicionario-de-dados.md            # 4. Design Tokens, catálogo completo de classes CSS, tabelas SQL e RLS
 │   ├── guia-de-desenvolvimento.md        # 5. Arquitetura Mock-First (7 serviços), Role Switcher e Anti-Class Boom
 │   ├── roteiro-sprints.md                # 6. Cronograma das Sprints (0 a 6), roteiro de deploy e transição
@@ -72,7 +72,7 @@ aresta-revista/
 │   │   ├── artigosService.ts             # Vitrine, leitura, CRUD (edicao/publicado exclusivo do autor) e capa
 │   │   ├── revisaoService.ts             # Listagem de textos em 'edicao' e comentários/sugestões entre autores/admins
 │   │   ├── autoresService.ts             # Perfis públicos (/autor), acervos (/coluna-arquivo) e papéis de usuários
-│   │   ├── categoriasService.ts          # Metadados e listagem das 6 editorias oficiais
+│   │   ├── categoriasService.ts          # Metadados e listagem das 5 editorias oficiais
 │   │   ├── interacoesService.ts          # Comentários públicos, favoritos, seguidores de coluna e newsletter
 │   │   ├── authService.ts                # Autenticação Google OAuth e alternador de visão no protótipo
 │   │   └── storageService.ts             # Upload seguro de capas e avatares JPEG no Supabase Storage
@@ -102,7 +102,7 @@ Toda a documentação do projeto segue o princípio **DRY (Don't Repeat Yourself
 | :-: | :--- | :--- |
 | **1** | [`docs/contexto-ia.md`](./docs/contexto-ia.md) | **Contexto Mestre & Índice:** Linha editorial, missão da revista, visão executiva e personas do protótipo. |
 | **2** | [`docs/identidade-visual.md`](./docs/identidade-visual.md) | **Identidade Visual & Layout:** Manual da marca `aresta.`, cor carmim (`#B91C1C`), menu *frosted glass* e regra de padding superior. |
-| **3** | [`docs/regras-de-negocio.md`](./docs/regras-de-negocio.md) | **Regras de Negócio & Domínio:** As 6 editorias, `/autor` vs `/coluna-arquivo`, RBAC, status `edicao`/`publicado` e revisão colaborativa. |
+| **3** | [`docs/regras-de-negocio.md`](./docs/regras-de-negocio.md) | **Regras de Negócio & Domínio:** As 5 editorias, `/autor` vs `/coluna-arquivo`, RBAC, status `edicao`/`publicado` e revisão colaborativa. |
 | **4** | [`docs/dicionario-de-dados.md`](./docs/dicionario-de-dados.md) | **Dicionário de Dados & Tokens:** Paleta editorial (`theme.css`), Catálogo Completo de Classes CSS (e onde usar), tabelas SQL e RLS. |
 | **5** | [`docs/guia-de-desenvolvimento.md`](./docs/guia-de-desenvolvimento.md) | **Guia de Engenharia:** Arquitetura nos 7 serviços (`src/services/` Mock-First), `PrototypeRoleSwitcher`, Anti-Class Boom e testes. |
 | **6** | [`docs/roteiro-sprints.md`](./docs/roteiro-sprints.md) | **Roteiro & Planejamento de Sprints:** Sprints 0 a 6, roteiro de deploy do protótipo e checklist de transição. |
@@ -142,9 +142,9 @@ npm run start
 
 ## 4. Status do Roadmap & Próximos Passos
 
-* **Fase Atual:** Especificação Técnica, Banco de Dados (`20261107_init_schema.sql`), Classes Semânticas e Regras de Negócio 100% revisados e alinhados.
+* **Fase Atual:** **Sprint 0 Concluída (Fundação & Design System Carmim)** — Aplicação Next.js 15 inicializada, tokens de design em `src/styles/theme.css` com carmim `#B91C1C`, catálogo de classes semânticas, Header *frosted glass*, padding superior `.main-content-layout` obrigatório, tipos de domínio e testes unitários Vitest validados com 0 erros.
 * **Estratégia Adotada:** **Protótipo Navegável Completo (Mock-First)** — construção de todo o ecossistema (Capa, Leitura, Perfil `/autor`, Acervo `/coluna-arquivo`, Editor `/painel` com sugestões colaborativas e `/admin`) com dados fictícios ricos.
 * **Seletor de Visão para Testes (`PrototypeRoleSwitcher`):** O protótipo na Vercel contará com uma barra flutuante permitindo alternar em 1 clique entre `Admin`, `Autor Titular`, `Autor Convidado`, `Leitor` e `Visitante Anônimo`.
 * **Marco de Validação:** Deploy público na Vercel ao final da **Sprint 4** para testes com pessoas reais via link no WhatsApp.
 * **Integração com Supabase Oficial:** Executada na **Sprint 5** através de uma **nova conta dedicada no Supabase** após a aprovação visual completa.
-* **Próxima Etapa:** **Sprint 0** — Setup da aplicação Next.js, Design Tokens carmim (`#B91C1C`) em `src/styles/theme.css`, `primitives.css`, layout mestre com Header Frosted Glass e Padding Superior obrigatório.
+* **Próxima Etapa:** Validação do usuário do estado da **Sprint 0** para liberação do commit e início da **Sprint 1 (Capa Editorial & 5 Editorias)**.

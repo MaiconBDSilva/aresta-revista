@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Formulários & Editor - Aresta Revista
+   Fonte da verdade: docs/dicionario-de-dados.md (Seção 1.3 - D)
+   ========================================================================== */
+
+.label-field {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink-primary);
+  margin-bottom: 0.375rem;
+}
+
+.label-field .required-indicator {
+  color: var(--color-brand-accent);
+  margin-left: 0.25rem;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  color: var(--color-ink-primary);
+  background-color: var(--color-paper-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-field:focus {
+  border-color: var(--color-brand-accent);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+
+.input-field::placeholder {
+  color: var(--color-ink-muted);
+}
+
+.textarea-editor {
+  width: 100%;
+  min-height: 5.5rem;
+  padding: 0.75rem 0.875rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  color: var(--color-ink-primary);
+  background-color: var(--color-paper-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.5rem;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.textarea-editor:focus {
+  border-color: var(--color-brand-accent);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+

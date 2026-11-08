@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Declaração Tipográfica da Marca: Svetze (public/fonts/Svetze.otf)
+   ========================================================================== */
+@font-face {
+  font-family: 'Svetze';
+  src: url('/fonts/Svetze.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Cores Base da Revista - Modo Claro (Contraste escuro nítido sobre fundo claro) */
+  --color-ink-primary: #09090B;      /* Preto profundo carvão editorial */
+  --color-ink-secondary: #18181B;    /* Texto de leitura e subtítulos bem escuros */
+  --color-ink-muted: #3F3F46;        /* Metadados e legendas escuros e legíveis */
+  --color-paper-bg: #FBFBF9;         /* Linho off-white editorial */
+  --color-paper-surface: #FFFFFF;
+  --color-border-subtle: #E4E4E7;
+
+  /* Cor Central da Marca: Vermelho Carmim Oficial */
+  --color-brand-accent: #B91C1C;
+  --color-brand-accent-hover: #991B1B;
+
+  /* Cores Temáticas das 5 Editorias Oficiais */
+  --color-cat-politica: #1E3A8A;
+  --color-cat-cultura: #854D0E;
+  --color-cat-entretenimento: #701A75;
+  --color-cat-ensaios: #9A3412;
+  --color-cat-esporte: #0F766E;
+
+  /* Dimensões Globais de Layout */
+  --header-height: 4rem;
+
+  /* Fontes Centrais */
+  --font-logo: var(--font-svetze, 'Svetze'), 'Svetze', Georgia, serif;
+  --font-serif: var(--font-newsreader, 'Newsreader', 'Playfair Display', Georgia, serif);
+  --font-sans: var(--font-plus-jakarta, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  --font-reading: var(--font-lora, 'Lora', 'Charter', Georgia, serif);
+}
+
+.dark {
+  /* Cores Base da Revista - Modo Noturno (Ativado exclusivamente via classe .dark) */
+  --color-ink-primary: #FBFBF9;
+  --color-ink-secondary: #E4E4E7;
+  --color-ink-muted: #A1A1AA;
+  --color-paper-bg: #09090B;
+  --color-paper-surface: #18181B;
+  --color-border-subtle: #27272A;
+
+  /* Destaque Carmim no Escuro */
+  --color-brand-accent: #DC2626;
+  --color-brand-accent-hover: #B91C1C;
+
+  /* Cores Temáticas Noturnas */
+  --color-cat-politica: #3B82F6;
+  --color-cat-cultura: #D97706;
+  --color-cat-entretenimento: #C026D3;
+  --color-cat-ensaios: #F97316;
+  --color-cat-esporte: #14B8A6;
+}

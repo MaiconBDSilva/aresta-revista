@@ -26,7 +26,7 @@
 | **Cor Central de Destaque** | **Vermelho Carmim `#B91C1C`** (`--color-brand-accent`) |
 | **Asset Oficial da Logo** | [`public/images/logo-aresta.png`](../public/images/logo-aresta.png) |
 | **Natureza Editorial** | Portal independente de colunas autorais, ensaios críticos, análises culturais e crônicas contemporâneas. |
-| **Eixos Temáticos (6 Editorias)** | **Política & Poder**, **Cultura & Artes**, **Entretenimento & Pop**, **Subjetividades**, **Opinião & Ensaios** e **Esporte & Sociedade**. |
+| **Eixos Temáticos (5 Editorias)** | **Política**, **Cultura**, **Entretenimento**, **Ensaios** e **Esporte**. |
 | **Autores & Colunas Oficiais** | **Lucas Campos** (*Coluna de Lucas*), **Danillo Reis** (*Coluna de Danillo*), **Sergio Rodrigues** (*Coluna de Sergio*), **Lara Lima** (*Coluna de Lara*) e **Guliver Elias** (*Coluna de Guliver*). |
 | **Governança de Autores & Admins** | **Todo autor é um admin, mas nem todo admin é autor.** Todo autor possui obrigatoriamente uma coluna exclusiva e acesso completo de administração; já um admin não-autor gerencia a plataforma sem ter coluna própria. |
 | **Stack Tecnológica** | Next.js 15/16 (App Router, Turbopack, React 19), TypeScript 5, Tailwind CSS 4 + Design Tokens (`theme.css`), Supabase (PostgreSQL + RLS + Auth + Storage), Zod, Lucide React, Sonner, Vitest, Vercel. |
@@ -38,7 +38,7 @@
 O **Aresta Revista** é um ecossistema digital projetado com foco em excelência tipográfica, performance de carregamento e colaboração editorial:
 
 1. **Vitrine Pública, Colunas & Experiência de Leitura (`/`, `/coluna/[slug]`, `/autor/[slug]` e `/coluna-arquivo/[slug]`):**
-   * **Header Flutuante Frosted Glass:** Menu fixo no topo com efeito de vidro fosco translúcido (`backdrop-filter: blur(12px)`) e navegação pelas 6 grandes editorias.
+   * **Header Flutuante Frosted Glass:** Menu fixo no topo com efeito de vidro fosco translúcido (`backdrop-filter: blur(12px)`) e navegação pelas 5 grandes editorias.
    * **Padding Superior Obrigatório:** Todas as páginas aplicam `.main-content-layout` para que o menu flutuante nunca sobreponha o conteúdo.
    * **Capa Editorial Dinâmica:** Destaque principal (*Hero Article*), mosaico de manchetes secundárias, vitrine horizontal *"Últimas das Colunas"* e feeds por editoria (exibindo artigos com `status = 'publicado'`).
    * **Dupla Presença Autoral:** Cada um dos colunistas conta com sua **Página de Perfil (`/autor/[slug]`)** (biografia, foto, redes sociais e últimos textos) e com a **Página de Acervo da Coluna (`/coluna-arquivo/[slug]`)** (manifesto da coluna, botão *"Seguir"* e histórico completo de artigos).
@@ -62,7 +62,7 @@ Para eliminar redundâncias e garantir facilidade de manutenção (princípio DR
 | :--- | :--- |
 | **[`docs/contexto-ia.md`](./contexto-ia.md)** *(Este arquivo)* | Visão editorial da revista, resumo executivo da arquitetura, regras de ouro e elenco de autores do protótipo. |
 | **[`docs/identidade-visual.md`](./identidade-visual.md)** | Manual oficial da marca `aresta.`, cor de destaque vermelho carmim (`#B91C1C`), menu *frosted glass* e regra de padding superior. |
-| **[`docs/regras-de-negocio.md`](./regras-de-negocio.md)** | As 6 editorias, os 5 autores oficiais, regra *"Todo autor é admin, nem todo admin é autor"*, `/autor` vs `/coluna-arquivo`, status `edicao`/`publicado` e mídia JPEG. |
+| **[`docs/regras-de-negocio.md`](./regras-de-negocio.md)** | As 5 editorias, os 5 autores oficiais, regra *"Todo autor é admin, nem todo admin é autor"*, `/autor` vs `/coluna-arquivo`, status `edicao`/`publicado` e mídia JPEG. |
 | **[`docs/dicionario-de-dados.md`](./dicionario-de-dados.md)** | Design Tokens (`theme.css`), Catálogo Completo de Classes Semânticas CSS (e onde são usadas), tabelas SQL, enums, contratos TS e RLS. |
 | **[`docs/guia-de-desenvolvimento.md`](./guia-de-desenvolvimento.md)** | Stack técnica, os 7 serviços em `src/services/` (Mock-First), `PrototypeRoleSwitcher`, governança Anti-Class Boom e testes. |
 | **[`docs/roteiro-sprints.md`](./roteiro-sprints.md)** | Planejamento de sprints de desenvolvimento (Sprints 0 a 6), deploy do protótipo na Vercel e checklist de transição para o Supabase. |
@@ -79,7 +79,7 @@ Para eliminar redundâncias e garantir facilidade de manutenção (princípio DR
 3. **Hierarquia Autor / Admin e Coluna Obrigatória:** **Todo autor é um admin, mas nem todo admin é autor.** Todo autor possui obrigatoriamente uma coluna exclusiva (`colunas`) e tem acesso administrativo completo; já um admin não-autor gerencia a plataforma sem ter coluna.
 4. **Ciclo de 2 Estados (`edicao` e `publicado`) & Autonomia do Autor:** Não há agendamento. Artigos em `edicao` são visíveis apenas para `autor` e `admin` (que podem deixar comentários/sugestões internas), mas **somente o autor original pode modificar seu texto e mudá-lo para `publicado`**.
 5. **Duas Rotas Autorais Complementares:** `/autor/[slug]` exibe o perfil biográfico do colunista e `/coluna-arquivo/[slug]` exibe o acervo histórico da sua coluna.
-6. **Dados Reais dos Envolvidos no Protótipo:** Os mocks do protótipo utilizam os 5 autores oficiais (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**), com **pelo menos 3 textos por autor (mínimo de 15 textos)** divididos entre as 6 editorias, além do componente `PrototypeRoleSwitcher`.
+6. **Dados Reais dos Envolvidos no Protótipo:** Os mocks do protótipo utilizam os 5 autores oficiais (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**), com **pelo menos 3 textos por autor (mínimo de 15 textos)** divididos entre as 5 editorias, além do componente `PrototypeRoleSwitcher`.
 7. **Política de Imagens 100% Compatível com Open Graph:** `images: { unoptimized: true }` no `next.config.ts`, com compressão client-side em **JPEG (`image/jpeg`, qualidade 0.82, $\le 120\text{ KB}$)** para compatibilidade nativa total com `@vercel/og` (Satori), WhatsApp e Instagram.
 8. **Zero Erros em Verificações:** Todo commit ou entrega deve passar sem falhas em `npx tsc --noEmit` e `npm run lint`.
 

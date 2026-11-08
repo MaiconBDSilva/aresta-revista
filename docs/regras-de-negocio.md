@@ -1,7 +1,7 @@
 # 📋 Regras de Negócio Oficiais & Especificação de Domínio | Aresta Revista
 
 > **Arquivo:** `docs/regras-de-negocio.md`  
-> **Finalidade:** Fonte única da verdade para todas as regras editoriais, modelo de colunas autorais e páginas de autor, relação entre Autor e Admin, taxonomia temática (6 editorias), ciclo de vida dos artigos (`edicao` e `publicado`), elenco oficial de autores do protótipo e compartilhamento visual dinâmico.  
+> **Finalidade:** Fonte única da verdade para todas as regras editoriais, modelo de colunas autorais e páginas de autor, relação entre Autor e Admin, taxonomia temática (5 editorias), ciclo de vida dos artigos (`edicao` e `publicado`), elenco oficial de autores do protótipo e compartilhamento visual dinâmico.  
 > **Última Atualização:** 07/11/2026
 
 ---
@@ -11,7 +11,7 @@
 - [1. Modelo Editorial: Autores, Perfis & Colunas Autorais](#1-modelo-editorial-autores-perfis--colunas-autorais)
   - [1.1 Conceito da Coluna Titular vs. Perfil do Colunista](#11-conceito-da-coluna-titular-vs-perfil-do-colunista)
   - [1.2 Elenco Oficial de Autores & Colunas do Protótipo](#12-elenco-oficial-de-autores--colunas-do-protótipo)
-  - [1.3 As 6 Editorias Centrais](#13-as-6-editorias-centrais)
+  - [1.3 As 5 Editorias Centrais](#13-as-6-editorias-centrais)
   - [1.4 Sistema de Tags Livres](#14-sistema-de-tags-livres)
 - [2. Perfis de Usuário & Níveis de Acesso (RBAC)](#2-perfis-de-usuário--níveis-de-acesso-rbac)
   - [2.1 Regra Fundamental: "Todo Autor é um Admin, mas nem todo Admin é Autor"](#21-regra-fundamental-todo-autor-é-um-admin-mas-nem-todo-admin-é-autor)
@@ -58,13 +58,13 @@ Na **Aresta Revista**, **todo autor possui obrigatoriamente uma Coluna Exclusiva
    * Exibe o nome próprio da coluna (ex: *"Coluna de Lucas"*, *"Coluna de Lara"*), o banner/selo visual e o manifesto/slogan da coluna;
    * Oferece o botão **"Seguir esta Coluna"** (para receber novos textos por e-mail), busca rápida dentro da coluna e a **listagem cronológica completa (acervo)** de todos os artigos publicados pelo colunista.
 
-* Cada artigo pertence à **Coluna do Autor** e é classificado em **1 das 6 grandes Editorias temáticas**.
+* Cada artigo pertence à **Coluna do Autor** e é classificado em **1 das 5 grandes Editorias temáticas**.
 
 ---
 
 ### 1.2 Elenco Oficial de Autores & Colunas do Protótipo
 
-Os dados gerados para o protótipo (mocks oficiais e seed inicial) utilizam os nomes reais dos 5 integrantes do projeto, cada um titular de sua respectiva coluna e contando com **pelo menos 3 artigos por autor (mínimo de 15 textos no total)** distribuídos entre as 6 editorias:
+Os dados gerados para o protótipo (mocks oficiais e seed inicial) utilizam os nomes reais dos 5 integrantes do projeto, cada um titular de sua respectiva coluna e contando com **pelo menos 3 artigos por autor (mínimo de 15 textos no total)** distribuídos entre as 5 editorias:
 
 | # | Autor Titular (`papel = 'autor'`) | Slug do Perfil (`/autor/[slug]`) | Nome da Coluna | Slug da Coluna (`/coluna-arquivo/[slug]`) | Mínimo de Textos no Protótipo |
 | :-: | :--- | :--- | :--- | :--- | :---: |
@@ -76,7 +76,7 @@ Os dados gerados para o protótipo (mocks oficiais e seed inicial) utilizam os n
 
 ---
 
-### 1.3 As 6 Editorias Centrais
+### 1.3 As 5 Editorias Centrais
 
 ```text
                                          ARESTA REVISTA
@@ -164,14 +164,14 @@ Para estimular a troca intelectual e o cuidado editorial entre Lucas Campos, Dan
 A capa foi desenhada para respirar, oferecendo clareza e ritmo visual sem poluição de banners:
 
 * **Desktop:**
-  * Header fixo superior (*frosted glass*) com divisória sutil: logotipo `aresta.` em serifa clássica com ponto carmim, links das 6 editorias, botão *"Colunistas"*, busca e botão *"Newsletter"*.
+  * Header fixo superior (*frosted glass*) com divisória sutil: logotipo `aresta.` em serifa clássica com ponto carmim, links das 5 editorias, botão *"Colunistas"*, busca e botão *"Newsletter"*.
   * Faixa editorial do dia (data, lema da revista e indicador de última edição).
   * Grade *Hero*: Manchete principal de grande impacto + 2 apoios laterais (`eh_destaque_secao`).
   * Vitrine horizontal: *"Últimas das Colunas"* (foto do autor + nome da coluna + título do texto, linkando para o artigo e para `/coluna-arquivo/[slug]`).
-  * Blocos verticais alternados para cada uma das 6 editorias.
+  * Blocos verticais alternados para cada uma das 5 editorias.
 * **Mobile:**
   * Barra superior compacta com menu gaveta (*drawer*) e busca rápida.
-  * Barra horizontal de rolagem suave com as 6 editorias em pílulas (*chips*).
+  * Barra horizontal de rolagem suave com as 5 editorias em pílulas (*chips*).
   * Cards empilhados verticalmente com imagens em proporção 16:9 de toque confortável.
 
 ### 4.2 Manchete Principal (*Hero Article*)
@@ -273,6 +273,6 @@ flowchart TD
   * `/coluna/[slug]` para leitura de artigos publicados;
   * `/coluna-arquivo/[slug]` para o acervo histórico da coluna do autor;
   * `/autor/[slug]` para a página biográfica de perfil do colunista;
-  * `/editoria/[slug]` para o arquivo de uma das 6 editorias.
+  * `/editoria/[slug]` para o arquivo de uma das 5 editorias.
 * **Schema.org:** Injeção de JSON-LD como `NewsArticle` ou `BlogPosting`.
 * **Sitemap Dinâmico:** `/sitemap.xml` contemplando todos os artigos com `status = 'publicado'`, páginas de acervo de colunas (`/coluna-arquivo/[slug]`) e perfis de colunistas (`/autor/[slug]`).
