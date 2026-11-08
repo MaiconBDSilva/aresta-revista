@@ -39,7 +39,10 @@
   - [7.1 Edição Semanal da Revista](#71-edição-semanal-da-revista)
   - [7.2 Seguir Colunista Específico](#72-seguir-colunista-específico)
 - [8. Política de Mídia, Imagens & Compatibilidade Open Graph](#8-política-de-mídia-imagens--compatibilidade-open-graph)
-- [9. SEO Editorial e Metadados](#9-seo-editorial-e-metadados)
+- [9. SEO Editorial, Metadados & Política de URLs Semânticas](#9-seo-editorial-metadados--política-de-urls-semânticas)
+  - [9.1 Política Rígida de URLs Semânticas (Sem IDs de Banco de Dados)](#91-política-rígida-de-urls-semânticas-sem-ids-de-banco-de-dados)
+  - [9.2 Mapa de Rotas Semânticas do Portal](#92-mapa-de-rotas-semânticas-do-portal)
+  - [9.3 Schema.org & Metatags](#93-schemaorg--metatags)
 
 ---
 
@@ -267,12 +270,27 @@ flowchart TD
 
 ---
 
-## 9. SEO Editorial e Metadados
+## 9. SEO Editorial, Metadados & Política de URLs Semânticas
 
-* **URLs Semânticas e Únicas:**
-  * `/coluna/[slug]` para leitura de artigos publicados;
-  * `/coluna-arquivo/[slug]` para o acervo histórico da coluna do autor;
-  * `/autor/[slug]` para a página biográfica de perfil do colunista;
-  * `/editoria/[slug]` para o arquivo de uma das 5 editorias.
+### 9.1 Política Rígida de URLs Semânticas (Sem IDs de Banco de Dados)
+Para garantir máxima legibilidade para o leitor humano, identidade editorial e indexação de alta performance em motores de busca (SEO):
+* **Proibição Absoluta de IDs Numéricos e UUIDs na URL Pública:** Em nenhuma hipótese a URL pública de um artigo conterá identificadores opacos gerados por banco de dados (ex: `/artigo/123` ou `/coluna/3fa85f64-5717-4562-b3fc-2c963f66afa6` são estritamente vetados).
+* **Estrutura Canônica da Rota de Artigo (`/coluna/[slug]`):**
+  * A URL do artigo é baseada no padrão `/coluna/[slug]`.
+  * O `slug` é **obrigatoriamente semântico**, gerado diretamente a partir do título do artigo no momento da criação/edição através da função canônica `slugify()` (`src/lib/slugify.ts`).
+  * O slug é formatado exclusivamente em minúsculas, com acentuação e caracteres especiais removidos e todas as palavras separadas por hífens (`kebab-case`). Exemplo:
+    * **Título:** *"A Crise Hídrica no Cerrado e os Desafios do Agronegócio em Goiás"*
+    * **URL Canônica:** `https://aresta.com.br/coluna/a-crise-hidrica-no-cerrado-e-os-desafios-do-agronegocio-em-goias`
+* **Unicidade de Slugs:** O banco de dados e os serviços garantem a restrição `UNIQUE` na coluna `slug` da tabela `artigos`. Em caso de títulos idênticos, adiciona-se um sufixo numérico sequencial com hífen (ex: `-2`).
+
+### 9.2 Mapa de Rotas Semânticas do Portal
+* `/` — Capa Editorial da revista (Hero, Destaques, 5 Editorias e Vitrine de Colunistas);
+* `/coluna/[slug]` — Leitura imersiva de artigo publicado (slug kebab-case semântico do título);
+* `/editoria/[slug]` — Arquivo de artigos filtrados por uma das 5 editorias oficiais (`politica`, `cultura`, `entretenimento`, `ensaios`, `esporte`);
+* `/autor/[slug]` — Página biográfica do colunista (slug kebab-case com o nome do autor);
+* `/coluna-arquivo/[slug]` — Acervo histórico e cronológico da coluna do autor (slug kebab-case do nome da coluna);
+* **Busca no Header (Estilo G1 / Globo.com):** A busca por artigos e temas é realizada diretamente através do widget interativo integrado à barra de navegação superior (`HeaderSearchBar.tsx`). Não há necessidade de uma página dedicada e isolada de busca, pois os resultados abrem em um popover flutuante inteligente com setas indicativas, permitindo navegação instantânea para os artigos publicados.
+
+### 9.3 Schema.org & Metatags
 * **Schema.org:** Injeção de JSON-LD como `NewsArticle` ou `BlogPosting`.
 * **Sitemap Dinâmico:** `/sitemap.xml` contemplando todos os artigos com `status = 'publicado'`, páginas de acervo de colunas (`/coluna-arquivo/[slug]`) e perfis de colunistas (`/autor/[slug]`).

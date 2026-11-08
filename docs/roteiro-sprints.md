@@ -74,12 +74,15 @@ flowchart TD
 - [x] Compilação estática (`npm run build`) validada com sucesso.
 
 ### 2.2 Sprint 1: Capa Editorial & Navegação pelas 5 Editorias (Mock-First)
-* Criação dos mocks tipados para os 7 serviços em `src/services/mocks/` utilizando os **5 autores reais do projeto** (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**), suas respectivas colunas (*"Coluna de Lucas"*, *"Coluna de Danillo"*, *"Coluna de Sergio"*, *"Coluna de Lara"* e *"Coluna de Guliver"*) e **pelo menos 3 textos por autor (mínimo de 15 textos)** divididos entre as 5 editorias.
-* Capa Editorial completa exibindo apenas artigos com `status = 'publicado'`:
-  * Manchete Principal (*Hero Article*) de grande destaque + 2 apoios secundários;
-  * Vitrine horizontal *"Últimas das Colunas"* com avatares dos 5 colunistas e link para `/coluna-arquivo/[slug]`;
-  * Seções modulares dedicadas a cada uma das 5 editorias;
-  * Páginas de filtro por editoria (`/editoria/[slug]`) e busca em tempo real (`/busca`).
+- [x] Criação dos mocks tipados para os serviços em `src/services/mocks/` utilizando os **5 autores reais do projeto** (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**), suas respectivas colunas (*"Coluna de Lucas"*, *"Coluna de Danillo"*, *"Coluna de Sergio"*, *"Coluna de Lara"* e *"Coluna de Guliver"*) e **15 artigos completos e aprofundados** sobre temas contemporâneos de Brasil e Goiás com URLs 100% semânticas em kebab-case (`/coluna/[slug]`).
+- [x] Construção da camada de serviços inicial Mock-First: `artigosService.ts`, `autoresService.ts` e `categoriasService.ts` com suíte de testes Vitest (13 testes específicos, totalizando 22 testes unitários aprovados).
+- [x] Capa Editorial completa exibindo apenas artigos com `status = 'publicado'`:
+  - [x] Manchete Principal (*Hero Article*) de grande destaque + 2 apoios secundários (`.grid-magazine-hero`);
+  - [x] Vitrine horizontal *"Últimas das Colunas"* com avatares dos 5 colunistas e link para `/coluna-arquivo/[slug]`;
+  - [x] Seções modulares dedicadas a cada uma das 5 editorias oficiais (`.grid-magazine-feed`).
+- [x] Páginas de filtro por editoria (`/editoria/[slug]`) com metadados dinâmicos e SSG.
+- [x] Busca inteligente integrada ao Header (estilo G1 / Globo.com) com botão carmim "BUSCAR", input responsivo com debounce e popover flutuante com seta notch e resultados imediatos (sem página isolada).
+- [x] Validação completa com 0 erros: TypeScript (`tsc --noEmit`), ESLint (`npm run lint`), Vitest (`22 testes aprovados`) e Build de Produção Next.js (`npm run build`).
 
 ### 2.3 Sprint 2: Leitor Imersivo, Perfil (/autor) & Acervo da Coluna (/coluna-arquivo)
 * Desenvolvimento da página do artigo (`/coluna/[slug]`):

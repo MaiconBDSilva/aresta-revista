@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Menu, X, PenSquare, Shield } from 'lucide-react';
+import { Menu, X, PenSquare, Shield } from 'lucide-react';
+import { HeaderSearchBar } from './HeaderSearchBar';
 
 export const CATEGORIAS_OFICIAIS = [
   { nome: 'Política', slug: 'politica', cor: 'var(--color-cat-politica)' },
@@ -91,6 +92,9 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
     if (containerRef.current) {
       observer.observe(containerRef.current);
     }
+    if (actionsRef.current) {
+      observer.observe(actionsRef.current);
+    }
     window.addEventListener('resize', verificarColisao);
 
     return () => {
@@ -132,15 +136,9 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
           })}
         </nav>
 
-        {/* Extrema Direita: Ações e Ícone do Drawer Mobile no canto direito */}
+        {/* Extrema Direita: Busca Inteligente (Estilo G1), Ações e Ícone do Drawer Mobile */}
         <div ref={actionsRef} className="navbar-actions">
-          <Link
-            href="/busca"
-            className="navbar-icon-btn"
-            aria-label="Buscar colunas e artigos"
-          >
-            <Search className="w-5 h-5" />
-          </Link>
+          <HeaderSearchBar />
 
           <Link href="/painel" className="navbar-btn-outline">
             <PenSquare className="w-3.5 h-3.5" style={{ color: 'var(--color-brand-accent)' }} />
@@ -166,6 +164,10 @@ export function EditorialNavbarBar({ ariaLabel = 'Navegação Principal' }: Edit
       {/* Menu Drawer Mobile */}
       {menuAberto && (
         <div className="navbar-mobile-drawer">
+          <div className="mb-4 pb-3 border-b border-border-subtle">
+            <HeaderSearchBar />
+          </div>
+
           <p className="section-kicker">Editorias</p>
           <div className="flex flex-col gap-2">
             {CATEGORIAS_OFICIAIS.map((cat) => {

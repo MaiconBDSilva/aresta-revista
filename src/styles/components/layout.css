@@ -392,3 +392,231 @@
   font-family: var(--font-sans);
   font-size: 0.8125rem;
 }
+
+/* ==========================================================================
+   Widget de Busca no Header (Estilo G1 / Popover Flutuante)
+   ========================================================================== */
+.header-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Estado Idle: Botão Caixa Vermelho Carmim com Lupa e Texto "BUSCAR" */
+.header-search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-brand-accent);
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.85rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.header-search-btn:hover {
+  background-color: var(--color-brand-accent-hover);
+  transform: translateY(-1px);
+}
+
+/* Estado Ativo: Caixa Branca com Lupa, Input e Botão Fechar */
+.header-search-input-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-paper-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.375rem;
+  padding: 0.35rem 0.65rem;
+  width: 14rem;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  transition: width 0.2s ease, border-color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+  .header-search-input-box {
+    width: 18rem;
+  }
+}
+
+.header-search-input-box:focus-within {
+  border-color: var(--color-brand-accent);
+  box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.15);
+}
+
+.header-search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink-primary);
+}
+
+.header-search-input::placeholder {
+  color: var(--color-ink-muted);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.header-search-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  padding: 0.125rem;
+  border-radius: 9999px;
+  transition: color 0.15s ease;
+}
+
+.header-search-clear-btn:hover {
+  color: var(--color-brand-accent);
+}
+
+/* Popover Flutuante com Seta Superior (Estilo G1) */
+.header-search-popover {
+  position: absolute;
+  top: calc(100% + 0.625rem);
+  right: 0;
+  width: 20rem;
+  max-width: calc(100vw - 2rem);
+  background-color: var(--color-paper-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  z-index: 100;
+  overflow: hidden;
+  animation: popoverFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .header-search-popover {
+    width: 23rem;
+  }
+}
+
+/* Seta Notch no Topo do Popover apontando para a caixa de busca */
+.header-search-popover::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 28px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-paper-surface);
+  border-left: 1px solid var(--color-border-subtle);
+  border-top: 1px solid var(--color-border-subtle);
+  transform: rotate(45deg);
+  z-index: 101;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-search-list {
+  max-height: 24rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.header-search-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+  text-decoration: none;
+  transition: background-color 0.12s ease;
+}
+
+.header-search-item:last-child {
+  border-bottom: none;
+}
+
+.header-search-item:hover,
+.header-search-item:focus {
+  background-color: rgba(185, 28, 28, 0.04);
+}
+
+.header-search-logo {
+  font-family: var(--font-logo);
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--color-brand-accent);
+  line-height: 1;
+  padding-top: 0.15rem;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.header-search-title {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-ink-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.header-search-meta {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  margin-top: 0.25rem;
+}
+
+.header-search-action {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--color-border-subtle);
+  background-color: rgba(9, 9, 11, 0.02);
+  color: var(--color-ink-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  text-decoration: none;
+  transition: color 0.12s ease, background-color 0.12s ease;
+}
+
+.header-search-action:hover {
+  color: var(--color-brand-accent);
+  background-color: rgba(185, 28, 28, 0.06);
+}
+
+.header-search-empty {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--color-ink-muted);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+

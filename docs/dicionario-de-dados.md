@@ -109,6 +109,7 @@ Todas as cores e variáveis visuais do sistema são parametrizadas no arquivo ce
 | `.navbar-center-links` | Container de navegação posicionado no centro absoluto da tela (`position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)`), com espaçamento variável fluido (`gap: clamp(0.5rem, 1.4vw, 2rem)`) e auto-colapso via medição geométrica contínua (`.is-collapsed`) ao se aproximar de qualquer elemento lateral. | • Componente `EditorialNavbarBar` |
 | `.navbar-link` | Link de categoria do menu em caixa alta, negrito (`#09090B`), padding adaptativo e hover/ativo (`is-active`) em vermelho carmim (`#B91C1C`). | • Componente `EditorialNavbarBar` e drawer mobile |
 | `.navbar-actions` | Container colado à direita na barra de menu para os controles de busca, escrita, admin e toggle mobile. | • Componente `EditorialNavbarBar` |
+| `.header-search-container`, `.header-search-btn`, `.header-search-input-box`, `.header-search-input`, `.header-search-popover` | Widget de busca inteligente integrado ao Header (estilo G1): botão carmim com texto "BUSCAR" em idle, expande para campo de texto ativo e abre popover com seta notch, logo `a.`, títulos de artigos com "EM [CATEGORIA]" e atalhos rápidos. Não necessita de página completa de busca. | • Componente `HeaderSearchBar.tsx` em `HeaderPortal.tsx` e `HeaderFrostedGlass.tsx` |
 | `.navbar-icon-btn`, `.navbar-btn-outline`, `.navbar-btn-solid` | Botões de ação da barra de menu com contraste escuro explícito e hover carmim. | • Botões de Busca, "Escrever" (`/painel`) e "Admin" (`/admin`) em `EditorialNavbarBar` |
 | `.navbar-mobile-toggle`, `.navbar-mobile-drawer` | Botão hambúrguer no canto direito mobile (e ativado em desktop quando os links centrais colapsam via `.is-visible`) e gaveta expansível de navegação mobile com vidro fosco. | • Componente `EditorialNavbarBar` |
 | `.main-content-layout` | Container `<main>` principal de todas as páginas em coluna flexível. | • Container principal `<main>` no `src/app/layout.tsx` |
@@ -206,6 +207,7 @@ CREATE TABLE IF NOT EXISTS public.tags (
 
 ### 2.5 Tabela `artigos`
 Possui exclusivamente dois estados (`'edicao'` e `'publicado'`). Apenas o `autor_id` pode modificar o texto e alterar o `status` para `'publicado'`.
+> ⚠️ **Regra de URLs Semânticas:** A coluna `slug` armazena a rota amigável do artigo (`/coluna/[slug]`), obrigatoriamente gerada a partir do título em `kebab-case` (sem acentos, minúsculas, palavras separadas por hífen). IDs de banco de dados (UUIDs) nunca são expostos na URL pública.
 ```sql
 CREATE TABLE IF NOT EXISTS public.artigos (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

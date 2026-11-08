@@ -82,6 +82,7 @@ Para eliminar redundâncias e garantir facilidade de manutenção (princípio DR
 6. **Dados Reais dos Envolvidos no Protótipo:** Os mocks do protótipo utilizam os 5 autores oficiais (**Lucas Campos**, **Danillo Reis**, **Sergio Rodrigues**, **Lara Lima** e **Guliver Elias**), com **pelo menos 3 textos por autor (mínimo de 15 textos)** divididos entre as 5 editorias, além do componente `PrototypeRoleSwitcher`.
 7. **Política de Imagens 100% Compatível com Open Graph:** `images: { unoptimized: true }` no `next.config.ts`, com compressão client-side em **JPEG (`image/jpeg`, qualidade 0.82, $\le 120\text{ KB}$)** para compatibilidade nativa total com `@vercel/og` (Satori), WhatsApp e Instagram.
 8. **Zero Erros em Verificações:** Todo commit ou entrega deve passar sem falhas em `npx tsc --noEmit` e `npm run lint`.
+9. **URLs Semânticas e Humanas (Sem IDs de Banco de Dados):** As rotas de leitura pública de artigos utilizam exclusivamente o padrão `/coluna/[slug]`, onde o `slug` é gerado via `slugify` a partir do título do artigo em `kebab-case` (sem acentos, minúsculas, palavras separadas por hífen). É estritamente proibido exibir IDs numéricos ou UUIDs nas URLs públicas.
 
 ---
 

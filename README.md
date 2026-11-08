@@ -43,7 +43,6 @@ aresta-revista/
 │   │   ├── editoria/                     # Listagem de artigos filtrados por editoria (/editoria/[slug])
 │   │   ├── autor/                        # Página biográfica de perfil do colunista (/autor/[slug])
 │   │   ├── coluna-arquivo/               # Acervo histórico da coluna do autor (/coluna-arquivo/[slug])
-│   │   ├── busca/                        # Busca textual de colunas publicadas em tempo real
 │   │   ├── login/                        # Autenticação de leitores, autores e admins (Google OAuth)
 │   │   ├── painel/                       # Painel do Colunista (Meus Textos em Edição/Publicados, Redação e Editor)
 │   │   ├── admin/                        # Administração (Listagem de Textos em Edição, Destaques da Capa e Usuários)
@@ -56,7 +55,7 @@ aresta-revista/
 │   │   ├── artigo/                       # Componentes do leitor (ArticleBody, ReadingProgress, AuthorSignature)
 │   │   ├── autor/                        # Componentes de perfil e acervo (AuthorBio, ColumnHeader, ColumnCard)
 │   │   ├── capa/                         # Módulos da capa (HeroArticle, SecondaryGrid, CategoryFeed)
-│   │   ├── layout/                       # HeaderFrostedGlass, FooterEditorial, MobileMenu, PrototypeRoleSwitcher
+│   │   ├── layout/                       # HeaderFrostedGlass, HeaderPortal, HeaderSearchBar (estilo G1), FooterEditorial, PrototypeRoleSwitcher
 │   │   ├── painel/                       # Editor e bancada (TiptapEditor, ArticleForm, RevisaoCommentsSidebar)
 │   │   └── ui/                           # Componentes atômicos e primitivas
 │   ├── contexts/                         # Provedores de estado global (AuthContext com suporte a Role Switcher)
@@ -142,9 +141,9 @@ npm run start
 
 ## 4. Status do Roadmap & Próximos Passos
 
-* **Fase Atual:** **Sprint 0 Concluída (Fundação & Design System Carmim)** — Aplicação Next.js 15 inicializada, tokens de design em `src/styles/theme.css` com carmim `#B91C1C`, catálogo de classes semânticas, Header *frosted glass*, padding superior `.main-content-layout` obrigatório, tipos de domínio e testes unitários Vitest validados com 0 erros.
+* **Fase Atual:** **Sprint 1 Concluída (Capa Editorial & Navegação pelas 5 Editorias)** — Base Mock-First dos 5 autores reais com 15 artigos completos e aprofundados sobre Brasil e Goiás, URLs 100% semânticas (`/coluna/[slug]`), serviços `artigosService`, `autoresService` e `categoriasService`, Capa com Manchete Hero + 2 Apoios Secundários (`.grid-magazine-hero`), vitrine "Últimas das Colunas", páginas de editoria (`/editoria/[slug]`), busca em tempo real (`/busca`) e 22 testes unitários Vitest validados com 0 erros.
 * **Estratégia Adotada:** **Protótipo Navegável Completo (Mock-First)** — construção de todo o ecossistema (Capa, Leitura, Perfil `/autor`, Acervo `/coluna-arquivo`, Editor `/painel` com sugestões colaborativas e `/admin`) com dados fictícios ricos.
 * **Seletor de Visão para Testes (`PrototypeRoleSwitcher`):** O protótipo na Vercel contará com uma barra flutuante permitindo alternar em 1 clique entre `Admin`, `Autor Titular`, `Autor Convidado`, `Leitor` e `Visitante Anônimo`.
 * **Marco de Validação:** Deploy público na Vercel ao final da **Sprint 4** para testes com pessoas reais via link no WhatsApp.
 * **Integração com Supabase Oficial:** Executada na **Sprint 5** através de uma **nova conta dedicada no Supabase** após a aprovação visual completa.
-* **Próxima Etapa:** Validação do usuário do estado da **Sprint 0** para liberação do commit e início da **Sprint 1 (Capa Editorial & 5 Editorias)**.
+* **Próxima Etapa:** **Sprint 2 (Leitor Imersivo `/coluna/[slug]`, Perfil `/autor/[slug]` e Acervo `/coluna-arquivo/[slug]`)**.
